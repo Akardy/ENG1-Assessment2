@@ -9,13 +9,13 @@ import com.badlogic.gdx.Gdx;
  * max time is reached.
  */
 public class Timer {
-    private float elapsedTime;
+    private float startingTime;
     private final float maxTime;
     private boolean reachedMaxTime;
 
     public Timer() {
         this.maxTime = Consts.MAX_TIME;
-        this.elapsedTime = 0;
+        this.startingTime = 300;
         reachedMaxTime = false;
     }
 
@@ -25,17 +25,17 @@ public class Timer {
      */
     public void update() {
         // Checks if the time has reached the limit
-        if (elapsedTime < maxTime) {
+        if (startingTime > maxTime) {
             // If not it updates the time
-            elapsedTime += Gdx.graphics.getDeltaTime();
+            startingTime -= Gdx.graphics.getDeltaTime();
         }
-        if (elapsedTime >= maxTime) {
+        if (startingTime <= maxTime) {
             reachedMaxTime = true;
         }
     }
 
     public float getElapsedTime(){
-        return elapsedTime;
+        return startingTime;
     }
 
     public boolean hasReachedMaxTime(){
