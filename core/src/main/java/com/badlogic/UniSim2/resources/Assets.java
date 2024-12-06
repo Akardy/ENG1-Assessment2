@@ -149,73 +149,21 @@ public class Assets {
         lectureHallCollisionTexture =   new Texture("textures/buildings/lectureHallCollision.png");
         lectureHallDraggingTexture =    new Texture("textures/buildings/lectureHallDragging.png");
 
-        goodrickePlacedTexture = new Texture("textures/buildings/goodrickePlaced.png");
-        goodrickeCollisionTexture = new Texture("textures/buildings/goodrickeCollision.png");
-        goodrickeDraggingTexture = new Texture("textures/buildings/goodrickeDragging.png");
+        libraryPlacedTexture =          new Texture("textures/buildings/libraryPlaced.png");
+        libraryCollisionTexture =       new Texture("textures/buildings/libraryCollision.png");
+        libraryDraggingTexture =        new Texture("textures/buildings/libraryDragging.png");
 
-        constantinePlacedTexture = new Texture("textures/buildings/constantinePlaced.png");
-        constantineCollisionTexture = new Texture("textures/buildings/constantineCollision.png");
-        constantineDraggingTexture = new Texture("textures/buildings/constantineDragging.png");
+        coursePlacedTexture =           new Texture("textures/buildings/coursePlaced.png");
+        courseCollisionTexture =        new Texture("textures/buildings/courseCollision.png");
+        courseDraggingTexture =         new Texture("textures/buildings/courseDragging.png");
 
         foodZonePlacedTexture =         new Texture("textures/buildings/foodZonePlaced.png");
         foodZoneCollisionTexture =      new Texture("textures/buildings/foodZoneCollision.png");
         foodZoneDraggingTexture =       new Texture("textures/buildings/foodZoneDragging.png");
 
-        piazzaPlacedTexture = new Texture("textures/buildings/piazzaPlaced.png");
-        piazzaCollisionTexture = new Texture("textures/buildings/piazzaCollision.png");
-        piazzaDraggingTexture = new Texture("textures/buildings/piazzaDragging.png");
-
-        centralHallPlacedTexture = new Texture("textures/buildings/centralhallPlaced.png");
-        centralHallCollisionTexture = new Texture("textures/buildings/centralhallCollision.png");
-        centralHallDraggingTexture = new Texture("textures/buildings/centralhallDragging.png");
-
-        libraryPlacedTexture = new Texture("textures/buildings/libraryPlaced.png");
-        libraryCollisionTexture = new Texture("textures/buildings/libraryCollision.png");
-        libraryDraggingTexture = new Texture("textures/buildings/libraryDragging.png");
-
-        coursePlacedTexture = new Texture("textures/buildings/coursePlaced.png");
-        courseCollisionTexture = new Texture("textures/buildings/courseCollision.png");
-        courseDraggingTexture = new Texture("textures/buildings/courseDragging.png");
-
-        softwareLabsPlacedTexture = new Texture("textures/buildings/softwareLabsPlaced.png");
-        softwareLabsCollisionTexture = new Texture("textures/buildings/softwareLabsCollision.png");
-        softwareLabsDraggingTexture = new Texture("textures/buildings/softwareLabsDragging.png");
-
-        hardwareLabsPlacedTexture = new Texture("textures/buildings/hardwareLabsPlaced.png");
-        hardwareLabsCollisionTexture = new Texture("textures/buildings/hardwareLabsCollision.png");
-        hardwareLabsDraggingTexture = new Texture("textures/buildings/hardwareLabsDragging.png");
-
-        foodZonePlacedTexture = new Texture("textures/buildings/foodZonePlaced.png");
-        foodZoneCollisionTexture = new Texture("textures/buildings/foodZoneCollision.png");
-        foodZoneDraggingTexture = new Texture("textures/buildings/foodZoneDragging.png");
-
-        nisaPlacedTexture = new Texture("textures/buildings/nisaPlaced.png");
-        nisaCollisionTexture = new Texture("textures/buildings/nisaCollision.png");
-        nisaDraggingTexture = new Texture("textures/buildings/nisaDragging.png");
-
-        greggsPlacedTexture = new Texture("textures/buildings/greggsPlaced.png");
-        greggsCollisionTexture = new Texture("textures/buildings/greggsCollision.png");
-        greggsDraggingTexture = new Texture("textures/buildings/greggsDragging.png");
-
-        derwentDiningPlacedTexture = new Texture("textures/buildings/derwentDiningPlaced.png");
-        derwentDiningCollisionTexture = new Texture("textures/buildings/derwentDiningCollision.png");
-        derwentDiningDraggingTexture = new Texture("textures/buildings/derwentDiningDragging.png");
-
-        recreationalPlacedTexture = new Texture("textures/buildings/recreationalPlaced.png");
-        recreationalCollisionTexture = new Texture("textures/buildings/recreationalCollision.png");
-        recreationalDraggingTexture = new Texture("textures/buildings/recreationalDragging.png");
-
-        naturePlacedTexture = new Texture("textures/buildings/naturePlaced.png");
-        natureCollisionTexture = new Texture("textures/buildings/natureCollision.png");
-        natureDraggingTexture = new Texture("textures/buildings/natureDragging.png");
-
-        gymPlacedTexture = new Texture("textures/buildings/gymPlaced.png");
-        gymCollisionTexture = new Texture("textures/buildings/gymCollision.png");
-        gymDraggingTexture = new Texture("textures/buildings/gymDragging.png");
-
-        societyBuildingPlacedTexture = new Texture("textures/buildings/societyBuildingPlaced.png");
-        societyBuildingCollisionTexture = new Texture("textures/buildings/societyBuildingCollision.png");
-        societyBuildingDraggingTexture = new Texture("textures/buildings/societyBuildingDragging.png");
+        recreationalPlacedTexture =     new Texture("textures/buildings/recreationalPlaced.png");
+        recreationalCollisionTexture =  new Texture("textures/buildings/recreationalCollision.png");
+        recreationalDraggingTexture =   new Texture("textures/buildings/recreationalDragging.png");
 
         naturePlacedTexture =           new Texture("textures/buildings/naturePlaced.png");
         natureCollisionTexture =        new Texture("textures/buildings/natureCollision.png");
