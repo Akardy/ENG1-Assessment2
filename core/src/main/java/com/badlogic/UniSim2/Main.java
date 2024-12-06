@@ -7,10 +7,7 @@ import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-/**
- * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all
- * platforms.
- */
+/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
 
     private StretchViewport viewport = new StretchViewport(Consts.WORLD_WIDTH, Consts.WORLD_HEIGHT);
@@ -46,8 +43,7 @@ public class Main extends Game {
     }
 
     /**
-     * Ends the game by settings the screen to {@link #endScreen}. Should be called
-     * by
+     * Ends the game by settings the screen to {@link #endScreen}. Should be called by
      * the {@link GameScreen} when the timer ends.
      */
     public void endGame() {
