@@ -10,32 +10,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 
 /**
- * This is the game menu that is shown by the {@link GameScreen}. It contains
+ * This is the game menu that is shown by the {@link GameScreen}. It contains 
  * the {@link Timer timer} for the game and {@link BuildingMenu the building menu}
- * which can be used to place new buildings.
+ * which can be used to place new buildings. 
  */
 public class GameMenu {
     private Stage stage;
     private final Skin skin;
     private BuildingMenu buildingMenu;
     private Timer timer;
-    private Money money;
-    private Satisfaction satisfaction;
-    private NPCCount num;
     private Label timerLabel;
-    private Label moneyLabel;
-    private Label satisLabel;
-    private Label numLabel;
     private boolean isPaused;
-
-    public GameMenu(Main game, Timer timer, Money money, Satisfaction satisfaction, NPCCount num, BuildingManager buildings){
+    
+    public GameMenu(Main game, Timer timer, BuildingManager buildings){
         stage = new Stage(game.getViewport());
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json")); 
         buildingMenu = new BuildingMenu(stage, buildings);
         this.timer = timer;
-        this.money = money;
-        this.satisfaction = satisfaction;
-        this.num = num;
         isPaused = false;
         createMenu();
     }
@@ -50,9 +41,6 @@ public class GameMenu {
     private void createMenu(){
         buildingMenu.createBuildingMenu();
         createTimerLabel();
-        createMoneyLabel();
-        createSatisLabel();
-        createNumLabel();
     }
 
     // Adds a label at the top of the screen displaying the time
@@ -60,10 +48,10 @@ public class GameMenu {
 
         // Initialize timerLabel
         timerLabel = new Label("00:00", skin);
-        timerLabel.setFontScale(3);
+        timerLabel.setFontScale(3); 
         timerLabel.setAlignment(Align.center);
         timerLabel.setColor(Consts.TIMER_COLOR);
-
+        
         // Position the label at the top center of the screen
         timerLabel.setPosition(Consts.TIMER_X, Consts.TIMER_Y, Align.center);
 
@@ -77,7 +65,7 @@ public class GameMenu {
      */
     private void updateTimerLabel(){
         float elapsedTime = timer.getElapsedTime();
-        int minutes = (int) (elapsedTime / 60);
+        int minutes = (int) (elapsedTime / 60); 
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
     }
@@ -98,84 +86,7 @@ public class GameMenu {
         updateTimerLabel();
         isPaused = false;
     }
-
-    // Adds a label at the top right of the screen displaying the money stat
-    private void createMoneyLabel(){
-
-        // Initialize timerLabel
-        moneyLabel = new Label("£0.00", skin);
-        moneyLabel.setFontScale(2);
-        moneyLabel.setAlignment(Align.center);
-        moneyLabel.setColor(Consts.MONEY_COLOR);
-
-        // Position the label at the top center of the screen
-        moneyLabel.setPosition(Consts.MONEY_X, Consts.MONEY_Y, Align.center);
-
-        // Add the label to the stage
-        stage.addActor(moneyLabel);
-    }
-
-    /**
-     * Updates the money  shown on the label to the amount got from
-     * the money variable class.
-     */
-    private void updateMoneyLabel(){
-        float updatedMoney = money.getMoney();
-        int pounds = (int) (updatedMoney / 100);
-        int pence = (int) (updatedMoney % 100);
-        moneyLabel.setText(String.format("£" + "%02d.%02d", pounds, pence));
-    }
-
-    // Adds a label at the top right of the screen displaying the satisfaction stat
-    private void createSatisLabel(){
-
-        // Initialize satisLabel
-        satisLabel = new Label("0%", skin);
-        satisLabel.setFontScale(2);
-        satisLabel.setAlignment(Align.center);
-        satisLabel.setColor(Consts.SATIS_COLOR);
-
-        // Position the label at the top center of the screen
-        satisLabel.setPosition(Consts.SATIS_X, Consts.SATIS_Y, Align.center);
-
-        // Add the label to the stage
-        stage.addActor(satisLabel);
-    }
-
-    /**
-     * Updates the satisfaction level shown on the label to the value got
-     * from the satisfaction variable class.
-     */
-    private void updateSatisLabel(){
-        float updatedSatis = satisfaction.getSatis();
-        satisLabel.setText(String.format("%s", updatedSatis + "%"));
-    }
-
-    // Adds a label at the bottom right of the screen displaying the number of students
-    private void createNumLabel(){
-
-        // Initialize numLabel
-        numLabel = new Label("0", skin);
-        numLabel.setFontScale(2);
-        numLabel.setAlignment(Align.center);
-        numLabel.setColor(Consts.NUM_COLOR);
-
-        // Position the label at the top center of the screen
-        numLabel.setPosition(Consts.NUM_X, Consts.NUM_Y, Align.center);
-
-        // Add the label to the stage
-        stage.addActor(numLabel);
-    }
-
-    /**
-     * Updates the number of stuents shown on the label to the value got
-     * from the NPCCount variable class.
-     */
-    private void updateNumLabel(){
-        int updatedNum = num.getNum();
-        numLabel.setText(String.format("%s", updatedNum));
-    }
-
+    
     /**
      * Processes any input.
      */
@@ -188,10 +99,7 @@ public class GameMenu {
      */
     public void draw(){
         if (isPaused == false) {
-            updateTimerLabel();
-            updateMoneyLabel();
-            updateSatisLabel();
-            updateNumLabel();
+            updateTimerLabel();    
         }
         buildingMenu.draw();
         stage.draw();

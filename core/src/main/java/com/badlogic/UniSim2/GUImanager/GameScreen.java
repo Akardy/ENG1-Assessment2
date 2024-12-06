@@ -11,16 +11,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * This screen is used when the game is being played.
+ * This screen is used when the game is being played. 
  */
 public class GameScreen implements Screen {
     private Main game;
     private StretchViewport viewport;
 
     private Timer timer;
-    private Money money;
-    private Satisfaction satisfaction;
-    private NPCCount num;
 
     private GameMenu menu; // Used to make and display the game menu
 
@@ -34,13 +31,10 @@ public class GameScreen implements Screen {
         this.game = game;
         viewport = game.getViewport();
         timer = new Timer();
-        money = new Money();
-        satisfaction = new Satisfaction();
-        num = new NPCCount();
         map = new Map(game);
-        menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager());
+        menu = new GameMenu(game, timer, map.getBuildingManager());
         SoundManager.playMusic();
-
+        
     }
 
     @Override
