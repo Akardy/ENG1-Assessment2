@@ -80,14 +80,33 @@ public class Consts {
     public static final int TIMER_Y = WORLD_HEIGHT - scaleToCellSize(2);
     public static final int TIMER_SIZE = 3;
     public static final Color TIMER_COLOR = new Color(Color.BLACK);
-    public static final int MAX_TIME = 300;
+    public static final int MAX_TIME = 0;
+
+    public static final int MONEY_WIDTH = scaleToCellSize(6);
+    public static final int MONEY_HEIGHT = scaleToCellSize(2);
+    public static final int MONEY_X = scaleToCellSize(72);
+    public static final int MONEY_Y = WORLD_HEIGHT - scaleToCellSize(1);
+    public static final int MONEY_SIZE = 2;
+    public static final Color MONEY_COLOR = new Color(Color.WHITE);
+
+    public static final int SATIS_WIDTH = scaleToCellSize(6);
+    public static final int SATIS_HEIGHT = scaleToCellSize(2);
+    public static final int SATIS_X = scaleToCellSize(73);
+    public static final int SATIS_Y = WORLD_HEIGHT - scaleToCellSize(3);
+    public static final int SATIS_SIZE = 2;
+    public static final Color SATIS_COLOR = new Color(Color.WHITE);
+
+    public static final int NUM_WIDTH = scaleToCellSize(6);
+    public static final int NUM_HEIGHT = scaleToCellSize(2);
+    public static final int NUM_X = scaleToCellSize(74);
+    public static final int NUM_Y = WORLD_HEIGHT - scaleToCellSize(37);
+    public static final int NUM_SIZE = 2;
+    public static final Color NUM_COLOR = new Color(Color.WHITE);
 
     public static final int SCORE_LABEL_WIDTH = scaleToCellSize(6);
     public static final int SCORE_LABEL_HEIGHT = scaleToCellSize(2);
     public static final int SCORE_LABEL_X = (WORLD_WIDTH/2) - scaleToCellSize(4);
     public static final int SCORE_LABEL_Y = (WORLD_HEIGHT/2) - scaleToCellSize(4);
-
-
 
     public static final Color COUNT_COLOR = new Color(Color.BLACK);
     public static final int COUNT_SIZE = 2;
