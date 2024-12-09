@@ -1,7 +1,4 @@
-package com.badlogic.UniSim2.GUImanager;
-
-import com.badlogic.UniSim2.resources.Consts;
-import com.badlogic.gdx.Gdx;
+package com.badlogic.UniSim2.stats;
 
 /**
  * Class controlling the satisfaction variable, stat shown on the top right

@@ -27,7 +27,7 @@ public class BuildingManager {
 
     /**
      * Adds currentBuilding to the buildings array and to collidableSprites array.
-     * 
+     *
      * @param building The building to add.
      */
     private void addBuilding(Building building) {
@@ -37,7 +37,7 @@ public class BuildingManager {
 
     /**
      * Used to determine what to do when the mouse moves or clicks.
-     * 
+     *
      * @param mousePos The position of the mouse in world coordinates.
      * @param clicked  true if a click has happened and false if not.
      */
@@ -65,7 +65,7 @@ public class BuildingManager {
                 }
             }
         }
-        
+
     }
 
     private void removeBuilding() {
@@ -150,7 +150,7 @@ public class BuildingManager {
      * Called when a building button has been pressed. Deals with placing a new
      * building
      * corresponding to the button pressed determined with type
-     * 
+     *
      * @param type The type of the building which the building button relates to.
      */
     public void handleSelection(Building.BuildingTypes type) {
@@ -164,7 +164,7 @@ public class BuildingManager {
 
     /**
      * Creates a new building based on the type.
-     * 
+     *
      * @param type The type of the building to create.
      */
     private void handleType(Building.BuildingTypes type) {
@@ -239,7 +239,7 @@ public class BuildingManager {
      * changes
      * the texture of the building depending on whether it is colliding with
      * another building.
-     * 
+     *
      * @param mousPos The position of the mouse if world coords.
      */
     private void handleDragging(Vector2 mousPos) {
@@ -250,7 +250,7 @@ public class BuildingManager {
     /**
      * Checks whether a building is colliding with anything in
      * {@link Map#collidableSprites}.
-     * 
+     *
      * @param building The building to check.
      * @return true if the building is colliding with something and false otherwise.
      */
@@ -273,7 +273,7 @@ public class BuildingManager {
      * Draws all the buildings and clamps them to ensure they cannot go outside
      * of the map boundaries. Will also draw the {@link #currentBuilding}
      * on top of any placed buildings.
-     * 
+     *
      * @param spriteBatch
      */
     public void draw(SpriteBatch spriteBatch) {
