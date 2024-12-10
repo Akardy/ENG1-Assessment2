@@ -220,20 +220,7 @@ public class Assets {
                 libraryButtonUpTexture,
                 courseButtonUpTexture,
                 foodZoneButtonUpTexture,
-                recreationalButtonUpTexture,
-                natureButtonUpTexture,
-                derwentButtonUpTexture,
-                goodrickeButtonUpTexture,
-                constantineButtonUpTexture,
-                nisaButtonUpTexture,
-                greggsButtonUpTexture,
-                derwentDiningButtonUpTexture,
-                gymButtonUpTexture,
-                societyBuildingButtonUpTexture,
-                piazzaButtonUpTexture,
-                centralHallButtonUpTexture,
-                softwareLabsButtonUpTexture,
-                hardwareLabsButtonUpTexture
+                recreationalButtonUpTexture
         };
 
         // Building button textures when hovering over
@@ -267,20 +254,7 @@ public class Assets {
                 libraryButtonDownTexture,
                 courseButtonDownTexture,
                 foodZoneButtonDownTexture,
-                recreationalButtonDownTexture,
-                natureButtonDownTexture,
-                derwentButtonDownTexture,
-                goodrickeButtonDownTexture,
-                constantineButtonDownTexture,
-                nisaButtonDownTexture,
-                greggsButtonDownTexture,
-                derwentDiningButtonDownTexture,
-                gymButtonDownTexture,
-                societyBuildingButtonDownTexture,
-                piazzaButtonDownTexture,
-                centralHallButtonDownTexture,
-                softwareLabsButtonDownTexture,
-                hardwareLabsButtonDownTexture
+                recreationalButtonDownTexture
         };
 
         // =======================================

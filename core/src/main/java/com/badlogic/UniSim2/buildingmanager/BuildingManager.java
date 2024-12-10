@@ -1,11 +1,18 @@
 package com.badlogic.UniSim2.buildingmanager;
 
 import com.badlogic.UniSim2.GUImanager.BuildingMenu;
+import com.badlogic.UniSim2.GUImanager.GameMenu;
+import com.badlogic.UniSim2.buildingmanager.types.*;
 import com.badlogic.UniSim2.mapmanager.Map;
+import com.badlogic.UniSim2.resources.Assets;
+import com.badlogic.UniSim2.resources.Consts;
+import com.badlogic.UniSim2.stats.BuildingCounts;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+
+import java.util.List;
 
 /**
  * This class is used to manage all of the placed {@link Building buildings}
@@ -13,17 +20,42 @@ import com.badlogic.gdx.utils.Array;
  */
 public class BuildingManager {
 
-    private Array<Building> buildings; // Array of all the buildings on the map in order of when placed
+    private List<Building> buildings;
+
+    private Array<Building> placed; // Array of all the buildings on the map in order of when placed
 
     private Building currentBuilding; // References the building currently selected
 
     private boolean currentlySelecting; // True when a building is selected and being being dragged
 
-    public BuildingManager() {
-        buildings = new Array<>();
+    private BuildingCounts buildingCounts;
+
+    public BuildingManager(BuildingCounts buildingCounts) {
+        placed = new Array<>();
         currentBuilding = null;
         currentlySelecting = false;
+        this.buildingCounts = buildingCounts;
+
+//        initialiseBuildings();
     }
+
+//    private void initialiseBuildings() {
+//        buildings = new ArrayList<>();
+//
+//        buildings.add(new Accomodation(Assets.derwentPlacedTexture, Assets.derwentCollisionTexture, Assets.derwentDraggingTexture,
+//            Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "DERWENT", 100));
+//
+//        buildings.add(new FoodZone(Assets.foodZonePlacedTexture, Assets.foodZoneCollisionTexture, Assets.foodZoneDraggingTexture,
+//            Consts.FOODZONE_WIDTH, Consts.FOODZONE_HEIGHT, 100000, "NISA", 100, 100));
+//
+//        buildings.add(new Recreational(Assets.recreationalPlacedTexture, Assets.recreationalCollisionTexture, Assets.recreationalDraggingTexture,
+//            Consts.RECREATIONAL_WIDTH, Consts.RECREATIONAL_HEIGHT, 100000, "NATURE", 1000));
+//
+//        buildings.add(new Library(Assets.libraryPlacedTexture, Assets.libraryCollisionTexture, Assets.libraryDraggingTexture,
+//            Consts.LIBRARY_WIDTH, Consts.LIBRARY_HEIGHT, 1000000, "Lib"));
+//
+//        buildings.add()
+//    }
 
     /**
      * Adds currentBuilding to the buildings array and to collidableSprites array.
@@ -31,7 +63,7 @@ public class BuildingManager {
      * @param building The building to add.
      */
     private void addBuilding(Building building) {
-        buildings.add(building);
+        placed.add(building);
         Map.collidableSprites.add(building);
     }
 
@@ -55,7 +87,7 @@ public class BuildingManager {
             }
         } else {
             if(clicked) {
-                for (Building building : buildings) {
+                for (Building building : placed) {
                     if (building.getBoundingRectangle().contains(mousePos)) {
                         currentBuilding = building;  // Select the building under the mouse pos
                         currentBuilding.selectBuilding();
@@ -69,7 +101,7 @@ public class BuildingManager {
     }
 
     private void removeBuilding() {
-        buildings.removeValue(currentBuilding, true);
+        placed.removeValue(currentBuilding, true);
         Map.collidableSprites.removeValue(currentBuilding, true);
         currentBuilding = null;
         currentlySelecting = false;
@@ -99,42 +131,34 @@ public class BuildingManager {
                 currentBuilding.placeBuilding(); // Place building
 
                 // Update counts for the building type
-                Building.BuildingTypes type = currentBuilding.getType();
+                //BuildingTypes type = currentBuilding.getType();
                 // System.out.println("Before increment: " +
                 // BuildingMenu.buildingCounts[type.ordinal()]);
-                BuildingMenu.buildingCounts[type.ordinal()]++;
-                BuildingMenu.updateCountLabel(type);
+                //BuildingMenu.buildingCounts[type.ordinal()]++;
+               // BuildingMenu.updateCountLabel(type);
 
                 // System.out.println("After increment: " +
                 // BuildingMenu.buildingCounts[type.ordinal()]);
 
                 // Update aggregate count for Accomodation
-                if (type == Building.BuildingTypes.Derwent
-                        || type == Building.BuildingTypes.Goodricke
-                        || type == Building.BuildingTypes.Constantine) {
-                    BuildingMenu.updateCountLabel(Building.BuildingTypes.Accomodation);
+                if (currentBuilding instanceof Accomodation) {
+                    buildingCounts.incrementAccomadation(currentBuilding.getType().ordinal());
                 }
 
-                if (type == Building.BuildingTypes.Nisa
-                        || type == Building.BuildingTypes.Greggs
-                        || type == Building.BuildingTypes.DerwentDining) {
-                    BuildingMenu.updateCountLabel(Building.BuildingTypes.FoodZone);
+                if (currentBuilding instanceof FoodZone) {
+                    buildingCounts.incrementFoodZones(currentBuilding.getType().ordinal());
                 }
 
-                if (type == Building.BuildingTypes.Nature
-                        || type == Building.BuildingTypes.Gym
-                        || type == Building.BuildingTypes.SocietyBuilding) {
-                    BuildingMenu.updateCountLabel(Building.BuildingTypes.Recreational);
+                if (currentBuilding instanceof Recreational) {
+                    buildingCounts.incrementRecreational(currentBuilding.getType().ordinal());
                 }
 
-                if (type == Building.BuildingTypes.Piazza
-                        || type == Building.BuildingTypes.CentralHall) {
-                    BuildingMenu.updateCountLabel(Building.BuildingTypes.LectureHall);
+                if (currentBuilding instanceof LectureHall) {
+                    buildingCounts.incrementLectureHall(currentBuilding.getType().ordinal());
                 }
 
-                if (type == Building.BuildingTypes.SoftwareLabs
-                        || type == Building.BuildingTypes.HardwareLabs) {
-                    BuildingMenu.updateCountLabel(Building.BuildingTypes.Course);
+                if (currentBuilding instanceof Labs) {
+                    buildingCounts.incrementLabs(currentBuilding.getType().ordinal());
                 }
 
                 // Reset current building and selection state
@@ -153,7 +177,7 @@ public class BuildingManager {
      *
      * @param type The type of the building which the building button relates to.
      */
-    public void handleSelection(Building.BuildingTypes type) {
+    public void handleSelection(BuildingTypes type) {
 
         handleType(type); // Sets current building to the type of building selected
         currentlySelecting = true; // Sets currently selecting to true as we have selected a building to drag and
@@ -167,68 +191,60 @@ public class BuildingManager {
      *
      * @param type The type of the building to create.
      */
-    private void handleType(Building.BuildingTypes type) {
+    private void handleType(BuildingTypes type) {
         switch (type) {
-            case Accomodation:
-                currentBuilding = new Accomodation();
+            case DERWENT:
+                currentBuilding = new Accomodation(Assets.derwentPlacedTexture, Assets.derwentCollisionTexture, Assets.derwentDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "DERWENT", 100, BuildingTypes.DERWENT);
                 break;
-            case Derwent:
-                currentBuilding = new Derwent();
+            case CONSTANTINE:
+                currentBuilding = new Accomodation(Assets.constantinePlacedTexture, Assets.constantineCollisionTexture, Assets.constantineDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Constantine", 100, BuildingTypes.CONSTANTINE);
                 break;
-            case Constantine:
-                currentBuilding = new Constantine();
+            case GOODRICKE:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-            case Goodricke:
-                currentBuilding = new Goodricke();
+            case PIAZZA:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-
-            case LectureHall:
-                currentBuilding = new LectureHall();
+            case CENTRALHALL:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-            case Piazza:
-                currentBuilding = new Piazza();
+            case SOFTWARELABS:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-            case CentralHall:
-                currentBuilding = new CentralHall();
+            case HARDWARELABS:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-            case Library:
-                currentBuilding = new Library();
+            case NISA:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-            case Course:
-                currentBuilding = new Course();
+            case GREGGS:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-            case SoftwareLabs:
-                currentBuilding = new SoftwareLabs();
+            case DERWENTDINING:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-            case HardwareLabs:
-                currentBuilding = new HardwareLabs();
+            case NATURE:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-            case FoodZone:
-                currentBuilding = new FoodZone();
+            case GYM:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-            case Nisa:
-                currentBuilding = new Nisa();
+            case SOCIETYBUILDING:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
-            case Greggs:
-                currentBuilding = new Greggs();
-                break;
-            case DerwentDining:
-                currentBuilding = new DerwentDining();
-                break;
-
-            case Recreational:
-                currentBuilding = new Recreational();
-                break;
-            case Nature:
-                currentBuilding = new Nature();
-                break;
-            case Gym:
-                currentBuilding = new Gym();
-                break;
-            case SocietyBuilding:
-                currentBuilding = new SocietyBuilding();
-                break;
-
             default:
                 throw new IllegalArgumentException("Unhandled BuildingType: " + type);
         }
@@ -278,7 +294,7 @@ public class BuildingManager {
      */
     public void draw(SpriteBatch spriteBatch) {
         spriteBatch.begin();
-        for (Building building : buildings) {
+        for (Building building : placed) {
             building.clampPosition(); // Ensures the buildings cannot be outside the map boundaries
             if (!building.equals(currentBuilding)) {
                 building.draw(spriteBatch);
@@ -302,7 +318,7 @@ public class BuildingManager {
      * Calls {@link Building#dispose()} on each building this stores.
      */
     public void dispose() {
-        for (Building building : buildings) {
+        for (Building building : placed) {
             building.dispose();
         }
     }

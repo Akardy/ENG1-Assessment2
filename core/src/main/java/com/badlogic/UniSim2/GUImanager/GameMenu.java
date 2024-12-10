@@ -3,10 +3,7 @@ package com.badlogic.UniSim2.GUImanager;
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
 import com.badlogic.UniSim2.resources.Consts;
-import com.badlogic.UniSim2.stats.Money;
-import com.badlogic.UniSim2.stats.NPCCount;
-import com.badlogic.UniSim2.stats.Satisfaction;
-import com.badlogic.UniSim2.stats.Timer;
+import com.badlogic.UniSim2.stats.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -32,10 +29,10 @@ public class GameMenu {
     private Label numLabel;
     private boolean isPaused;
 
-    public GameMenu(Main game, Timer timer, Money money, Satisfaction satisfaction, NPCCount num, BuildingManager buildings){
+    public GameMenu(Main game, Timer timer, Money money, Satisfaction satisfaction, NPCCount num, BuildingManager buildings, BuildingCounts counts){
         stage = new Stage(game.getViewport());
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        buildingMenu = new BuildingMenu(stage, buildings);
+        buildingMenu = new BuildingMenu(stage, buildings, counts);
         this.timer = timer;
         this.money = money;
         this.satisfaction = satisfaction;

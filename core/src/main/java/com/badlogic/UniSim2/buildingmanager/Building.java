@@ -1,6 +1,8 @@
 package com.badlogic.UniSim2.buildingmanager;
 
 import com.badlogic.UniSim2.GUImanager.BuildingMenu;
+import com.badlogic.UniSim2.GUImanager.GameScreen;
+import com.badlogic.UniSim2.buildingmanager.types.BuildingTypes;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,41 +30,19 @@ public abstract class Building extends Sprite {
     private final float cost;
     private final String name;
 
-    public enum BuildingTypes {
-        Accomodation,
-        LectureHall,
-        Library,
-        Course,
-        FoodZone,
-        Recreational,
-        Nature,
-        Derwent,
-        Goodricke,
-        Constantine,
-        Nisa,
-        Greggs,
-        DerwentDining,
-        Gym,
-        SocietyBuilding,
-        Piazza,
-        CentralHall,
-        SoftwareLabs,
-        HardwareLabs
-    }
-
     private BuildingTypes type;
 
     public Building(Texture placedTexture, Texture collisionTexture, Texture draggingTexture, int width, int height,
-            BuildingTypes type, float cost, String name) {
+                    float cost, String name, BuildingTypes type) {
 
         this.placedTexture = placedTexture;
         this.collisionTexture = collisionTexture;
         this.draggingTexture = draggingTexture;
         this.width = width;
         this.height = height;
-        this.type = type;
         this.cost = cost;
         this.name= name;
+        this.type = type;
         isSelected = true;
         isPlaced = false;
 
@@ -117,20 +97,20 @@ public abstract class Building extends Sprite {
      * placed texture.
      */
     public void placeBuilding() {
-        incrementCount();
+        //incrementCount();
         isSelected = false;
         isPlaced = true;
         setRegion(placedTexture);
         SoundManager.playClick();
     }
 
-    private void incrementCount() {
-        int index = type.ordinal();
-        BuildingMenu.buildingCounts[index]++;
-        // BuildingMenu.updateCountLabel(index); // Increments the building count label
-        // by 1 and displays
-        BuildingMenu.updateCountLabel(Building.BuildingTypes.values()[index]);
-    }
+//    private void incrementCount() {
+//        int index = type.ordinal();
+//        ;
+//        // BuildingMenu.updateCountLabel(index); // Increments the building count label
+//        // by 1 and displays
+//        BuildingMenu.updateCountLabel(Building.BuildingTypes.values()[index]);
+//    }
 
     /**
      * Sets the texture to collision or dragging dependings on if it is colliding
@@ -206,9 +186,7 @@ public abstract class Building extends Sprite {
         return height;
     }
 
-    public BuildingTypes getType() {
-        return type;
-    }
+    public BuildingTypes getType(){return  type;}
 
     public void dispose() {
     }

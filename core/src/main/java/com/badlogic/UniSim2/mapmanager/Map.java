@@ -4,6 +4,7 @@ import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
 import com.badlogic.UniSim2.resources.*;
+import com.badlogic.UniSim2.stats.BuildingCounts;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,31 +25,34 @@ public class Map {
     private final Grid grid;
 
     private BuildingManager buildings; // Used to control all the buildings in the game
-    public static Array<Sprite> collidableSprites; // Contains both buildings and paths 
-    
+    public static Array<Sprite> collidableSprites; // Contains both buildings and paths
+
     private final SpriteBatch spriteBatch;
     private StretchViewport viewport;
+    private BuildingCounts counts;
 
 
-    public Map(Main game) {
+    public Map(Main game, BuildingCounts counts) {
         width = Consts.WORLD_WIDTH;
         height = Consts.WORLD_HEIGHT;
+        this.counts = counts;
 
         grid = new Grid();
 
-        buildings = new BuildingManager();
+        buildings = new BuildingManager(counts);
         collidableSprites = new Array<Sprite>();
         Paths.createPaths();
 
         this.viewport = game.getViewport();
 
         spriteBatch = new SpriteBatch();
+
     }
 
     public BuildingManager getBuildingManager() {
         return buildings;
     }
-    
+
 
     /**
      * Handles all input.
@@ -70,10 +74,10 @@ public class Map {
         drawBackground();
         grid.draw(viewport);
         drawPath();
-        buildings.draw(spriteBatch); 
+        buildings.draw(spriteBatch);
     }
 
-    // Required to start drawing 
+    // Required to start drawing
     private void drawSetup(){
         ScreenUtils.clear(Consts.BACKGROUND_COLOR);
         viewport.apply();

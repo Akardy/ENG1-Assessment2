@@ -4,10 +4,7 @@ import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.resources.SoundManager;
-import com.badlogic.UniSim2.stats.Money;
-import com.badlogic.UniSim2.stats.NPCCount;
-import com.badlogic.UniSim2.stats.Satisfaction;
-import com.badlogic.UniSim2.stats.Timer;
+import com.badlogic.UniSim2.stats.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -25,6 +22,7 @@ public class GameScreen implements Screen {
     private Money money;
     private Satisfaction satisfaction;
     private NPCCount num;
+    private BuildingCounts counts;
 
     private GameMenu menu; // Used to make and display the game menu
 
@@ -37,12 +35,13 @@ public class GameScreen implements Screen {
     public GameScreen(Main game){
         this.game = game;
         viewport = game.getViewport();
+        this.counts = new BuildingCounts();
         timer = new Timer();
         money = new Money();
         satisfaction = new Satisfaction();
         num = new NPCCount();
-        map = new Map(game);
-        menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager());
+        map = new Map(game, counts);
+        menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts);
         SoundManager.playMusic();
 
     }

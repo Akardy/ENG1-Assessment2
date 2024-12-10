@@ -1,5 +1,6 @@
-package com.badlogic.UniSim2.buildingmanager;
+package com.badlogic.UniSim2.buildingmanager.types;
 
+import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -13,16 +14,16 @@ public class FoodZone extends Building{
     private final int capacity;
 
     public FoodZone(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
-                    int width, int height, float cost, String name, float moneyGenerated, int capacity) {
+                    int width, int height, float cost, String name, float moneyGenerated, int capacity, BuildingTypes type) {
         super(
             placedTexture,
             collisionTexture,
             draggingTexture,
             width * Consts.CELL_SIZE,
             height * Consts.CELL_SIZE,
-            BuildingTypes.Recreational,
             cost,
-            name
+            name,
+            type
         );
         this.moneyGenerated = moneyGenerated;
         this.capacity = capacity;

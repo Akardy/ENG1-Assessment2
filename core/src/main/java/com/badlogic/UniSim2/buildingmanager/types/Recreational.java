@@ -1,9 +1,8 @@
-package com.badlogic.UniSim2.buildingmanager;
+package com.badlogic.UniSim2.buildingmanager.types;
 
+import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.graphics.Texture;
-
-import static com.badlogic.UniSim2.resources.Consts.scaleToCellSize;
 
 /**
  * A building which represents a recreational building where students can have
@@ -15,16 +14,16 @@ public class Recreational extends Building{
     private final float upKeep;
 
     public Recreational(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
-                        int width, int height, float cost, String name, float upKeep) {
+                        int width, int height, float cost, String name, float upKeep, BuildingTypes type) {
         super(
             placedTexture,
             collisionTexture,
             draggingTexture,
             width * Consts.CELL_SIZE,
             height * Consts.CELL_SIZE,
-            BuildingTypes.Recreational,
             cost,
-            name
+            name,
+            type
         );
         this.upKeep = upKeep;
     }

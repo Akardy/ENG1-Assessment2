@@ -1,5 +1,6 @@
-package com.badlogic.UniSim2.buildingmanager;
+package com.badlogic.UniSim2.buildingmanager.types;
 
+import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -13,18 +14,18 @@ public class Accomodation extends Building{
     private int studentsCont;
 
     public Accomodation(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
-                        int width, int height, float cost, String name, int rooms, int studentsCont) {
+                        int width, int height, float cost, String name, int rooms, BuildingTypes type) {
         super(
             placedTexture,
             collisionTexture,
             draggingTexture,
-            width * Consts.CELL_SIZE,
-            height * Consts.CELL_SIZE,
-            BuildingTypes.Recreational,
+            width,
+            height,
             cost,
-            name
+            name,
+            type
         );
         this.rooms = rooms;
-        this.studentsCont = studentsCont;
+        this.studentsCont = rooms;
     }
 }
