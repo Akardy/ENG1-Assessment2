@@ -1,4 +1,4 @@
-package com.badlogic.UniSim2.GUImanager;
+package com.badlogic.UniSim2.stats;
 
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.gdx.Gdx;

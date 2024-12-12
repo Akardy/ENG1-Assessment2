@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.GUImanager;
 
+import com.badlogic.UniSim2.buildingmanager.types.*;
+import com.badlogic.UniSim2.stats.BuildingCounts;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
@@ -29,46 +31,23 @@ public class BuildingMenu {
     private BuildingManager buildings;
     private Image menuBar;
 
+    private static BuildingCounts buildingCounts;
+
     private final Skin skin;
 
     // Holds the count of each type of building
-    private int accomodationCount, lectureHallCount, libraryCount, courseCount, foodZoneCount, recreationalCount,
-            natureCount;
-    public static int[] buildingCounts;
 
     // Holds the labels that display the count of each building
     private static Array<Label> countLabels;
 
-    public BuildingMenu(Stage stage, BuildingManager buildings) {
+    public BuildingMenu(Stage stage, BuildingManager buildings, BuildingCounts buildingCounts) {
         this.stage = stage;
         Gdx.input.setInputProcessor(stage);
         this.buildings = buildings;
+        this.buildingCounts = buildingCounts;
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
-        // Initializes buildingCounts with each building type
-        buildingCounts = new int[] {
-                accomodationCount,
-                lectureHallCount,
-                libraryCount,
-                courseCount,
-                foodZoneCount,
-                recreationalCount,
-                natureCount,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-
-        };
 
         countLabels = new Array<>();
     }
@@ -102,25 +81,15 @@ public class BuildingMenu {
     private void createImageButtons() {
         int buttonGap = Consts.BUILDING_BUTTON_GAP;
 
-        // Add buttons only for the main classes
-        Building.BuildingTypes[] mainClasses = {
-                Building.BuildingTypes.Accomodation,
-                Building.BuildingTypes.LectureHall,
-                Building.BuildingTypes.Library,
-                Building.BuildingTypes.Course,
-                Building.BuildingTypes.FoodZone,
-                Building.BuildingTypes.Recreational
-        };
-
-        for (Building.BuildingTypes type : mainClasses) {
-            createImageButton(type, buttonGap);
+        for (int i = 0; i < 6; i++) {
+            createImageButton(i, buttonGap);
             buttonGap += Consts.BUILDING_BUTTON_GAP;
         }
     }
 
     /**
      * Creates a single image button and adds it to the {@link #stage}.
-     * 
+     *
      * @param type      The building type to create a button for. Defines the
      *                  texture of
      *                  the button.
@@ -131,17 +100,16 @@ public class BuildingMenu {
      *                  Will place newly created button at
      *                  ({@link Consts#BUILDING_BUTTON_Y_BOUNDARY} - buttonGap).
      */
-    private void createImageButton(Building.BuildingTypes type, int buttonGap) {
-        int index = type.ordinal(); // Gets the index of type within BuildingTypes
+    private void createImageButton(int index, int buttonGap) {
         ImageButton button = setupImageButton(index, buttonGap); // Creates a button of the building type
-        addImageButtonClick(button, type, index); // Adds a click listener to the button so we can do something when
+        addImageButtonClick(button, index); // Adds a click listener to the button so we can do something when
                                                   // clicked
         stage.addActor(button);
     }
 
     /**
      * Sets the texture, size nad position of the button.
-     * 
+     *
      * @param index     The index of the button textures in
      *                  {@link Assets#buttonUpTextures}
      *                  and {@link Assets#buttonDownTextures}.
@@ -183,35 +151,36 @@ public class BuildingMenu {
     /**
      * Adds a click listener to the button so that it knows what to do when
      * clicked.
-     * 
+     *
      * @param button The button to add the listener to.
      * @param type   The type of building that button represents. This building type
      *               will be created when the button is pressed.
      * @param index  The index of the building in the enum
      *               {@link Building#BuildingTypes}
      */
-    private void addImageButtonClick(ImageButton button, Building.BuildingTypes type, int index) {
+    private void addImageButtonClick(ImageButton button, int index) {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (!buildings.getCurrentlySelecting()) {
                     SoundManager.playClick();
 
-                    if (type == Building.BuildingTypes.Accomodation) {
+                    if (index == 0) {
                         showAccommodationPopup(); // Popup for Accommodation options
-                    } else if (type == Building.BuildingTypes.FoodZone) {
-                        showFoodZonePopup(); // Popup for FoodZone options
-                    } else if (type == Building.BuildingTypes.Recreational) {
-                        showRecreationalPopup();
-                    } else if (type == Building.BuildingTypes.LectureHall) {
-                        showLectureHallPopup();
-                    } else if (type == Building.BuildingTypes.Course) {
-                        showCoursePopup(); // Popup for Labs options
-                    } else if (type == Building.BuildingTypes.Library) {
+                    } else if (index == 1) {
+                        showLectureHallPopup(); // Popup for FoodZone options
+                    } else if (index == 2) {
                         showLibraryPopup();
-                    } else {
-                        buildings.handleSelection(type); // Handle other building types
+                    } else if (index == 3) {
+                        showCoursePopup();
+                    } else if (index == 4) {
+                        showFoodZonePopup(); // Popup for Labs options
+                    } else if (index == 5) {
+                        showRecreationalPopup();
                     }
+                    //else {
+//                        buildings.handleSelection(type); // Handle other building types
+//                    }
                 }
             }
         });
@@ -229,8 +198,8 @@ public class BuildingMenu {
 
         // Add button for Library
         String label = "Library";
-        Building.BuildingTypes type = Building.BuildingTypes.Library;
-        int count = buildingCounts[type.ordinal()] / 2; // Adjust for double increment issue
+        BuildingTypes type = BuildingTypes.LIBRARY;
+        int count = buildingCounts.getBuildingCounts(type.ordinal()); // Adjust for double increment issue
 
         TextButton button = new TextButton(label + " (" + count + ")", skin);
 
@@ -273,23 +242,23 @@ public class BuildingMenu {
         popupWindow.getTitleTable().padTop(20).center();
 
         // Add buttons and counts for accommodation options
-        String[] labels = { "Derwent", "Goodricke", "Constantine" };
-        Building.BuildingTypes[] subTypes = {
-                Building.BuildingTypes.Derwent,
-                Building.BuildingTypes.Goodricke,
-                Building.BuildingTypes.Constantine
+        String[] labels = { "DERWENT", "GOODRICKE", "CONSTANTINE" };
+        BuildingTypes[] subTypes = {
+                BuildingTypes.DERWENT,
+                BuildingTypes.GOODRICKE,
+                BuildingTypes.CONSTANTINE
         };
 
         for (int i = 0; i < labels.length; i++) {
-            Building.BuildingTypes subtype = subTypes[i];
-            int count = buildingCounts[subtype.ordinal()] / 2;
+            BuildingTypes subType = subTypes[i];
+            int count = buildingCounts.getBuildingCounts(subType.ordinal());
 
             TextButton button = new TextButton(labels[i] + " (" + count + ")", skin);
 
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    buildings.handleSelection(subtype); // Select and place the building
+                    buildings.handleSelection(subType); // Select and place the building
                     popupWindow.remove(); // Close the popup after selection
                 }
             });
@@ -326,23 +295,23 @@ public class BuildingMenu {
         popupWindow.getTitleTable().padTop(20).center();
 
         // Add buttons and counts for FoodZone options
-        String[] labels = { "Nisa", "Greggs", "Derwent Dining" };
-        Building.BuildingTypes[] subTypes = {
-                Building.BuildingTypes.Nisa,
-                Building.BuildingTypes.Greggs,
-                Building.BuildingTypes.DerwentDining
+        String[] labels = { "NISA", "GREGGS", "DERWENT Dining" };
+        BuildingTypes[] subTypes = {
+                BuildingTypes.NISA,
+                BuildingTypes.GREGGS,
+                BuildingTypes.DERWENTDINING
         };
 
         for (int i = 0; i < labels.length; i++) {
-            Building.BuildingTypes subtype = subTypes[i];
-            int count = BuildingMenu.buildingCounts[subtype.ordinal()] / 2;
+            BuildingTypes subType = subTypes[i];
+            int count = buildingCounts.getBuildingCounts(subType.ordinal());
 
             TextButton button = new TextButton(labels[i] + " (" + count + ")", skin);
 
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    buildings.handleSelection(subtype); // Select and place the building
+                    buildings.handleSelection(subType); // Select and place the building
                     popupWindow.remove(); // Close the popup after selection
                 }
             });
@@ -379,31 +348,31 @@ public class BuildingMenu {
         popupWindow.getTitleTable().padTop(20).center();
 
         // Define Recreational subtypes and labels
-        String[] labels = { "Nature", "Gym", "Society Building" };
-        Building.BuildingTypes[] subTypes = {
-                Building.BuildingTypes.Nature,
-                Building.BuildingTypes.Gym,
-                Building.BuildingTypes.SocietyBuilding
+        String[] labels = { "NATURE", "GYM", "Society Building" };
+        BuildingTypes[] subTypes = {
+                BuildingTypes.NATURE,
+                BuildingTypes.GYM,
+                BuildingTypes.SOCIETYBUILDING
         };
 
         // Ensure subTypes align with buildingCounts array size
         for (int i = 0; i < subTypes.length; i++) {
-            Building.BuildingTypes subtype = subTypes[i];
+            BuildingTypes subType = subTypes[i];
 
             // Safeguard: Check bounds of buildingCounts before accessing
-            if (subtype.ordinal() >= buildingCounts.length) {
-                System.err.println("Invalid index for buildingCounts: " + subtype.ordinal());
-                continue;
-            }
+//            if (subType.ordinal() >= buildingCounts.length) {
+//                System.err.println("Invalid index for buildingCounts: " + subType.ordinal());
+//                continue;
+//            }
 
-            int count = buildingCounts[subtype.ordinal()] / 2; // Adjust count display logic
+            int count = buildingCounts.getBuildingCounts(subType.ordinal()); // Adjust count display logic
 
             TextButton button = new TextButton(labels[i] + " (" + count + ")", skin);
 
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    buildings.handleSelection(subtype); // Select and place the building
+                    buildings.handleSelection(subType); // Select and place the building
                     popupWindow.remove(); // Close the popup after selection
                 }
             });
@@ -441,21 +410,21 @@ public class BuildingMenu {
 
         // Add buttons and counts for Labs options
         String[] labels = { "Software Labs", "Hardware Labs" };
-        Building.BuildingTypes[] subTypes = {
-                Building.BuildingTypes.SoftwareLabs,
-                Building.BuildingTypes.HardwareLabs
+        BuildingTypes[] subTypes = {
+                BuildingTypes.SOFTWARELABS,
+                BuildingTypes.HARDWARELABS
         };
 
         for (int i = 0; i < labels.length; i++) {
-            Building.BuildingTypes subtype = subTypes[i];
-            int count = buildingCounts[subtype.ordinal()] / 2;
+            BuildingTypes subType = subTypes[i];
+            int count = buildingCounts.getBuildingCounts(subType.ordinal());
 
             TextButton button = new TextButton(labels[i] + " (" + count + ")", skin);
 
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    buildings.handleSelection(subtype); // Select and place the building
+                    buildings.handleSelection(subType); // Select and place the building
                     popupWindow.remove(); // Close the popup after selection
                 }
             });
@@ -492,22 +461,22 @@ public class BuildingMenu {
         popupWindow.getTitleTable().padTop(20).center();
 
         // Add buttons and counts for Lecture Hall options
-        String[] labels = { "Piazza", "CentralHall" };
-        Building.BuildingTypes[] subTypes = {
-                Building.BuildingTypes.Piazza,
-                Building.BuildingTypes.CentralHall
+        String[] labels = { "Piazza", "CENTRALHALL" };
+        BuildingTypes[] subTypes = {
+                BuildingTypes.PIAZZA,
+                BuildingTypes.CENTRALHALL
         };
 
         for (int i = 0; i < labels.length; i++) {
-            Building.BuildingTypes subtype = subTypes[i];
-            int count = BuildingMenu.buildingCounts[subtype.ordinal()] / 2;
+            BuildingTypes subType = subTypes[i];
+            int count = buildingCounts.getBuildingCounts(subType.ordinal());
 
             TextButton button = new TextButton(labels[i] + " (" + count + ")", skin);
 
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    buildings.handleSelection(subtype); // Select and place the building
+                    buildings.handleSelection(subType); // Select and place the building
                     popupWindow.remove(); // Close the popup after selection
                 }
             });
@@ -536,7 +505,7 @@ public class BuildingMenu {
     /**
      * A count label is created for each building button to show how many building
      * of that type have been placed on the map.
-     * 
+     *
      * @param index  The index of the button textures in
      *               {@link Assets#buttonUpTextures}
      *               and {@link Assets#buttonDownTextures}.
@@ -544,7 +513,7 @@ public class BuildingMenu {
      */
     private void setUpCountLabel(int index, ImageButton button) {
 
-        int count = buildingCounts[index]; // Gets the count for the type of building using the type index in
+        int count = buildingCounts.getAccommodationCount(); // Gets the count for the type of building using the type index in
                                            // BuildingTypes
         Label countLabel = new Label(String.valueOf(count), skin);
 
@@ -560,68 +529,43 @@ public class BuildingMenu {
 
     /**
      * Increments the count label for a specified building button label.
-     * 
+     *
      * @param index The index of the building in the enum
      *              {@link Building#BuildingTypes}
      */
     /**
      * Updates the count label for a specified building type.
-     * If the type is Accomodation, it sums up the counts for Derwent, Goodricke,
-     * and Constantine.
-     * 
+     * If the type is Accomodation, it sums up the counts for DERWENT, GOODRICKE,
+     * and CONSTANTINE.
+     *
      * @param type The type of building to update the count for.
      */
-    public static void updateCountLabel(Building.BuildingTypes type) {
-        int index = type.ordinal();
+    public static void updateCountLabel(Building currentBuilding) {
 
         // Update the count for the specific type
-        if (type == Building.BuildingTypes.Accomodation) {
+        if (currentBuilding instanceof Accomodation) {
             // Aggregate count for Accomodation
-            int total = buildingCounts[Building.BuildingTypes.Derwent.ordinal()]
-                    + buildingCounts[Building.BuildingTypes.Goodricke.ordinal()]
-                    + buildingCounts[Building.BuildingTypes.Constantine.ordinal()];
-            buildingCounts[index] = total;
+            countLabels.get(0).setText(buildingCounts.getAccommodationCount());
         }
 
-        if (type == Building.BuildingTypes.FoodZone) {
-            int total = buildingCounts[Building.BuildingTypes.Nisa.ordinal()]
-                    + buildingCounts[Building.BuildingTypes.Greggs.ordinal()]
-                    + buildingCounts[Building.BuildingTypes.DerwentDining.ordinal()];
-            buildingCounts[index] = total;
+        if (currentBuilding instanceof LectureHall) {
+            countLabels.get(1).setText(buildingCounts.getLectureHallCount());
         }
 
-        if (type == Building.BuildingTypes.Recreational) {
-            int total = buildingCounts[Building.BuildingTypes.Nature.ordinal()]
-                    + buildingCounts[Building.BuildingTypes.Gym.ordinal()]
-                    + buildingCounts[Building.BuildingTypes.SocietyBuilding.ordinal()];
-            buildingCounts[index] = total;
+        if (currentBuilding instanceof Library) {
+            countLabels.get(2).setText(buildingCounts.getLibaryCount());
         }
 
-        if (type == Building.BuildingTypes.LectureHall) {
-            int total = buildingCounts[Building.BuildingTypes.Piazza.ordinal()]
-                    + buildingCounts[Building.BuildingTypes.CentralHall.ordinal()];
-            buildingCounts[index] = total;
+        if (currentBuilding instanceof Labs) {
+            countLabels.get(3).setText(buildingCounts.getLabsCount());
         }
 
-        if (type == Building.BuildingTypes.Course) {
-            int total = buildingCounts[Building.BuildingTypes.SoftwareLabs.ordinal()]
-                    + buildingCounts[Building.BuildingTypes.HardwareLabs.ordinal()];
-            buildingCounts[index] = total;
+        if (currentBuilding instanceof  FoodZone) {
+            countLabels.get(4).setText(buildingCounts.getFoodZoneCount());
         }
 
-        if (type == Building.BuildingTypes.Library) {
-            int displayCount = buildingCounts[index] / 2; // Adjust for double increment issue
-            if (index < countLabels.size) {
-                countLabels.get(index).setText(String.valueOf(displayCount));
-            }
-        }
-
-        // Display half the count as a workaround
-        int displayCount = buildingCounts[index] / 2;
-
-        // Update the label
-        if (index < countLabels.size) {
-            countLabels.get(index).setText(String.valueOf(displayCount));
+        if (currentBuilding instanceof Recreational) {
+            countLabels.get(5).setText(buildingCounts.getRecreationalCount());
         }
     }
 

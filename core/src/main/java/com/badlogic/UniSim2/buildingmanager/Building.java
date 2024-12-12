@@ -1,6 +1,8 @@
 package com.badlogic.UniSim2.buildingmanager;
 
 import com.badlogic.UniSim2.GUImanager.BuildingMenu;
+import com.badlogic.UniSim2.GUImanager.GameScreen;
+import com.badlogic.UniSim2.buildingmanager.types.BuildingTypes;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,38 +27,21 @@ public abstract class Building extends Sprite {
     private final int width;
     private final int height;
 
-    public enum BuildingTypes {
-        Accomodation,
-        LectureHall,
-        Library,
-        Course,
-        FoodZone,
-        Recreational,
-        Nature,
-        Derwent,
-        Goodricke,
-        Constantine,
-        Nisa,
-        Greggs,
-        DerwentDining,
-        Gym,
-        SocietyBuilding,
-        Piazza,
-        CentralHall,
-        SoftwareLabs,
-        HardwareLabs
-    }
+    private final float cost;
+    private final String name;
 
     private BuildingTypes type;
 
     public Building(Texture placedTexture, Texture collisionTexture, Texture draggingTexture, int width, int height,
-            BuildingTypes type) {
+                    float cost, String name, BuildingTypes type) {
 
         this.placedTexture = placedTexture;
         this.collisionTexture = collisionTexture;
         this.draggingTexture = draggingTexture;
         this.width = width;
         this.height = height;
+        this.cost = cost;
+        this.name= name;
         this.type = type;
         isSelected = true;
         isPlaced = false;
@@ -68,7 +53,7 @@ public abstract class Building extends Sprite {
     /**
      * Updates the position of the building to the specified mousePos. Will
      * ensure that the building is snapped to the grid.
-     * 
+     *
      * @param mousePos The position of the mouse in world coords.
      */
     private void updatePosition(Vector2 mousePos) {
@@ -87,7 +72,7 @@ public abstract class Building extends Sprite {
      * Should be called when is building is being dragged. Will update the
      * position to the mousePos and will set use the colliding texture
      * if colliding is set to true.
-     * 
+     *
      * @param mousePos  The mouse position in world coords.
      * @param colliding true if the building is colliding with something in
      *                  {@link Map#collidableSprites} and false otherwise.
@@ -112,25 +97,17 @@ public abstract class Building extends Sprite {
      * placed texture.
      */
     public void placeBuilding() {
-        incrementCount();
+        //incrementCount();
         isSelected = false;
         isPlaced = true;
         setRegion(placedTexture);
         SoundManager.playClick();
     }
 
-    private void incrementCount() {
-        int index = type.ordinal();
-        BuildingMenu.buildingCounts[index]++;
-        // BuildingMenu.updateCountLabel(index); // Increments the building count label
-        // by 1 and displays
-        BuildingMenu.updateCountLabel(Building.BuildingTypes.values()[index]);
-    }
-
     /**
      * Sets the texture to collision or dragging dependings on if it is colliding
      * with another collidable in {@link Map#collidableSprites}.
-     * 
+     *
      * @param collision true when the building is colliding and false otherwise.
      */
     private void setDraggingTexture(boolean collision) {
@@ -151,7 +128,7 @@ public abstract class Building extends Sprite {
     /**
      * Gets the distance from this building to another building. The distance
      * is defined by the x_distance + y_distance between buildings.
-     * 
+     *
      * @param building The other building to find the distance between.
      * @return The distance. Can be rounded both down and up.
      */
@@ -169,7 +146,7 @@ public abstract class Building extends Sprite {
 
     /**
      * Returns the column of the bottom left square of the building.
-     * 
+     *
      * @return
      */
     public int getCol() {
@@ -178,7 +155,7 @@ public abstract class Building extends Sprite {
 
     /**
      * Returns the row of the bottom left square of the building.
-     * 
+     *
      * @return
      */
     public int getRow() {
@@ -201,9 +178,7 @@ public abstract class Building extends Sprite {
         return height;
     }
 
-    public BuildingTypes getType() {
-        return type;
-    }
+    public BuildingTypes getType(){return  type;}
 
     public void dispose() {
     }
