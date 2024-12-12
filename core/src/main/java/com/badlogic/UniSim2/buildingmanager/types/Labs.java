@@ -17,8 +17,8 @@ public class Labs extends Building {
             placedTexture,
             collisionTexture,
             draggingTexture,
-            width * Consts.CELL_SIZE,
-            height * Consts.CELL_SIZE,
+            width,
+            height,
             cost,
             name,
             type

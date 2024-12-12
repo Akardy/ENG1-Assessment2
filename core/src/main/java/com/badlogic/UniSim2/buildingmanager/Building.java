@@ -104,14 +104,6 @@ public abstract class Building extends Sprite {
         SoundManager.playClick();
     }
 
-//    private void incrementCount() {
-//        int index = type.ordinal();
-//        ;
-//        // BuildingMenu.updateCountLabel(index); // Increments the building count label
-//        // by 1 and displays
-//        BuildingMenu.updateCountLabel(Building.BuildingTypes.values()[index]);
-//    }
-
     /**
      * Sets the texture to collision or dragging dependings on if it is colliding
      * with another collidable in {@link Map#collidableSprites}.

@@ -1,7 +1,6 @@
 package com.badlogic.UniSim2.buildingmanager;
 
 import com.badlogic.UniSim2.GUImanager.BuildingMenu;
-import com.badlogic.UniSim2.GUImanager.GameMenu;
 import com.badlogic.UniSim2.buildingmanager.types.*;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.Assets;
@@ -111,14 +110,6 @@ public class BuildingManager {
      * Used to place a building in a location. The {@link #currentBuilding} holds
      * the location where it should be placed.
      */
-    // private void handlePlacing(){
-    // // If the current building is not colliding
-    // if(!isColliding(currentBuilding)){
-    // currentBuilding.placeBuilding(); // Place building
-    // currentBuilding = null;
-    // currentlySelecting = false; // No longer selecting a building
-    // }
-    // }
 
     private boolean placingInProgress = false; // Guard to prevent duplicate calls
 
@@ -131,14 +122,6 @@ public class BuildingManager {
                 currentBuilding.placeBuilding(); // Place building
 
                 // Update counts for the building type
-                //BuildingTypes type = currentBuilding.getType();
-                // System.out.println("Before increment: " +
-                // BuildingMenu.buildingCounts[type.ordinal()]);
-                //BuildingMenu.buildingCounts[type.ordinal()]++;
-               // BuildingMenu.updateCountLabel(type);
-
-                // System.out.println("After increment: " +
-                // BuildingMenu.buildingCounts[type.ordinal()]);
 
                 // Update aggregate count for Accomodation
                 if (currentBuilding instanceof Accomodation) {
@@ -160,6 +143,8 @@ public class BuildingManager {
                 if (currentBuilding instanceof Labs) {
                     buildingCounts.incrementLabs(currentBuilding.getType().ordinal());
                 }
+
+                BuildingMenu.updateCountLabel(currentBuilding);
 
                 // Reset current building and selection state
                 currentBuilding = null;
@@ -206,8 +191,8 @@ public class BuildingManager {
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
             case PIAZZA:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new LectureHall(Assets.piazzaPlacedTexture, Assets.piazzaCollisionTexture, Assets.piazzaDraggingTexture,
+                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 10000000, "Piazza", BuildingTypes.PIAZZA);
                 break;
             case CENTRALHALL:
                 currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
@@ -242,6 +227,10 @@ public class BuildingManager {
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;
             case SOCIETYBUILDING:
+                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                break;
+            case LIBRARY:
                 currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
                 break;

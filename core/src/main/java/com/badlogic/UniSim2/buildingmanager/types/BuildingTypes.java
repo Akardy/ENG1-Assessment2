@@ -14,5 +14,5 @@ public enum BuildingTypes {
     SOFTWARELABS,
     HARDWARELABS,
     NATURE,
-    LIBARY
+    LIBRARY
 }

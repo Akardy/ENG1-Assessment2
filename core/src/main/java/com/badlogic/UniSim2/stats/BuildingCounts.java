@@ -29,7 +29,7 @@ public class BuildingCounts {
         return buildingCounts[index];
     }
 
-    public int getAccomadationCount() {
+    public int getAccommodationCount() {
         return accommodation;
     }
 

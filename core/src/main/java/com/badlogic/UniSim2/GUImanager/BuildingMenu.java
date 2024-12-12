@@ -1,6 +1,6 @@
 package com.badlogic.UniSim2.GUImanager;
 
-import com.badlogic.UniSim2.buildingmanager.types.BuildingTypes;
+import com.badlogic.UniSim2.buildingmanager.types.*;
 import com.badlogic.UniSim2.stats.BuildingCounts;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.UniSim2.buildingmanager.Building;
@@ -31,7 +31,7 @@ public class BuildingMenu {
     private BuildingManager buildings;
     private Image menuBar;
 
-    private BuildingCounts buildingCounts;
+    private static BuildingCounts buildingCounts;
 
     private final Skin skin;
 
@@ -168,15 +168,15 @@ public class BuildingMenu {
                     if (index == 0) {
                         showAccommodationPopup(); // Popup for Accommodation options
                     } else if (index == 1) {
-                        showFoodZonePopup(); // Popup for FoodZone options
+                        showLectureHallPopup(); // Popup for FoodZone options
                     } else if (index == 2) {
-                        showRecreationalPopup();
-                    } else if (index == 3) {
-                        showLectureHallPopup();
-                    } else if (index == 4) {
-                        showCoursePopup(); // Popup for Labs options
-                    } else if (index == 5) {
                         showLibraryPopup();
+                    } else if (index == 3) {
+                        showCoursePopup();
+                    } else if (index == 4) {
+                        showFoodZonePopup(); // Popup for Labs options
+                    } else if (index == 5) {
+                        showRecreationalPopup();
                     }
                     //else {
 //                        buildings.handleSelection(type); // Handle other building types
@@ -198,7 +198,7 @@ public class BuildingMenu {
 
         // Add button for Library
         String label = "Library";
-        BuildingTypes type = BuildingTypes.LIBARY;
+        BuildingTypes type = BuildingTypes.LIBRARY;
         int count = buildingCounts.getBuildingCounts(type.ordinal()); // Adjust for double increment issue
 
         TextButton button = new TextButton(label + " (" + count + ")", skin);
@@ -513,7 +513,7 @@ public class BuildingMenu {
      */
     private void setUpCountLabel(int index, ImageButton button) {
 
-        int count = buildingCounts.getAccomadationCount(); // Gets the count for the type of building using the type index in
+        int count = buildingCounts.getAccommodationCount(); // Gets the count for the type of building using the type index in
                                            // BuildingTypes
         Label countLabel = new Label(String.valueOf(count), skin);
 
@@ -540,59 +540,34 @@ public class BuildingMenu {
      *
      * @param type The type of building to update the count for.
      */
-//    public static void updateCountLabel(Building.BuildingTypes type) {
-//        int index = type.ordinal();
-//
-//        // Update the count for the specific type
-//        if (type == Building.BuildingTypes.Accomodation) {
-//            // Aggregate count for Accomodation
-//            int total = buildingCounts[Building.BuildingTypes.DERWENT.ordinal()]
-//                    + buildingCounts[Building.BuildingTypes.GOODRICKE.ordinal()]
-//                    + buildingCounts[Building.BuildingTypes.CONSTANTINE.ordinal()];
-//            buildingCounts[index] = total;
-//        }
-//
-//        if (type == Building.BuildingTypes.FoodZone) {
-//            int total = buildingCounts[Building.BuildingTypes.NISA.ordinal()]
-//                    + buildingCounts[Building.BuildingTypes.GREGGS.ordinal()]
-//                    + buildingCounts[Building.BuildingTypes.DERWENTDINING.ordinal()];
-//            buildingCounts[index] = total;
-//        }
-//
-//        if (type == Building.BuildingTypes.Recreational) {
-//            int total = buildingCounts[Building.BuildingTypes.NATURE.ordinal()]
-//                    + buildingCounts[Building.BuildingTypes.GYM.ordinal()]
-//                    + buildingCounts[Building.BuildingTypes.SOCIETYBUILDING.ordinal()];
-//            buildingCounts[index] = total;
-//        }
-//
-//        if (type == Building.BuildingTypes.LectureHall) {
-//            int total = buildingCounts[Building.BuildingTypes.Piazza.ordinal()]
-//                    + buildingCounts[Building.BuildingTypes.CENTRALHALL.ordinal()];
-//            buildingCounts[index] = total;
-//        }
-//
-//        if (type == Building.BuildingTypes.Course) {
-//            int total = buildingCounts[Building.BuildingTypes.SOFTWARELABS.ordinal()]
-//                    + buildingCounts[Building.BuildingTypes.HARDWARELABS.ordinal()];
-//            buildingCounts[index] = total;
-//        }
-//
-//        if (type == Building.BuildingTypes.Library) {
-//            int displayCount = buildingCounts[index] / 2; // Adjust for double increment issue
-//            if (index < countLabels.size) {
-//                countLabels.get(index).setText(String.valueOf(displayCount));
-//            }
-//        }
-//
-//        // Display half the count as a workaround
-//        int displayCount = buildingCounts[index] / 2;
-//
-//        // Update the label
-//        if (index < countLabels.size) {
-//            countLabels.get(index).setText(String.valueOf(displayCount));
-//        }
-//    }
+    public static void updateCountLabel(Building currentBuilding) {
+
+        // Update the count for the specific type
+        if (currentBuilding instanceof Accomodation) {
+            // Aggregate count for Accomodation
+            countLabels.get(0).setText(buildingCounts.getAccommodationCount());
+        }
+
+        if (currentBuilding instanceof LectureHall) {
+            countLabels.get(1).setText(buildingCounts.getLectureHallCount());
+        }
+
+        if (currentBuilding instanceof Library) {
+            countLabels.get(2).setText(buildingCounts.getLibaryCount());
+        }
+
+        if (currentBuilding instanceof Labs) {
+            countLabels.get(3).setText(buildingCounts.getLabsCount());
+        }
+
+        if (currentBuilding instanceof  FoodZone) {
+            countLabels.get(4).setText(buildingCounts.getFoodZoneCount());
+        }
+
+        if (currentBuilding instanceof Recreational) {
+            countLabels.get(5).setText(buildingCounts.getRecreationalCount());
+        }
+    }
 
     /**
      * Adds the count labels to the stage.
