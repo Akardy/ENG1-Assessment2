@@ -5,6 +5,8 @@ import com.badlogic.UniSim2.GUImanager.GameScreen;
 import com.badlogic.UniSim2.GUImanager.StartScreen;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -21,6 +23,8 @@ public class Main extends Game {
 
     @Override
     public void create() {
+        Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4,
+            Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 4);
         Assets.loadTextures();
         startScreen = new StartScreen(this);
         setScreen(startScreen);

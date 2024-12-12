@@ -34,27 +34,7 @@ public class BuildingManager {
         currentBuilding = null;
         currentlySelecting = false;
         this.buildingCounts = buildingCounts;
-
-//        initialiseBuildings();
     }
-
-//    private void initialiseBuildings() {
-//        buildings = new ArrayList<>();
-//
-//        buildings.add(new Accomodation(Assets.derwentPlacedTexture, Assets.derwentCollisionTexture, Assets.derwentDraggingTexture,
-//            Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "DERWENT", 100));
-//
-//        buildings.add(new FoodZone(Assets.foodZonePlacedTexture, Assets.foodZoneCollisionTexture, Assets.foodZoneDraggingTexture,
-//            Consts.FOODZONE_WIDTH, Consts.FOODZONE_HEIGHT, 100000, "NISA", 100, 100));
-//
-//        buildings.add(new Recreational(Assets.recreationalPlacedTexture, Assets.recreationalCollisionTexture, Assets.recreationalDraggingTexture,
-//            Consts.RECREATIONAL_WIDTH, Consts.RECREATIONAL_HEIGHT, 100000, "NATURE", 1000));
-//
-//        buildings.add(new Library(Assets.libraryPlacedTexture, Assets.libraryCollisionTexture, Assets.libraryDraggingTexture,
-//            Consts.LIBRARY_WIDTH, Consts.LIBRARY_HEIGHT, 1000000, "Lib"));
-//
-//        buildings.add()
-//    }
 
     /**
      * Adds currentBuilding to the buildings array and to collidableSprites array.
@@ -73,7 +53,6 @@ public class BuildingManager {
      * @param clicked  true if a click has happened and false if not.
      */
     public void input(Vector2 mousePos, boolean clicked, boolean backspacePressed) {
-
         // If we're currently selecting a building
         if (currentlySelecting) {
             if (clicked) {
@@ -144,6 +123,10 @@ public class BuildingManager {
                     buildingCounts.incrementLabs(currentBuilding.getType().ordinal());
                 }
 
+                if (currentBuilding instanceof Library){
+                    buildingCounts.incrementLibary(currentBuilding.getType().ordinal());
+                }
+
                 BuildingMenu.updateCountLabel(currentBuilding);
 
                 // Reset current building and selection state
@@ -180,7 +163,7 @@ public class BuildingManager {
         switch (type) {
             case DERWENT:
                 currentBuilding = new Accomodation(Assets.derwentPlacedTexture, Assets.derwentCollisionTexture, Assets.derwentDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "DERWENT", 100, BuildingTypes.DERWENT);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Derwent", 100, BuildingTypes.DERWENT);
                 break;
             case CONSTANTINE:
                 currentBuilding = new Accomodation(Assets.constantinePlacedTexture, Assets.constantineCollisionTexture, Assets.constantineDraggingTexture,
@@ -195,44 +178,44 @@ public class BuildingManager {
                     Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 10000000, "Piazza", BuildingTypes.PIAZZA);
                 break;
             case CENTRALHALL:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new LectureHall(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", BuildingTypes.CENTRALHALL);
                 break;
             case SOFTWARELABS:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new Labs(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", BuildingTypes.SOFTWARELABS);
                 break;
             case HARDWARELABS:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new Labs(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", BuildingTypes.HARDWARELABS);
                 break;
             case NISA:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, 100,  BuildingTypes.NISA);
                 break;
             case GREGGS:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, 100,  BuildingTypes.GREGGS);
                 break;
             case DERWENTDINING:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, 100,  BuildingTypes.DERWENTDINING);
                 break;
             case NATURE:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.NATURE);
                 break;
             case GYM:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GYM);
                 break;
             case SOCIETYBUILDING:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.SOCIETYBUILDING);
                 break;
             case LIBRARY:
-                currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                currentBuilding = new Library(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", BuildingTypes.LIBRARY);
                 break;
             default:
                 throw new IllegalArgumentException("Unhandled BuildingType: " + type);
