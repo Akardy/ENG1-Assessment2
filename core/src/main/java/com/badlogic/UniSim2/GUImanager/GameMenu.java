@@ -80,6 +80,9 @@ public class GameMenu {
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+        if (seconds == 0){
+            money.loan();
+        }
     }
 
 

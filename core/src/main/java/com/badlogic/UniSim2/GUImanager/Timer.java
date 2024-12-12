@@ -29,6 +29,7 @@ public class Timer {
             // If not it updates the time
             startingTime -= Gdx.graphics.getDeltaTime();
         }
+
         if (startingTime <= maxTime) {
             reachedMaxTime = true;
         }
