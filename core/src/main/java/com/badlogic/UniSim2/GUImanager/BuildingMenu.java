@@ -1,5 +1,6 @@
 package com.badlogic.UniSim2.GUImanager;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
@@ -7,37 +8,41 @@ import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 
-/**
- * A menu which can be used to place new buildings onto the map. This menu is
- * a part of the {@link GameMenu game menu}. It shows all the types of buildings
- * that can be placed and how many of them are already placed.
- */
 public class BuildingMenu {
 
     private Stage stage;
     private BuildingManager buildings;
     private Image menuBar;
-
     private final Skin skin;
 
-    // Holds the count of each type of building
-    private int accomodationCount, lectureHallCount, libraryCount, courseCount, foodZoneCount, recreationalCount,
-            natureCount;
     public static int[] buildingCounts;
-
-    // Holds the labels that display the count of each building
     private static Array<Label> countLabels;
+
+    // The main building types to show initially
+    private final Building.BuildingTypes[] mainClasses = {
+            Building.BuildingTypes.Accomodation,
+            Building.BuildingTypes.LectureHall,
+            Building.BuildingTypes.Library,
+            Building.BuildingTypes.Course,
+            Building.BuildingTypes.FoodZone,
+            Building.BuildingTypes.Recreational
+    };
+
+    private Table menuTable;
 
     public BuildingMenu(Stage stage, BuildingManager buildings) {
         this.stage = stage;
@@ -46,537 +51,222 @@ public class BuildingMenu {
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
-        // Initializes buildingCounts with each building type
-        buildingCounts = new int[] {
-                accomodationCount,
-                lectureHallCount,
-                libraryCount,
-                courseCount,
-                foodZoneCount,
-                recreationalCount,
-                natureCount,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-
-        };
-
+        // Initialize buildingCounts (adjust the size if there are more types)
+        buildingCounts = new int[20];
         countLabels = new Array<>();
+
+        // Create a table to hold the menu items
+        menuTable = new Table();
+        // menuTable.setFillParent(true);
+        menuTable.setDebug(false); // Set to true to see layout boundariess
+
+        menuTable.setPosition(Consts.MENU_BAR_X, Consts.MENU_BAR_Y);
+        menuTable.setSize(Consts.MENU_BAR_WIDTH, Consts.MENU_BAR_HEIGHT);
+
+        stage.addActor(menuTable);
     }
 
-    /**
-     * Creates a bar to hold all the building buttons, creates the building
-     * buttons and creates the labels which hold the amount of times each
-     * building has been placed.
-     */
     public void createBuildingMenu() {
         createMenuBar();
-        createImageButtons();
-        createCountLabels();
+        showMainOptions();
+        menuTable.toFront();
     }
 
-    /**
-     * Creates a button for each building types with a gap between each button and
-     * a count label for each button.
-     */
-    // private void createImageButtons() {
-    // int buttonGap = Consts.BUILDING_BUTTON_GAP;
+    private void showMainOptions() {
+        menuTable.clear();
+        countLabels.clear(); // Reset count labels array
 
-    // // Iterating through each type of building
-    // for (Building.BuildingTypes type : Building.BuildingTypes.values()) {
+        // Add a title row for clarity (optional)
+        // Label titleLabel = new Label("Main Building Types", skin);
+        // menuTable.add(titleLabel).colspan(2).center().pad(10);
+        // menuTable.row();
 
-    // createImageButton(type, buttonGap);
-    // buttonGap += Consts.BUILDING_BUTTON_GAP;
-    // }
-    // }
-
-    private void createImageButtons() {
-        int buttonGap = Consts.BUILDING_BUTTON_GAP;
-
-        // Add buttons only for the main classes
-        Building.BuildingTypes[] mainClasses = {
-                Building.BuildingTypes.Accomodation,
-                Building.BuildingTypes.LectureHall,
-                Building.BuildingTypes.Library,
-                Building.BuildingTypes.Course,
-                Building.BuildingTypes.FoodZone,
-                Building.BuildingTypes.Recreational
-        };
-
+        // Add main type buttons and a placeholder for count labels in the same row
         for (Building.BuildingTypes type : mainClasses) {
-            createImageButton(type, buttonGap);
-            buttonGap += Consts.BUILDING_BUTTON_GAP;
+            final ImageButton button = createImageButton(type);
+            final Label countLabel = createCountLabelForType(type);
+            // Add button and label to the table in the same row
+            // menuTable.add(button).pad(20).left();
+            // menuTable.add(countLabel).pad(0).left();
+            // menuTable.row();
+            Stack stack = new Stack();
+            stack.add(button); // Add the button first
+
+            Container<Label> labelContainer = new Container<>(countLabel);
+            labelContainer.align(Align.topRight);
+
+            // Use negative padding to move the label outside the button boundary
+            labelContainer.padTop(-10).padRight(-10);
+
+            stack.add(labelContainer);
+
+            // Add the stack to the table as before
+            menuTable.add(stack).pad(20);
+            menuTable.row();
+
+            // Add listener to show sub-options (or handle directly)
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    if (!buildings.getCurrentlySelecting()) {
+                        SoundManager.playClick();
+                        showSubOptions(type); // Show sub-options in the same menu
+                    }
+                }
+            });
         }
     }
 
-    /**
-     * Creates a single image button and adds it to the {@link #stage}.
-     * 
-     * @param type      The building type to create a button for. Defines the
-     *                  texture of
-     *                  the button.
-     * @param buttonGap The gap from the max y coord a button can be placed defined
-     *                  by
-     *                  {@link Consts#BUILDING_BUTTON_Y_BOUNDARY} to where the
-     *                  button should be placed.
-     *                  Will place newly created button at
-     *                  ({@link Consts#BUILDING_BUTTON_Y_BOUNDARY} - buttonGap).
-     */
-    private void createImageButton(Building.BuildingTypes type, int buttonGap) {
-        int index = type.ordinal(); // Gets the index of type within BuildingTypes
-        ImageButton button = setupImageButton(index, buttonGap); // Creates a button of the building type
-        addImageButtonClick(button, type, index); // Adds a click listener to the button so we can do something when
-                                                  // clicked
-        stage.addActor(button);
+    private void showSubOptions(Building.BuildingTypes mainType) {
+        menuTable.clear();
+        countLabels.clear();
+
+        // // Add a title for the sub-menu
+        // Label titleLabel = new Label(mainType.name() + " Options", skin);
+        // menuTable.add(titleLabel).colspan(2).center().pad(10);
+        // titleLabel.setColor(Color.BLACK); // Set the title color to red
+        // titleLabel.setFontScale(1f); // Increase the title font size
+        // menuTable.row();
+
+        String[] labels;
+        Building.BuildingTypes[] subTypes;
+
+        switch (mainType) {
+            case Accomodation:
+                labels = new String[] { "Derwent", "Goodricke", "Constantine" };
+                subTypes = new Building.BuildingTypes[] {
+                        Building.BuildingTypes.Derwent,
+                        Building.BuildingTypes.Goodricke,
+                        Building.BuildingTypes.Constantine
+                };
+                break;
+            case FoodZone:
+                labels = new String[] { "Nisa", "Greggs", "Derwent Dining" };
+                subTypes = new Building.BuildingTypes[] {
+                        Building.BuildingTypes.Nisa,
+                        Building.BuildingTypes.Greggs,
+                        Building.BuildingTypes.DerwentDining
+                };
+                break;
+            case Recreational:
+                labels = new String[] { "Nature", "Gym", "Society Building" };
+                subTypes = new Building.BuildingTypes[] {
+                        Building.BuildingTypes.Nature,
+                        Building.BuildingTypes.Gym,
+                        Building.BuildingTypes.SocietyBuilding
+                };
+                break;
+            case LectureHall:
+                labels = new String[] { "Piazza", "CentralHall" };
+                subTypes = new Building.BuildingTypes[] {
+                        Building.BuildingTypes.Piazza,
+                        Building.BuildingTypes.CentralHall
+                };
+                break;
+            case Course:
+                labels = new String[] { "Software Labs", "Hardware Labs" };
+                subTypes = new Building.BuildingTypes[] {
+                        Building.BuildingTypes.SoftwareLabs,
+                        Building.BuildingTypes.HardwareLabs
+                };
+                break;
+            case Library:
+                labels = new String[] { "Library" };
+                subTypes = new Building.BuildingTypes[] { Building.BuildingTypes.Library };
+                break;
+            default:
+                // If no sub-options, directly handle selection and go back to main menu
+                buildings.handleSelection(mainType);
+                showMainOptions();
+                return;
+        }
+
+        for (int i = 0; i < subTypes.length; i++) {
+            final Building.BuildingTypes subtype = subTypes[i];
+            int index = subtype.ordinal();
+            int displayCount = buildingCounts[index] / 2;
+
+            // Just show the building name on the button, not the count
+            String buildingName = labels[i];
+            TextButton button = new TextButton(buildingName, skin);
+            button.getLabel().setFontScale(1.5f);
+
+            // Create a stack to overlay the count label on the button
+            Stack stack = new Stack();
+            stack.add(button);
+
+            // Create a label for the count
+            Label countLabel = new Label(String.valueOf(displayCount), skin);
+            countLabel.setColor(Color.BLACK); // Set text color
+            countLabel.setFontScale(1.4f); // Increase font size
+
+            // Create a container to align the count label at the top-right corner
+            Container<Label> countContainer = new Container<>(countLabel);
+            countContainer.align(Align.topRight);
+
+            // Adjust padding if you want the label slightly outside the button boundary
+            countContainer.padTop(-10).padRight(-10);
+
+            // Add the container with the count label on top of the button
+            stack.add(countContainer);
+
+            // Add the stack (with button + count label) to the table
+            menuTable.add(stack).colspan(2).pad(20).width(145).height(50).fillX();
+            menuTable.row();
+
+            // Add listener to handle clicks
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    buildings.handleSelection(subtype);
+                    showMainOptions();
+                }
+            });
+        }
+
+        // Add a back button
+        TextButton backButton = new TextButton("Back", skin);
+        backButton.getLabel().setFontScale(1.3f);
+        menuTable.add(backButton).colspan(2).pad(10).width(70).height(30).fillX();
+        menuTable.row();
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                showMainOptions();
+            }
+        });
     }
 
-    /**
-     * Sets the texture, size nad position of the button.
-     * 
-     * @param index     The index of the button textures in
-     *                  {@link Assets#buttonUpTextures}
-     *                  and {@link Assets#buttonDownTextures}.
-     * @param buttonGap The gap from the max y coord a button can be placed defined
-     *                  by
-     *                  {@link Consts#BUILDING_BUTTON_Y_BOUNDARY} to where the
-     *                  button should be placed.
-     *                  Will place newly created button at
-     *                  ({@link Consts#BUILDING_BUTTON_Y_BOUNDARY} - buttonGap).
-     * @return The button.
-     */
-    private ImageButton setupImageButton(int index, int buttonGap) {
-        Texture buttonUpTexture = Assets.buttonUpTextures[index]; // Texture when not hovering or clicking
-        Texture buttonDownTexture = Assets.buttonDownTextures[index]; // Texture when hovering or clicking
+    private ImageButton createImageButton(Building.BuildingTypes type) {
+        int index = type.ordinal();
+        Texture buttonUpTexture = Assets.buttonUpTextures[index];
+        Texture buttonDownTexture = Assets.buttonDownTextures[index];
         Drawable buttonUpDrawable = new TextureRegionDrawable(buttonUpTexture);
         Drawable buttonDownDrawable = new TextureRegionDrawable(buttonDownTexture);
-        ImageButton.ImageButtonStyle buttonStyle = new ImageButton.ImageButtonStyle();
 
+        ImageButton.ImageButtonStyle buttonStyle = new ImageButton.ImageButtonStyle();
         buttonStyle.up = buttonUpDrawable;
         buttonStyle.down = buttonDownDrawable;
         buttonStyle.over = buttonDownDrawable;
 
-        ImageButton button = new ImageButton(buttonStyle); // Creates a new button with the correct building button
-                                                           // textures
-
-        button.setSize(Consts.BUILDING_BUTTON_WIDTH, Consts.BUILDING_BUTTON_HEIGHT);
-        button.setPosition(Consts.BUILDING_BUTTON_X_BOUNDARY, Consts.BUILDING_BUTTON_Y_BOUNDARY - buttonGap); // Places
-                                                                                                              // the
-                                                                                                              // button
-                                                                                                              // with a
-                                                                                                              // gap
-
-        setUpCountLabel(index, button); // Sets up a count label for the button to count how many times the buildint
-                                        // type is placed
-
+        ImageButton button = new ImageButton(buttonStyle);
         return button;
     }
 
-    /**
-     * Adds a click listener to the button so that it knows what to do when
-     * clicked.
-     * 
-     * @param button The button to add the listener to.
-     * @param type   The type of building that button represents. This building type
-     *               will be created when the button is pressed.
-     * @param index  The index of the building in the enum
-     *               {@link Building#BuildingTypes}
-     */
-    private void addImageButtonClick(ImageButton button, Building.BuildingTypes type, int index) {
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (!buildings.getCurrentlySelecting()) {
-                    SoundManager.playClick();
-
-                    if (type == Building.BuildingTypes.Accomodation) {
-                        showAccommodationPopup(); // Popup for Accommodation options
-                    } else if (type == Building.BuildingTypes.FoodZone) {
-                        showFoodZonePopup(); // Popup for FoodZone options
-                    } else if (type == Building.BuildingTypes.Recreational) {
-                        showRecreationalPopup();
-                    } else if (type == Building.BuildingTypes.LectureHall) {
-                        showLectureHallPopup();
-                    } else if (type == Building.BuildingTypes.Course) {
-                        showCoursePopup(); // Popup for Labs options
-                    } else if (type == Building.BuildingTypes.Library) {
-                        showLibraryPopup();
-                    } else {
-                        buildings.handleSelection(type); // Handle other building types
-                    }
-                }
-            }
-        });
+    private Label createCountLabelForType(Building.BuildingTypes type) {
+        int index = type.ordinal();
+        int displayCount = buildingCounts[index] / 2;
+        Label label = new Label(String.valueOf(displayCount), skin);
+        label.setColor(Consts.COUNT_COLOR);
+        label.setFontScale(Consts.COUNT_SIZE);
+        countLabels.add(label);
+        return label;
     }
 
-    //////// library///
-    private void showLibraryPopup() {
-        Window popupWindow = new Window("Library Options", skin);
-
-        popupWindow.setSize(400, 200);
-        popupWindow.setPosition(200, 300);
-        popupWindow.setMovable(true);
-
-        popupWindow.getTitleTable().padTop(20).center();
-
-        // Add button for Library
-        String label = "Library";
-        Building.BuildingTypes type = Building.BuildingTypes.Library;
-        int count = buildingCounts[type.ordinal()] / 2; // Adjust for double increment issue
-
-        TextButton button = new TextButton(label + " (" + count + ")", skin);
-
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                buildings.handleSelection(type); // Select and place the Library
-                popupWindow.remove(); // Close the popup after selection
-            }
-        });
-
-        popupWindow.row();
-        popupWindow.add(button).pad(10).fillX();
-
-        // Add a close button
-        TextButton closeButton = new TextButton("Close", skin);
-        closeButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                popupWindow.remove(); // Close the popup
-            }
-        });
-
-        popupWindow.row();
-        popupWindow.add(closeButton).pad(10).fillX();
-
-        // Add the popup to the stage
-        stage.addActor(popupWindow);
-    }
-
-    // //////// Accomodation ////////////
-
-    private void showAccommodationPopup() {
-        Window popupWindow = new Window("Accommodation Options", skin);
-
-        popupWindow.setSize(400, 300);
-        popupWindow.setPosition(200, 300);
-        popupWindow.setMovable(true);
-
-        popupWindow.getTitleTable().padTop(20).center();
-
-        // Add buttons and counts for accommodation options
-        String[] labels = { "Derwent", "Goodricke", "Constantine" };
-        Building.BuildingTypes[] subTypes = {
-                Building.BuildingTypes.Derwent,
-                Building.BuildingTypes.Goodricke,
-                Building.BuildingTypes.Constantine
-        };
-
-        for (int i = 0; i < labels.length; i++) {
-            Building.BuildingTypes subtype = subTypes[i];
-            int count = buildingCounts[subtype.ordinal()] / 2;
-
-            TextButton button = new TextButton(labels[i] + " (" + count + ")", skin);
-
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    buildings.handleSelection(subtype); // Select and place the building
-                    popupWindow.remove(); // Close the popup after selection
-                }
-            });
-
-            popupWindow.row();
-            popupWindow.add(button).pad(10).fillX();
-        }
-
-        // Add a close button
-        TextButton closeButton = new TextButton("Close", skin);
-        closeButton.addListener(new ClickListener() {
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                popupWindow.remove(); // Close the popup
-            }
-
-        });
-
-        popupWindow.row();
-        popupWindow.add(closeButton).pad(10).fillX();
-
-        stage.addActor(popupWindow);
-    }
-
-    ///////////// food zone/////
-    private void showFoodZonePopup() {
-        Window popupWindow = new Window("Food Zone Options", skin);
-
-        popupWindow.setSize(400, 300);
-        popupWindow.setPosition(200, 300);
-        popupWindow.setMovable(true);
-
-        popupWindow.getTitleTable().padTop(20).center();
-
-        // Add buttons and counts for FoodZone options
-        String[] labels = { "Nisa", "Greggs", "Derwent Dining" };
-        Building.BuildingTypes[] subTypes = {
-                Building.BuildingTypes.Nisa,
-                Building.BuildingTypes.Greggs,
-                Building.BuildingTypes.DerwentDining
-        };
-
-        for (int i = 0; i < labels.length; i++) {
-            Building.BuildingTypes subtype = subTypes[i];
-            int count = BuildingMenu.buildingCounts[subtype.ordinal()] / 2;
-
-            TextButton button = new TextButton(labels[i] + " (" + count + ")", skin);
-
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    buildings.handleSelection(subtype); // Select and place the building
-                    popupWindow.remove(); // Close the popup after selection
-                }
-            });
-
-            popupWindow.row();
-            popupWindow.add(button).pad(10).fillX();
-        }
-
-        // Add a close button
-        TextButton closeButton = new TextButton("Close", skin);
-        closeButton.addListener(new ClickListener() {
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                popupWindow.remove(); // Close the popup
-            }
-
-        });
-
-        popupWindow.row();
-        popupWindow.add(closeButton).pad(10).fillX();
-
-        stage.addActor(popupWindow);
-    }
-
-    /////////// recreational////////
-    private void showRecreationalPopup() {
-        Window popupWindow = new Window("Recreational Options", skin);
-
-        popupWindow.setSize(400, 300);
-        popupWindow.setPosition(200, 300);
-        popupWindow.setMovable(true);
-
-        popupWindow.getTitleTable().padTop(20).center();
-
-        // Define Recreational subtypes and labels
-        String[] labels = { "Nature", "Gym", "Society Building" };
-        Building.BuildingTypes[] subTypes = {
-                Building.BuildingTypes.Nature,
-                Building.BuildingTypes.Gym,
-                Building.BuildingTypes.SocietyBuilding
-        };
-
-        // Ensure subTypes align with buildingCounts array size
-        for (int i = 0; i < subTypes.length; i++) {
-            Building.BuildingTypes subtype = subTypes[i];
-
-            // Safeguard: Check bounds of buildingCounts before accessing
-            if (subtype.ordinal() >= buildingCounts.length) {
-                System.err.println("Invalid index for buildingCounts: " + subtype.ordinal());
-                continue;
-            }
-
-            int count = buildingCounts[subtype.ordinal()] / 2; // Adjust count display logic
-
-            TextButton button = new TextButton(labels[i] + " (" + count + ")", skin);
-
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    buildings.handleSelection(subtype); // Select and place the building
-                    popupWindow.remove(); // Close the popup after selection
-                }
-            });
-
-            popupWindow.row();
-            popupWindow.add(button).pad(10).fillX();
-        }
-
-        // Add a close button
-        TextButton closeButton = new TextButton("Close", skin);
-        closeButton.addListener(new ClickListener() {
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                popupWindow.remove(); // Close the popup
-            }
-
-        });
-
-        popupWindow.row();
-        popupWindow.add(closeButton).pad(10).fillX();
-
-        stage.addActor(popupWindow);
-    }
-
-    ////////// course///
-    private void showCoursePopup() {
-        Window popupWindow = new Window("Courses Options", skin);
-
-        popupWindow.setSize(400, 300);
-        popupWindow.setPosition(200, 300);
-        popupWindow.setMovable(true);
-
-        popupWindow.getTitleTable().padTop(20).center();
-
-        // Add buttons and counts for Labs options
-        String[] labels = { "Software Labs", "Hardware Labs" };
-        Building.BuildingTypes[] subTypes = {
-                Building.BuildingTypes.SoftwareLabs,
-                Building.BuildingTypes.HardwareLabs
-        };
-
-        for (int i = 0; i < labels.length; i++) {
-            Building.BuildingTypes subtype = subTypes[i];
-            int count = buildingCounts[subtype.ordinal()] / 2;
-
-            TextButton button = new TextButton(labels[i] + " (" + count + ")", skin);
-
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    buildings.handleSelection(subtype); // Select and place the building
-                    popupWindow.remove(); // Close the popup after selection
-                }
-            });
-
-            popupWindow.row();
-            popupWindow.add(button).pad(10).fillX();
-        }
-
-        // Add a close button
-        TextButton closeButton = new TextButton("Close", skin);
-        closeButton.addListener(new ClickListener() {
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                popupWindow.remove(); // Close the popup
-            }
-
-        });
-
-        popupWindow.row();
-        popupWindow.add(closeButton).pad(10).fillX();
-
-        stage.addActor(popupWindow);
-    }
-
-    /////////// lecture hall/////
-    private void showLectureHallPopup() {
-        Window popupWindow = new Window("Lecture Hall Options", skin);
-
-        popupWindow.setSize(400, 300);
-        popupWindow.setPosition(200, 300);
-        popupWindow.setMovable(true);
-
-        popupWindow.getTitleTable().padTop(20).center();
-
-        // Add buttons and counts for Lecture Hall options
-        String[] labels = { "Piazza", "CentralHall" };
-        Building.BuildingTypes[] subTypes = {
-                Building.BuildingTypes.Piazza,
-                Building.BuildingTypes.CentralHall
-        };
-
-        for (int i = 0; i < labels.length; i++) {
-            Building.BuildingTypes subtype = subTypes[i];
-            int count = BuildingMenu.buildingCounts[subtype.ordinal()] / 2;
-
-            TextButton button = new TextButton(labels[i] + " (" + count + ")", skin);
-
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    buildings.handleSelection(subtype); // Select and place the building
-                    popupWindow.remove(); // Close the popup after selection
-                }
-            });
-
-            popupWindow.row();
-            popupWindow.add(button).pad(10).fillX();
-        }
-
-        // Add a close button
-        TextButton closeButton = new TextButton("Close", skin);
-        closeButton.addListener(new ClickListener() {
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                popupWindow.remove(); // Close the popup
-            }
-
-        });
-
-        popupWindow.row();
-        popupWindow.add(closeButton).pad(10).fillX();
-
-        stage.addActor(popupWindow);
-    }
-
-    /**
-     * A count label is created for each building button to show how many building
-     * of that type have been placed on the map.
-     * 
-     * @param index  The index of the button textures in
-     *               {@link Assets#buttonUpTextures}
-     *               and {@link Assets#buttonDownTextures}.
-     * @param button The button the count label is for.
-     */
-    private void setUpCountLabel(int index, ImageButton button) {
-
-        int count = buildingCounts[index]; // Gets the count for the type of building using the type index in
-                                           // BuildingTypes
-        Label countLabel = new Label(String.valueOf(count), skin);
-
-        // Sets position of label to the top right of the button
-        float x = button.getX() + button.getWidth();
-        float y = button.getY() + button.getHeight();
-        countLabel.setPosition(x, y);
-
-        countLabel.setColor(Consts.COUNT_COLOR);
-        countLabel.setFontScale(Consts.COUNT_SIZE);
-        countLabels.add(countLabel);
-    }
-
-    /**
-     * Increments the count label for a specified building button label.
-     * 
-     * @param index The index of the building in the enum
-     *              {@link Building#BuildingTypes}
-     */
-    /**
-     * Updates the count label for a specified building type.
-     * If the type is Accomodation, it sums up the counts for Derwent, Goodricke,
-     * and Constantine.
-     * 
-     * @param type The type of building to update the count for.
-     */
     public static void updateCountLabel(Building.BuildingTypes type) {
         int index = type.ordinal();
 
-        // Update the count for the specific type
         if (type == Building.BuildingTypes.Accomodation) {
-            // Aggregate count for Accomodation
             int total = buildingCounts[Building.BuildingTypes.Derwent.ordinal()]
                     + buildingCounts[Building.BuildingTypes.Goodricke.ordinal()]
                     + buildingCounts[Building.BuildingTypes.Constantine.ordinal()];
@@ -609,28 +299,10 @@ public class BuildingMenu {
             buildingCounts[index] = total;
         }
 
-        if (type == Building.BuildingTypes.Library) {
-            int displayCount = buildingCounts[index] / 2; // Adjust for double increment issue
-            if (index < countLabels.size) {
-                countLabels.get(index).setText(String.valueOf(displayCount));
-            }
-        }
-
-        // Display half the count as a workaround
+        // Update the display count
         int displayCount = buildingCounts[index] / 2;
-
-        // Update the label
         if (index < countLabels.size) {
             countLabels.get(index).setText(String.valueOf(displayCount));
-        }
-    }
-
-    /**
-     * Adds the count labels to the stage.
-     */
-    private void createCountLabels() {
-        for (Label countLabel : countLabels) {
-            stage.addActor(countLabel);
         }
     }
 
@@ -639,11 +311,9 @@ public class BuildingMenu {
         menuBar.setSize(Consts.MENU_BAR_WIDTH, Consts.MENU_BAR_HEIGHT);
         menuBar.setPosition(Consts.MENU_BAR_X, Consts.MENU_BAR_Y);
         stage.addActor(menuBar);
+        // menuBar.toFront();
     }
 
-    /**
-     * Draws the building menu.
-     */
     public void draw() {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
