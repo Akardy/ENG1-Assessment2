@@ -1,4 +1,4 @@
-package com.badlogic.UniSim2.GUImanager;
+package com.badlogic.UniSim2.stats;
 
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.gdx.Gdx;
@@ -12,17 +12,21 @@ public class Money {
     private float startingMoney;
 
     public Money() {
-        this.startingMoney = 900000;
+        this.startingMoney = 10000;
     }
 
     /**
      * Update the money value by the amount spent or gained.
      */
     public void loan() {
-        startingMoney += 900000;
+        startingMoney += 10000;
     }
 
     public float getMoney(){
         return startingMoney;
+    }
+
+    public void reduceMoney(float amount){
+        startingMoney -= amount;
     }
 }

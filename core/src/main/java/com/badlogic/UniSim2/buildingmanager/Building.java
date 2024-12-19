@@ -178,6 +178,8 @@ public abstract class Building extends Sprite {
         return height;
     }
 
+    public float getCost(){return cost;}
+
     public BuildingTypes getType(){return  type;}
 
     public void dispose() {

@@ -8,8 +8,8 @@ import com.badlogic.gdx.utils.Array;
 
 public class NPCManager {
 
-    private final Array<NPC> NPCList;
-    private final Grid grid;
+    private static Array<NPC> NPCList;
+    private static Grid grid;
     private final SpriteBatch batch;
 
     public NPCManager(){
@@ -42,7 +42,7 @@ public class NPCManager {
 
 
     // ADD NPCs with a 0.3s cool down - using threads so doesn't steal all system resources
-    public void addNPC(int count) {
+    public static void addNPC(int count) {
         new Thread(() -> {
             for (int i = 0; i < count; i++) {
                 NPC npc = new NPC(grid);

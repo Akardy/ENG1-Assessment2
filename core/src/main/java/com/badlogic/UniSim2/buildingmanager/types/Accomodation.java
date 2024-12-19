@@ -28,4 +28,8 @@ public class Accomodation extends Building{
         this.rooms = rooms;
         this.studentsCont = rooms;
     }
+
+    public int getStudentsCont(){
+        return this.studentsCont;
+    }
 }

@@ -113,7 +113,7 @@ public class GameMenu {
         moneyLabel.setColor(Consts.MONEY_COLOR);
 
         // Position the label at the top center of the screen
-        moneyLabel.setPosition(Consts.MONEY_X, Consts.MONEY_Y, Align.center);
+        moneyLabel.setPosition(Consts.MONEY_X, Consts.MONEY_Y, Align.right);
 
         // Add the label to the stage
         stage.addActor(moneyLabel);
@@ -125,8 +125,8 @@ public class GameMenu {
      */
     private void updateMoneyLabel(){
         float updatedMoney = money.getMoney();
-        int pounds = (int) (updatedMoney / 100);
-        int pence = (int) (updatedMoney % 100);
+        int pounds = (int) (updatedMoney);
+        int pence = (int) ((updatedMoney - ((int) updatedMoney)) * 100);
         moneyLabel.setText(String.format("£" + "%02d.%02d", pounds, pence));
     }
 

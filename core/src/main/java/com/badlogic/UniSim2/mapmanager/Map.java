@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.mapmanager;
 
+import NPC.NPCManager;
+import com.badlogic.UniSim2.stats.Money;
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
@@ -32,14 +34,14 @@ public class Map {
     private BuildingCounts counts;
 
 
-    public Map(Main game, BuildingCounts counts) {
+    public Map(Main game, BuildingCounts counts, NPCManager npcManager, Money money) {
         width = Consts.WORLD_WIDTH;
         height = Consts.WORLD_HEIGHT;
         this.counts = counts;
 
         grid = new Grid();
 
-        buildings = new BuildingManager(counts);
+        buildings = new BuildingManager(counts, npcManager, money);
         collidableSprites = new Array<Sprite>();
         Paths.createPaths();
 

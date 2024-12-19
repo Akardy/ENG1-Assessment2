@@ -1,6 +1,8 @@
 package com.badlogic.UniSim2.buildingmanager;
 
+import NPC.NPCManager;
 import com.badlogic.UniSim2.GUImanager.BuildingMenu;
+import com.badlogic.UniSim2.stats.Money;
 import com.badlogic.UniSim2.buildingmanager.types.*;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.Assets;
@@ -29,11 +31,17 @@ public class BuildingManager {
 
     private BuildingCounts buildingCounts;
 
-    public BuildingManager(BuildingCounts buildingCounts) {
+    private NPCManager npcManager;
+
+    private Money money;
+
+    public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money) {
         placed = new Array<>();
         currentBuilding = null;
         currentlySelecting = false;
         this.buildingCounts = buildingCounts;
+        this.npcManager = npcManager;
+        this.money = money;
     }
 
     /**
@@ -97,7 +105,11 @@ public class BuildingManager {
             placingInProgress = true; // Prevent duplicate execution
             // System.out.println("handlePlacing called for: " + currentBuilding.getType());
 
-            if (!isColliding(currentBuilding)) {
+            if (!isColliding(currentBuilding) && money.getMoney() > currentBuilding.getCost()) {
+
+                money.reduceMoney(currentBuilding.getCost());
+
+
                 currentBuilding.placeBuilding(); // Place building
 
                 // Update counts for the building type
@@ -105,6 +117,8 @@ public class BuildingManager {
                 // Update aggregate count for Accomodation
                 if (currentBuilding instanceof Accomodation) {
                     buildingCounts.incrementAccomadation(currentBuilding.getType().ordinal());
+                    int npcCount = ((Accomodation) currentBuilding).getStudentsCont() / 50;
+                    NPCManager.addNPC(npcCount);
                 }
 
                 if (currentBuilding instanceof FoodZone) {
@@ -163,59 +177,59 @@ public class BuildingManager {
         switch (type) {
             case DERWENT:
                 currentBuilding = new Accomodation(Assets.derwentPlacedTexture, Assets.derwentCollisionTexture, Assets.derwentDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Derwent", 100, BuildingTypes.DERWENT);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2500, "Derwent", 250, BuildingTypes.DERWENT);
                 break;
             case CONSTANTINE:
                 currentBuilding = new Accomodation(Assets.constantinePlacedTexture, Assets.constantineCollisionTexture, Assets.constantineDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Constantine", 100, BuildingTypes.CONSTANTINE);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 6000, "Constantine", 600, BuildingTypes.CONSTANTINE);
                 break;
             case GOODRICKE:
                 currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GOODRICKE);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Goodricke", 400, BuildingTypes.GOODRICKE);
                 break;
             case PIAZZA:
                 currentBuilding = new LectureHall(Assets.piazzaPlacedTexture, Assets.piazzaCollisionTexture, Assets.piazzaDraggingTexture,
-                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 10000000, "Piazza", BuildingTypes.PIAZZA);
+                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 2500, "Piazza", BuildingTypes.PIAZZA);
                 break;
             case CENTRALHALL:
                 currentBuilding = new LectureHall(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", BuildingTypes.CENTRALHALL);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Central Hall", BuildingTypes.CENTRALHALL);
                 break;
             case SOFTWARELABS:
                 currentBuilding = new Labs(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", BuildingTypes.SOFTWARELABS);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Software labs", BuildingTypes.SOFTWARELABS);
                 break;
             case HARDWARELABS:
                 currentBuilding = new Labs(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", BuildingTypes.HARDWARELABS);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Hardware Labs", BuildingTypes.HARDWARELABS);
                 break;
             case NISA:
                 currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, 100,  BuildingTypes.NISA);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 1000, "Nisa", 100, 100,  BuildingTypes.NISA);
                 break;
             case GREGGS:
                 currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, 100,  BuildingTypes.GREGGS);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Greggs", 100, 100,  BuildingTypes.GREGGS);
                 break;
             case DERWENTDINING:
                 currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, 100,  BuildingTypes.DERWENTDINING);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3000, "Derwent Dining", 100, 100,  BuildingTypes.DERWENTDINING);
                 break;
             case NATURE:
                 currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.NATURE);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 1000, "Nature", 100, BuildingTypes.NATURE);
                 break;
             case GYM:
                 currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.GYM);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Gym", 100, BuildingTypes.GYM);
                 break;
             case SOCIETYBUILDING:
                 currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", 100, BuildingTypes.SOCIETYBUILDING);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3000, "Society Building", 100, BuildingTypes.SOCIETYBUILDING);
                 break;
             case LIBRARY:
                 currentBuilding = new Library(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 100000, "Goodricke", BuildingTypes.LIBRARY);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Library", BuildingTypes.LIBRARY);
                 break;
             default:
                 throw new IllegalArgumentException("Unhandled BuildingType: " + type);

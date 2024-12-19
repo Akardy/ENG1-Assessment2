@@ -133,8 +133,6 @@ public class NPC {
             direction = possibleDirections.random();
             startPosition.set(targetPosition);
             targetPosition.set(startPosition.x + direction.x, startPosition.y + direction.y);
-            System.out.println(targetPosition);
-            System.out.println(currentPosition);
             isMoving = true;
         }
         else if(currentPosition.x % CELL_SIZE == 0 && currentPosition.y % CELL_SIZE == 0){

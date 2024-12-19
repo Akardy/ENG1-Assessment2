@@ -43,11 +43,10 @@ public class GameScreen implements Screen {
         money = new Money();
         satisfaction = new Satisfaction();
         num = new NPCCount();
-        map = new Map(game, counts);
-        menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts);
         NPCManager = new NPCManager();
+        map = new Map(game, counts, NPCManager, money);
+        menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts);
         SoundManager.playMusic();
-        NPCManager.addNPC(5); // example adding 5 NPCs - delete later/move to place building :)
 
     }
 
@@ -60,7 +59,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         input();
         update();
-        if (hasEnded == true) return;
+        if (hasEnded) return;
         draw();
         NPCManager.update(delta);
     }
