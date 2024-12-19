@@ -31,6 +31,9 @@ public abstract class Building extends Sprite {
     private final String name;
 
     private BuildingTypes type;
+    private int capacity;
+
+    private int studentsInBuilding;
 
     public Building(Texture placedTexture, Texture collisionTexture, Texture draggingTexture, int width, int height,
                     float cost, String name, BuildingTypes type) {
@@ -43,6 +46,7 @@ public abstract class Building extends Sprite {
         this.cost = cost;
         this.name= name;
         this.type = type;
+        this.studentsInBuilding = 0;
         isSelected = true;
         isPlaced = false;
 
@@ -173,6 +177,13 @@ public abstract class Building extends Sprite {
     public int getBuildingWidth() {
         return width;
     }
+
+    public int getCapacity(){return 0;}
+    public int getRooms(){return 0;}
+    public float getIncome() {return 0;
+    }
+    public float getSatisfaction(){return 0;}
+    public float getMultiplierEffect(){return 0;}
 
     public int getBuildingHeight() {
         return height;

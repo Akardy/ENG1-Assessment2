@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class Library extends Building{
 
+    private final float multiplierEffect;
+
     public Library(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
                    int width, int height, float cost, String name, BuildingTypes type) {
         super(
@@ -22,5 +24,7 @@ public class Library extends Building{
             name,
             type
         );
+        this.multiplierEffect = 1.2f;
     }
+    public float getMultiplierEffect(){return multiplierEffect;}
 }

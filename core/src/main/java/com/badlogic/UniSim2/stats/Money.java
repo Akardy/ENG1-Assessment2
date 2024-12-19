@@ -29,4 +29,6 @@ public class Money {
     public void reduceMoney(float amount){
         startingMoney -= amount;
     }
+
+    public void increaseMoney(float amount){startingMoney += amount;}
 }

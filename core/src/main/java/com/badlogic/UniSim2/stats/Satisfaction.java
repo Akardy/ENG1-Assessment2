@@ -21,4 +21,6 @@ public class Satisfaction {
     public float getSatis(){
         return startingSatis;
     }
+
+    public void increaseSatis(float amount){startingSatis = Math.min(startingSatis + amount, 100);}
 }

@@ -10,11 +10,16 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class FoodZone extends Building{
 
-    private final float moneyGenerated;
+    private final float incomePerStudent;
     private final int capacity;
 
+    private final float satisfactionPerStudent;
+
+    private final int moneyGenerated;
+
     public FoodZone(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
-                    int width, int height, float cost, String name, float moneyGenerated, int capacity, BuildingTypes type) {
+                    int width, int height, float cost, String name, BuildingTypes type, int capacity,
+                    float incomePerStudent, float satisfactionPerStudent) {
         super(
             placedTexture,
             collisionTexture,
@@ -25,7 +30,19 @@ public class FoodZone extends Building{
             name,
             type
         );
-        this.moneyGenerated = moneyGenerated;
+        this.moneyGenerated = 0;
         this.capacity = capacity;
+        this.incomePerStudent = incomePerStudent;
+        this.satisfactionPerStudent = satisfactionPerStudent;
+
+    }
+    public int getCapacity(){
+        return capacity;
+    }
+    public float getIncome(){
+        return incomePerStudent;
+    }
+    public float getSatisfaction(){
+        return satisfactionPerStudent;
     }
 }

@@ -12,9 +12,13 @@ public class Accomodation extends Building{
 
     private final int rooms;
     private int studentsCont;
+    private final int breakDownChance;
+    private final float incomePerStudent;
+    private final int costToFix;
 
     public Accomodation(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
-                        int width, int height, float cost, String name, int rooms, BuildingTypes type) {
+                        int width, int height, float cost, String name, int rooms, BuildingTypes type,
+                        float incomePerStudent, int breakDownChance, int costToFix) {
         super(
             placedTexture,
             collisionTexture,
@@ -27,9 +31,18 @@ public class Accomodation extends Building{
         );
         this.rooms = rooms;
         this.studentsCont = rooms;
+        this.incomePerStudent = incomePerStudent;
+        this.breakDownChance = breakDownChance;
+        this.costToFix = costToFix;
     }
 
     public int getStudentsCont(){
         return this.studentsCont;
+    }
+    public int getRooms(){
+        return rooms;
+    }
+    public float getIncome(){
+        return incomePerStudent;
     }
 }

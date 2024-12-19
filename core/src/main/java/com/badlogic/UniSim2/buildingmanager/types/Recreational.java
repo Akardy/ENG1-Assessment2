@@ -11,10 +11,17 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class Recreational extends Building{
 
-    private final float upKeep;
+
+
+    private final int capacity;
+    private final float satisfactionPerStudent;
+    private final float originSatisfactionPerStudent;
+
+
 
     public Recreational(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
-                        int width, int height, float cost, String name, float upKeep, BuildingTypes type) {
+                        int width, int height, float cost, String name, BuildingTypes type, int capacity,
+                        float satisfactionPerStudent) {
         super(
             placedTexture,
             collisionTexture,
@@ -25,6 +32,18 @@ public class Recreational extends Building{
             name,
             type
         );
-        this.upKeep = upKeep;
+        this.capacity = capacity;
+        this.originSatisfactionPerStudent = satisfactionPerStudent;
+        this.satisfactionPerStudent = calculateDiscountRate();
+
+    }
+    public float calculateDiscountRate(){
+        return originSatisfactionPerStudent;
+    }
+    public int getCapacity(){
+        return capacity;
+    }
+    public float getSatisfaction(){
+        return satisfactionPerStudent;
     }
 }

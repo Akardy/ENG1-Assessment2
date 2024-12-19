@@ -8,6 +8,8 @@ import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.Assets;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.stats.BuildingCounts;
+import com.badlogic.UniSim2.stats.Satisfaction;
+import com.badlogic.UniSim2.stats.Timer;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -34,14 +36,18 @@ public class BuildingManager {
     private NPCManager npcManager;
 
     private Money money;
+    private Satisfaction satisfaction;
+    private Timer timer;
 
-    public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money) {
+    public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer) {
         placed = new Array<>();
         currentBuilding = null;
         currentlySelecting = false;
         this.buildingCounts = buildingCounts;
         this.npcManager = npcManager;
         this.money = money;
+        this.satisfaction = satisfaction;
+        this.timer = timer;
     }
 
     /**
@@ -177,55 +183,55 @@ public class BuildingManager {
         switch (type) {
             case DERWENT:
                 currentBuilding = new Accomodation(Assets.derwentPlacedTexture, Assets.derwentCollisionTexture, Assets.derwentDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2500, "Derwent", 250, BuildingTypes.DERWENT);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2500F, "Derwent", 250, BuildingTypes.DERWENT, 1f, 5, 250);
                 break;
             case CONSTANTINE:
                 currentBuilding = new Accomodation(Assets.constantinePlacedTexture, Assets.constantineCollisionTexture, Assets.constantineDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 6000, "Constantine", 600, BuildingTypes.CONSTANTINE);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 6000, "Constantine", 600, BuildingTypes.CONSTANTINE, 1.2f, 3, 250);
                 break;
             case GOODRICKE:
                 currentBuilding = new Accomodation(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Goodricke", 400, BuildingTypes.GOODRICKE);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Goodricke", 400, BuildingTypes.GOODRICKE, 1.5f, 4, 250);
                 break;
             case PIAZZA:
                 currentBuilding = new LectureHall(Assets.piazzaPlacedTexture, Assets.piazzaCollisionTexture, Assets.piazzaDraggingTexture,
-                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 2500, "Piazza", BuildingTypes.PIAZZA);
+                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 2500, "Piazza", BuildingTypes.PIAZZA, 200, 0.001f);
                 break;
             case CENTRALHALL:
                 currentBuilding = new LectureHall(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Central Hall", BuildingTypes.CENTRALHALL);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Central Hall", BuildingTypes.CENTRALHALL, 400, 0.0012f);
                 break;
             case SOFTWARELABS:
                 currentBuilding = new Labs(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Software labs", BuildingTypes.SOFTWARELABS);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Software labs", BuildingTypes.SOFTWARELABS, 100, 0.005f);
                 break;
             case HARDWARELABS:
                 currentBuilding = new Labs(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Hardware Labs", BuildingTypes.HARDWARELABS);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Hardware Labs", BuildingTypes.HARDWARELABS, 150, 0.006f);
                 break;
             case NISA:
                 currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 1000, "Nisa", 100, 100,  BuildingTypes.NISA);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 1000, "Nisa", BuildingTypes.NISA, 200, 2, 0.0005f);
                 break;
             case GREGGS:
                 currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Greggs", 100, 100,  BuildingTypes.GREGGS);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Greggs", BuildingTypes.GREGGS, 300, 2.5f, 0.0008f);
                 break;
             case DERWENTDINING:
                 currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3000, "Derwent Dining", 100, 100,  BuildingTypes.DERWENTDINING);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3000, "Derwent Dining", BuildingTypes.DERWENTDINING, 500, 3.2f, 0.001f);
                 break;
             case NATURE:
                 currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 1000, "Nature", 100, BuildingTypes.NATURE);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 1000, "Nature", BuildingTypes.NATURE, 100, 0.05f);
                 break;
             case GYM:
                 currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Gym", 100, BuildingTypes.GYM);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Gym", BuildingTypes.GYM, 150, 0.07f);
                 break;
             case SOCIETYBUILDING:
                 currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3000, "Society Building", 100, BuildingTypes.SOCIETYBUILDING);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3000, "Society Building", BuildingTypes.SOCIETYBUILDING, 250, 0.01f);
                 break;
             case LIBRARY:
                 currentBuilding = new Library(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
@@ -292,6 +298,44 @@ public class BuildingManager {
         }
         spriteBatch.end();
     }
+
+    public void gainSatisfactionAndCurrency(boolean isThirtySeconds){ // TODO: recreational do not have their distance boost yet
+        float satisfactionGain = 0f;
+        float currencyGain = 0f;
+        int totalCapacity = 0;
+        int totalRooms = 0;
+        int libraryCount = 0;
+        for (Building building : placed){
+            if(building.getType() != BuildingTypes.LIBRARY ){
+                totalCapacity += building.getCapacity();
+                totalRooms += building.getRooms();
+            } else {
+                libraryCount += 1;}
+
+        }
+        float studentFillBuildingPercent = Math.min(1, (float) totalRooms / totalCapacity);
+        for (Building building : placed){
+            int studentsInBuilding = (int) (building.getCapacity() * studentFillBuildingPercent);
+            System.out.println(studentsInBuilding);
+            if(building.getType() == BuildingTypes.DERWENT || building.getType() == BuildingTypes.GOODRICKE || building.getType() == BuildingTypes.CONSTANTINE) { // TODO: change to accom
+                currencyGain += building.getRooms() * building.getIncome();
+            }
+            if(building.getType() == BuildingTypes.PIAZZA || building.getType() == BuildingTypes.CENTRALHALL) { // TODO: change to lecture
+                satisfactionGain += studentsInBuilding * building.getSatisfaction() * (1 + (libraryCount * building.getMultiplierEffect()));
+            }
+            if ((building.getType() == BuildingTypes.SOFTWARELABS || building.getType() == BuildingTypes.HARDWARELABS) && isThirtySeconds){ // TODO: Change to labs
+                satisfactionGain += studentsInBuilding * building.getSatisfaction();
+            }
+            if (building.getType() != BuildingTypes.LIBRARY){
+                currencyGain += studentsInBuilding * building.getIncome();
+                satisfactionGain += studentsInBuilding * building.getSatisfaction();
+            }
+        }
+        satisfaction.increaseSatis(satisfactionGain);
+        money.increaseMoney(currencyGain);
+
+    }
+
 
     /**
      * @return true if a building is currently being selected and false otherwise.

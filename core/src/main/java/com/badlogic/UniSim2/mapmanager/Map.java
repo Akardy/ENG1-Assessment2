@@ -7,6 +7,8 @@ import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.UniSim2.stats.BuildingCounts;
+import com.badlogic.UniSim2.stats.Satisfaction;
+import com.badlogic.UniSim2.stats.Timer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -34,14 +36,14 @@ public class Map {
     private BuildingCounts counts;
 
 
-    public Map(Main game, BuildingCounts counts, NPCManager npcManager, Money money) {
+    public Map(Main game, BuildingCounts counts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer) {
         width = Consts.WORLD_WIDTH;
         height = Consts.WORLD_HEIGHT;
         this.counts = counts;
 
         grid = new Grid();
 
-        buildings = new BuildingManager(counts, npcManager, money);
+        buildings = new BuildingManager(counts, npcManager, money, satisfaction, timer);
         collidableSprites = new Array<Sprite>();
         Paths.createPaths();
 

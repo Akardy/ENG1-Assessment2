@@ -11,8 +11,12 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class Labs extends Building {
 
+    private final int capacity;
+    private final float satisfactionPerStudent;
+
     public Labs(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
-                int width, int height, float cost, String name, BuildingTypes type) {
+                int width, int height, float cost, String name, BuildingTypes type, int capacity,
+                float satisfactionPerStudent) {
         super(
             placedTexture,
             collisionTexture,
@@ -23,5 +27,13 @@ public class Labs extends Building {
             name,
             type
         );
+        this.capacity = capacity;
+        this.satisfactionPerStudent = satisfactionPerStudent;
+    }
+    public int getCapacity(){
+        return capacity;
+    }
+    public float getSatisfaction(){
+        return satisfactionPerStudent;
     }
 }

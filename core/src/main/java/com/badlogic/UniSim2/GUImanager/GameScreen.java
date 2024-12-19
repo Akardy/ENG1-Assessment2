@@ -34,6 +34,8 @@ public class GameScreen implements Screen {
     // This variable is needed to stop a crash from occuring when the game ends.
     boolean hasEnded = false;
 
+    private int lastProcessedSecond;
+
     private Map map;
     public GameScreen(Main game){
         this.game = game;
@@ -44,7 +46,7 @@ public class GameScreen implements Screen {
         satisfaction = new Satisfaction();
         num = new NPCCount();
         NPCManager = new NPCManager();
-        map = new Map(game, counts, NPCManager, money);
+        map = new Map(game, counts, NPCManager, money, satisfaction, timer);
         menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts);
         SoundManager.playMusic();
 
@@ -59,6 +61,12 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         input();
         update();
+        //map.getBuildingManager().
+        if(((int)timer.getElapsedTime()) % 10 == 0 && ((int)timer.getElapsedTime()) != (lastProcessedSecond)){
+            map.getBuildingManager().gainSatisfactionAndCurrency(((int)timer.getElapsedTime()) % 30 == 0);
+            lastProcessedSecond = (int)timer.getElapsedTime();
+        }
+        //map.getBuildingManager().gainSatisfactionAndCurrency(false);
         if (hasEnded) return;
         draw();
         NPCManager.update(delta);
