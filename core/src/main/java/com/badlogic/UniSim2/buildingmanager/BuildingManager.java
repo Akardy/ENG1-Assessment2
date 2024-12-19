@@ -10,11 +10,18 @@ import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.stats.BuildingCounts;
 import com.badlogic.UniSim2.stats.Satisfaction;
 import com.badlogic.UniSim2.stats.Timer;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -39,6 +46,10 @@ public class BuildingManager {
     private Satisfaction satisfaction;
     private Timer timer;
 
+    private Label statsLabel;
+
+    private Stage stage;
+
     public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer) {
         placed = new Array<>();
         currentBuilding = null;
@@ -48,6 +59,8 @@ public class BuildingManager {
         this.money = money;
         this.satisfaction = satisfaction;
         this.timer = timer;
+        this.stage = new Stage();
+        initialiseStatsLabel();
     }
 
     /**
@@ -123,7 +136,7 @@ public class BuildingManager {
                 // Update aggregate count for Accomodation
                 if (currentBuilding instanceof Accomodation) {
                     buildingCounts.incrementAccomadation(currentBuilding.getType().ordinal());
-                    int npcCount = ((Accomodation) currentBuilding).getStudentsCont() / 50;
+                    int npcCount = ((Accomodation) currentBuilding).getRooms() / 50;
                     NPCManager.addNPC(npcCount);
                 }
 
@@ -284,6 +297,8 @@ public class BuildingManager {
      *
      * @param spriteBatch
      */
+
+
     public void draw(SpriteBatch spriteBatch) {
         spriteBatch.begin();
         for (Building building : placed) {
@@ -297,6 +312,47 @@ public class BuildingManager {
             currentBuilding.draw(spriteBatch);
         }
         spriteBatch.end();
+
+        stage.act();
+        stage.draw();
+    }
+
+
+
+    private void initialiseStatsLabel() {
+        Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        statsLabel = new Label("", skin);
+        statsLabel.setVisible(false);
+        //statsLabel.setPosition(10, Gdx.graphics.getHeight() - 50);
+        statsLabel.setSize(300, 100);
+        statsLabel.setFontScale(1.2f);
+        statsLabel.setWrap(true);
+        stage.addActor(statsLabel);
+    }
+
+
+    public Building getHoveredBuilding(Vector2 mousePos) { // see if a building is being hovered over
+        for (Building building : placed) {
+            if (building.getBoundingRectangle().contains(mousePos)) {
+                return building;
+            }
+        }
+        return null;
+    }
+    public void displayBuildingStats(Building building, Viewport viewport) {
+        String stats = building.getStats();
+        statsLabel.setText(stats);
+        statsLabel.setVisible(true);
+
+        // Position the label just above the building
+        //Vector2 buildingWorldPos = new Vector2(building.getX(), building.getY());
+        Vector3 screenPos = viewport.project(new Vector3(building.getX(), building.getY(), 0));
+        float labelX = screenPos.x + (building.getWidth() / 2) - (statsLabel.getPrefWidth() / 2);
+        float labelY = screenPos.y + building.getHeight() + 10; // Slight offset above the building
+        statsLabel.setPosition(labelX, labelY);
+    }
+    public void hideBuildingStats(){
+        statsLabel.setVisible(false);
     }
 
     public void gainSatisfactionAndCurrency(boolean isThirtySeconds){ // TODO: recreational do not have their distance boost yet
@@ -316,23 +372,29 @@ public class BuildingManager {
         float studentFillBuildingPercent = Math.min(1, (float) totalRooms / totalCapacity);
         for (Building building : placed){
             int studentsInBuilding = (int) (building.getCapacity() * studentFillBuildingPercent);
-            System.out.println(studentsInBuilding);
+            building.setHowFull(studentsInBuilding);
             if(building.getType() == BuildingTypes.DERWENT || building.getType() == BuildingTypes.GOODRICKE || building.getType() == BuildingTypes.CONSTANTINE) { // TODO: change to accom
-                currencyGain += building.getRooms() * building.getIncome();
+                currencyGain = building.getRooms() * building.getIncome();
+                building.updateMoneyGenerated(currencyGain);
             }
             if(building.getType() == BuildingTypes.PIAZZA || building.getType() == BuildingTypes.CENTRALHALL) { // TODO: change to lecture
-                satisfactionGain += studentsInBuilding * building.getSatisfaction() * (1 + (libraryCount * building.getMultiplierEffect()));
+                satisfactionGain = studentsInBuilding * building.getSatisfaction() * (1 + (libraryCount * building.getMultiplierEffect()));
+                building.updateSatisfactionGenerated(satisfactionGain);
             }
             if ((building.getType() == BuildingTypes.SOFTWARELABS || building.getType() == BuildingTypes.HARDWARELABS) && isThirtySeconds){ // TODO: Change to labs
-                satisfactionGain += studentsInBuilding * building.getSatisfaction();
+                satisfactionGain = studentsInBuilding * building.getSatisfaction();
+                building.updateSatisfactionGenerated(satisfactionGain);
             }
             if (building.getType() != BuildingTypes.LIBRARY){
-                currencyGain += studentsInBuilding * building.getIncome();
-                satisfactionGain += studentsInBuilding * building.getSatisfaction();
+                currencyGain = studentsInBuilding * building.getIncome();
+                satisfactionGain = studentsInBuilding * building.getSatisfaction();
+                building.updateMoneyGenerated(currencyGain);
+                building.updateSatisfactionGenerated(satisfactionGain);
             }
+            satisfaction.increaseSatis(satisfactionGain);
+            money.increaseMoney(currencyGain);
         }
-        satisfaction.increaseSatis(satisfactionGain);
-        money.increaseMoney(currencyGain);
+
 
     }
 

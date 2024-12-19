@@ -19,8 +19,8 @@ public class Money {
      * Update the money value by the amount spent or gained.
      */
     public void loan() {
-        startingMoney += 10000;
-    }
+        startingMoney += 0;
+    } // add later
 
     public float getMoney(){
         return startingMoney;

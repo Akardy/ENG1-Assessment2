@@ -45,4 +45,10 @@ public class FoodZone extends Building{
     public float getSatisfaction(){
         return satisfactionPerStudent;
     }
+
+    public String getStats(){
+        return "Building: " + getType() + "\nMoney earned: " + getMoneyGenerated() + "\nSatisfaction earned: " + getSatisfactionGenerated() +
+            "\nCapacity: " + capacity + "\nHow many students use: " + getHowFull() +
+            "\nIncome per student per 10s: " + incomePerStudent + "\nSatisfaction per student per 10s: " + satisfactionPerStudent;
+    }
 }

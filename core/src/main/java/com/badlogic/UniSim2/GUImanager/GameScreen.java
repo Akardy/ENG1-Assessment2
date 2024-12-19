@@ -2,6 +2,7 @@ package com.badlogic.UniSim2.GUImanager;
 
 import NPC.NPCManager;
 import com.badlogic.UniSim2.Main;
+import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.resources.SoundManager;
@@ -9,6 +10,7 @@ import com.badlogic.UniSim2.stats.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -61,10 +63,11 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         input();
         update();
-        //map.getBuildingManager().
         if(((int)timer.getElapsedTime()) % 10 == 0 && ((int)timer.getElapsedTime()) != (lastProcessedSecond)){
-            map.getBuildingManager().gainSatisfactionAndCurrency(((int)timer.getElapsedTime()) % 30 == 0);
             lastProcessedSecond = (int)timer.getElapsedTime();
+            //System.out.println(lastProcessedSecond);
+            map.getBuildingManager().gainSatisfactionAndCurrency(((int)timer.getElapsedTime()) % 30 == 0);
+
         }
         //map.getBuildingManager().gainSatisfactionAndCurrency(false);
         if (hasEnded) return;
@@ -78,6 +81,16 @@ public class GameScreen implements Screen {
     private void input() {
         menu.input();
         map.input();
+        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        viewport.unproject(mousePos); // Convert screen coordinates to world coordinates
+
+        Building hoveredBuilding = map.getBuildingManager().getHoveredBuilding(mousePos);
+
+        if (hoveredBuilding != null) {
+            map.getBuildingManager().displayBuildingStats(hoveredBuilding, viewport);
+        } else {
+            map.getBuildingManager().hideBuildingStats();
+        }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
             if (isPaused) {
@@ -135,6 +148,7 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
     }
+
 
     @Override
     public void dispose() {

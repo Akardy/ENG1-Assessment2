@@ -30,19 +30,22 @@ public class Accomodation extends Building{
             type
         );
         this.rooms = rooms;
-        this.studentsCont = rooms;
         this.incomePerStudent = incomePerStudent;
         this.breakDownChance = breakDownChance;
         this.costToFix = costToFix;
+
     }
 
-    public int getStudentsCont(){
-        return this.studentsCont;
-    }
+
     public int getRooms(){
         return rooms;
     }
     public float getIncome(){
         return incomePerStudent;
+    }
+
+    public String getStats(){
+        return "Building: " + getType() + "\nMoney earned: " + getMoneyGenerated() + "\nStudents: "
+            + rooms + "\nIncome per student per 10s: " + incomePerStudent;
     }
 }

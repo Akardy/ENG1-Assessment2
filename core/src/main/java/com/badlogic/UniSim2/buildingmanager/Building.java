@@ -34,6 +34,10 @@ public abstract class Building extends Sprite {
     private int capacity;
 
     private int studentsInBuilding;
+    private float moneyGenerated;
+    private float satisfactionGenerated;
+
+    private int howFull;
 
     public Building(Texture placedTexture, Texture collisionTexture, Texture draggingTexture, int width, int height,
                     float cost, String name, BuildingTypes type) {
@@ -49,6 +53,10 @@ public abstract class Building extends Sprite {
         this.studentsInBuilding = 0;
         isSelected = true;
         isPlaced = false;
+        moneyGenerated = 0;
+        satisfactionGenerated = 0;
+        howFull = 0;
+
 
         setSize(width, height);
         setRegion(placedTexture); // By default a buildings texture is its placed texture
@@ -170,6 +178,11 @@ public abstract class Building extends Sprite {
         return isSelected;
     }
 
+    public void setHowFull(int numberOfStudents){ // TODO: CURRENTLY THIS IS ONLY CALLED EVERY TEN SECONDS - MAKE IT GET CALLED EVERY TIME ANY BUILDING IS PLACED WITH CORRECT VALUE
+        howFull = numberOfStudents;
+    }
+    public int getHowFull(){ return howFull;}
+
     public boolean getIsPlaced() {
         return isPlaced;
     }
@@ -178,8 +191,24 @@ public abstract class Building extends Sprite {
         return width;
     }
 
+    public void updateMoneyGenerated(float amount){
+        moneyGenerated += amount;
+    }
+    public void updateSatisfactionGenerated(float amount){
+        satisfactionGenerated += amount;
+    }
+    public float getMoneyGenerated(){
+        return moneyGenerated;
+    }
+    public float getSatisfactionGenerated(){
+        return satisfactionGenerated;
+    }
+
     public int getCapacity(){return 0;}
     public int getRooms(){return 0;}
+    public String getStats() {
+        return "Capacity: " + getCapacity() + "\nCost: " + getCost();
+    }
     public float getIncome() {return 0;
     }
     public float getSatisfaction(){return 0;}
@@ -195,4 +224,5 @@ public abstract class Building extends Sprite {
 
     public void dispose() {
     }
+
 }

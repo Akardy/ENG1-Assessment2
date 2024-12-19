@@ -27,4 +27,9 @@ public class Library extends Building{
         this.multiplierEffect = 1.2f;
     }
     public float getMultiplierEffect(){return multiplierEffect;}
+
+    public String getStats(){ // TODO: this one is not done - show how many lecture halls this effect, and the extra money made from it because of it
+        return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() +
+            "\nMultiplier effect: " + multiplierEffect;
+    }
 }
