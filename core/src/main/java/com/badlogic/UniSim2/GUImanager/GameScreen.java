@@ -1,5 +1,6 @@
 package com.badlogic.UniSim2.GUImanager;
 
+import NPC.NPCManager;
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.Consts;
@@ -22,6 +23,8 @@ public class GameScreen implements Screen {
     private Money money;
     private Satisfaction satisfaction;
     private NPCCount num;
+
+    private NPCManager NPCManager;
     private BuildingCounts counts;
 
     private GameMenu menu; // Used to make and display the game menu
@@ -42,7 +45,9 @@ public class GameScreen implements Screen {
         num = new NPCCount();
         map = new Map(game, counts);
         menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts);
+        NPCManager = new NPCManager();
         SoundManager.playMusic();
+        NPCManager.addNPC(5); // example adding 5 NPCs - delete later/move to place building :)
 
     }
 
@@ -57,6 +62,7 @@ public class GameScreen implements Screen {
         update();
         if (hasEnded == true) return;
         draw();
+        NPCManager.update(delta);
     }
 
     /**

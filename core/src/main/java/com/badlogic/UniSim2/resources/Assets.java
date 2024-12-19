@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  * This class is used to store all textures that will be used in the game.
@@ -158,6 +159,8 @@ public class Assets {
     public static Texture societyBuildingPlacedTexture;
     public static Texture societyBuildingCollisionTexture;
     public static Texture societyBuildingDraggingTexture;
+
+    public static TextureRegion NPCTexture;
 
     private Assets() {
     };
@@ -335,6 +338,8 @@ public class Assets {
         societyBuildingPlacedTexture = new Texture("textures/buildings/recreationalPlaced.png");
         societyBuildingCollisionTexture = new Texture("textures/buildings/recreationalCollision.png");
         societyBuildingDraggingTexture = new Texture("textures/buildings/recreationalDragging.png");
+
+        NPCTexture = new TextureRegion(new Texture("textures/NPC.png"));
 
     }
 }
