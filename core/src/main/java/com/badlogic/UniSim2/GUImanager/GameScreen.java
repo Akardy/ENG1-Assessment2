@@ -74,6 +74,7 @@ public class GameScreen implements Screen {
         if (hasEnded) return;
         draw();
         NPCManager.update(delta);
+
     }
 
     /**

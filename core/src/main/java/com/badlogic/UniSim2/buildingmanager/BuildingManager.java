@@ -11,12 +11,19 @@ import com.badlogic.UniSim2.stats.BuildingCounts;
 import com.badlogic.UniSim2.stats.Satisfaction;
 import com.badlogic.UniSim2.stats.Timer;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -55,6 +62,8 @@ public class BuildingManager {
     private float scaleX;
     private float scaleY;
 
+    private Skin skin;
+
 
     public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer) {
         placed = new Array<>();
@@ -68,6 +77,7 @@ public class BuildingManager {
         this.stage = new Stage();
         this.scaleX = 1.28F;
         this.scaleY = 1.4210526F;
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         initialiseStatsLabel();
     }
 
@@ -328,14 +338,27 @@ public class BuildingManager {
 
 
     private void initialiseStatsLabel() {
-        Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         statsLabel = new Label("", skin);
         statsLabel.setVisible(false);
-        //statsLabel.setPosition(10, Gdx.graphics.getHeight() - 50);
-        statsLabel.setSize(300, 100);
-        statsLabel.setFontScale(1.2f);
+        statsLabel.getStyle().fontColor = Color.BLACK;
+        statsLabel.setSize(500, 100);
+        statsLabel.setFontScale(1.5f);
+        statsLabel.setAlignment(Align.center);
         statsLabel.setWrap(true);
+        statsLabel.getStyle().background = createBackgroundColor(Color.LIGHT_GRAY);
+
         stage.addActor(statsLabel);
+    }
+    private TextureRegionDrawable createBackgroundColor(Color color) {
+        // Create a Pixmap for the background
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(color);
+        pixmap.fill();
+
+        Texture texture = new Texture(pixmap);
+        pixmap.dispose();
+
+        return new TextureRegionDrawable(texture);
     }
 
 
@@ -347,19 +370,24 @@ public class BuildingManager {
         }
         return null;
     }
-    public void displayBuildingStats(Building building) {
+    public void displayBuildingStats(Building building) { // TODO: THIS NEEDS TO BE DISPLAYED AFTER NPCs - they go over
         String stats = building.getStats();
-        statsLabel.setText(stats);
-        statsLabel.setVisible(true);
+        statsLabel.setText(stats); // Update label text
+        float padding = 10; // Padding around text
+        GlyphLayout layout = new GlyphLayout(statsLabel.getStyle().font, stats); // Used to calculate text dimensions
 
+
+        // Set the label size based on the longest line width and height with padding
+        statsLabel.setSize((layout.width) + padding * 5, statsLabel.getPrefHeight() + padding);
 
         Vector2 screenPos = new Vector2(building.getX(), building.getY());
-        float labelX = (float) ((screenPos.x * 1.28)+ (building.getWidth() / 2) - (statsLabel.getPrefWidth() / 2));
-        float labelY = (float) ((screenPos.y * 1.4210526) + building.getHeight() + 10); // Slight offset above the building
-
-
+        float labelX = (float) ((screenPos.x * scaleX)+ (building.getWidth() / 2) - (statsLabel.getPrefWidth() / 2));
+        float labelY = (float) ((screenPos.y * scaleY) + building.getHeight() + 10);
+        labelX = Math.min(labelX, Gdx.graphics.getWidth() - layout.width - padding * 5);
+        labelY = Math.min(labelY, Gdx.graphics.getHeight() - statsLabel.getPrefHeight() - padding);
 
         statsLabel.setPosition(labelX, labelY);
+        statsLabel.setVisible(true);
     }
 
     public void hideBuildingStats(){
