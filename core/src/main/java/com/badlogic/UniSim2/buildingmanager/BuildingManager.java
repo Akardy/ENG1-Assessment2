@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.awt.*;
@@ -48,7 +49,12 @@ public class BuildingManager {
 
     private Label statsLabel;
 
+
     private Stage stage;
+
+    private float scaleX;
+    private float scaleY;
+
 
     public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer) {
         placed = new Array<>();
@@ -60,6 +66,8 @@ public class BuildingManager {
         this.satisfaction = satisfaction;
         this.timer = timer;
         this.stage = new Stage();
+        this.scaleX = 1.28F;
+        this.scaleY = 1.4210526F;
         initialiseStatsLabel();
     }
 
@@ -339,18 +347,21 @@ public class BuildingManager {
         }
         return null;
     }
-    public void displayBuildingStats(Building building, Viewport viewport) {
+    public void displayBuildingStats(Building building) {
         String stats = building.getStats();
         statsLabel.setText(stats);
         statsLabel.setVisible(true);
 
-        // Position the label just above the building
-        //Vector2 buildingWorldPos = new Vector2(building.getX(), building.getY());
-        Vector3 screenPos = viewport.project(new Vector3(building.getX(), building.getY(), 0));
-        float labelX = screenPos.x + (building.getWidth() / 2) - (statsLabel.getPrefWidth() / 2);
-        float labelY = screenPos.y + building.getHeight() + 10; // Slight offset above the building
+
+        Vector2 screenPos = new Vector2(building.getX(), building.getY());
+        float labelX = (float) ((screenPos.x * 1.28)+ (building.getWidth() / 2) - (statsLabel.getPrefWidth() / 2));
+        float labelY = (float) ((screenPos.y * 1.4210526) + building.getHeight() + 10); // Slight offset above the building
+
+
+
         statsLabel.setPosition(labelX, labelY);
     }
+
     public void hideBuildingStats(){
         statsLabel.setVisible(false);
     }

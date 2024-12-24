@@ -10,6 +10,7 @@ import com.badlogic.UniSim2.stats.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -87,7 +88,7 @@ public class GameScreen implements Screen {
         Building hoveredBuilding = map.getBuildingManager().getHoveredBuilding(mousePos);
 
         if (hoveredBuilding != null) {
-            map.getBuildingManager().displayBuildingStats(hoveredBuilding, viewport);
+            map.getBuildingManager().displayBuildingStats(hoveredBuilding);
         } else {
             map.getBuildingManager().hideBuildingStats();
         }

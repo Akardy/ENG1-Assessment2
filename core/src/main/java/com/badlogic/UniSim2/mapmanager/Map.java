@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * This class represents the map that the game will take place on. It holds
@@ -34,7 +35,7 @@ public class Map {
     private final SpriteBatch spriteBatch;
     private StretchViewport viewport;
     private BuildingCounts counts;
-
+    //private Viewport viewport;
 
     public Map(Main game, BuildingCounts counts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer) {
         width = Consts.WORLD_WIDTH;
