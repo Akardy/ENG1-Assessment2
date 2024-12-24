@@ -143,7 +143,6 @@ public class BuildingManager {
     private void handlePlacing() {
         if (currentlySelecting && currentBuilding != null && !placingInProgress) {
             placingInProgress = true; // Prevent duplicate execution
-            // System.out.println("handlePlacing called for: " + currentBuilding.getType());
 
             if (!isColliding(currentBuilding) && money.getMoney() > currentBuilding.getCost()) {
 
@@ -159,6 +158,12 @@ public class BuildingManager {
                     buildingCounts.incrementAccomadation(currentBuilding.getType().ordinal());
                     int npcCount = ((Accomodation) currentBuilding).getRooms() / 50;
                     NPCManager.addNPC(npcCount);
+                    // checks for new discount Rates on recreational buildings
+                    for (Building building: placed){
+                        if (building.getType() == BuildingTypes.NATURE || building.getType() == BuildingTypes.GYM || building.getType() == BuildingTypes.SOCIETYBUILDING){ // TODO: Change to accomodation
+                            building.calculateDiscountRate(currentBuilding.getX(), currentBuilding.getY());
+                        }
+                    }
                 }
 
                 if (currentBuilding instanceof FoodZone) {
@@ -167,6 +172,13 @@ public class BuildingManager {
 
                 if (currentBuilding instanceof Recreational) {
                     buildingCounts.incrementRecreational(currentBuilding.getType().ordinal());
+                    // calculate discount rate
+                    for (Building building: placed){
+                        if (building.getType() == BuildingTypes.DERWENT || building.getType() == BuildingTypes.GOODRICKE || building.getType() == BuildingTypes.CONSTANTINE){ // TODO: Change to accomodation
+                            ((Recreational) currentBuilding).calculateDiscountRate(building.getX(), building.getY());
+                        }
+                    }
+
                 }
 
                 if (currentBuilding instanceof LectureHall) {

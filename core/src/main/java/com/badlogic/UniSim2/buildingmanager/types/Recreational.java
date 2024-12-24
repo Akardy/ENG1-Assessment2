@@ -4,6 +4,9 @@ import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.graphics.Texture;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * A building which represents a recreational building where students can have
  * fun.
@@ -14,8 +17,10 @@ public class Recreational extends Building{
 
 
     private final int capacity;
-    private final float satisfactionPerStudent;
+    private float satisfactionPerStudent;
     private final float originSatisfactionPerStudent;
+    private float bestDiscountRate;
+    private final int maxCellDistance;
 
 
 
@@ -34,11 +39,23 @@ public class Recreational extends Building{
         );
         this.capacity = capacity;
         this.originSatisfactionPerStudent = satisfactionPerStudent;
-        this.satisfactionPerStudent = calculateDiscountRate();
+        this.bestDiscountRate = 1f;
+        maxCellDistance = 68;
+        this.satisfactionPerStudent = satisfactionPerStudent;
+
 
     }
-    public float calculateDiscountRate(){
-        return originSatisfactionPerStudent;
+    public void calculateDiscountRate(float buildingX, float buildingY){
+        float distX = (float) StrictMath.pow((buildingX - this.getX()), 2);
+        float distY = (float) StrictMath.pow((buildingY - this.getY()), 2);
+        float realCellDist = ((float) StrictMath.pow(distX + distY, 0.5) / Consts.CELL_SIZE) - 4; // the four offsets the actual building itself
+        float discountRate = (float) StrictMath.pow(realCellDist / maxCellDistance, 2); // square to add quadratic delay - i.e. so its not linear
+        if(discountRate < bestDiscountRate){
+            this.bestDiscountRate = discountRate;
+            this.satisfactionPerStudent = (1 - discountRate) * originSatisfactionPerStudent;
+        }
+
+
     }
     public int getCapacity(){
         return capacity;
@@ -46,10 +63,21 @@ public class Recreational extends Building{
     public float getSatisfaction(){
         return satisfactionPerStudent;
     }
+    public static double roundToSignificantFigures(double value, int sigFig) {
+        if (value == 0) {
+            return 0;
+        }
+        BigDecimal bd = new BigDecimal(value);
+        int scale = sigFig - 1 - (int) Math.floor(Math.log10(Math.abs(value)));
+        bd = bd.setScale(scale, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 
-    public String getStats(){ // TODO: ADD HOW CLOSE IS NEAREST BUILDING
-        return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +
+    public String getStats(){
+        return "Building: " + getType() + "\nAccomodation Proximity Discount: -" + bestDiscountRate + "%" +
+            "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +
             "\nCapacity: " + capacity + "\nHow many students use: " + getHowFull() +
-            "\nSatisfaction per student per 10s: " + satisfactionPerStudent;
+            "\nOriginal satisfaction per student per 10s: " + originSatisfactionPerStudent +
+            "\nSatisfaction per student per 10s: " + roundToSignificantFigures(satisfactionPerStudent, 3);
     }
 }

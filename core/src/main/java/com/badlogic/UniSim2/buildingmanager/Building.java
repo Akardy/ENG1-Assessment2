@@ -225,4 +225,6 @@ public abstract class Building extends Sprite {
     public void dispose() {
     }
 
+    public void calculateDiscountRate(float x, float y) {
+    }
 }
