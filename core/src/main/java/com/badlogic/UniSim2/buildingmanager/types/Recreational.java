@@ -48,7 +48,7 @@ public class Recreational extends Building{
     }
 
     public String getStats(){ // TODO: ADD HOW CLOSE IS NEAREST BUILDING
-        return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() +
+        return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +
             "\nCapacity: " + capacity + "\nHow many students use: " + getHowFull() +
             "\nSatisfaction per student per 10s: " + satisfactionPerStudent;
     }

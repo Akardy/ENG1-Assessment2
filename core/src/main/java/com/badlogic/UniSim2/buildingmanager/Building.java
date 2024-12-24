@@ -200,8 +200,8 @@ public abstract class Building extends Sprite {
     public float getMoneyGenerated(){
         return moneyGenerated;
     }
-    public float getSatisfactionGenerated(){
-        return satisfactionGenerated;
+    public String getSatisfactionGenerated(){
+        return String.format("%.2f", satisfactionGenerated);
     }
 
     public int getCapacity(){return 0;}

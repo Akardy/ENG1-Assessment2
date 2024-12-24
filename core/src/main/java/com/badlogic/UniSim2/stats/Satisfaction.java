@@ -7,8 +7,12 @@ package com.badlogic.UniSim2.stats;
 public class Satisfaction {
     private float startingSatis;
 
+    private float decay;
+
     public Satisfaction() {
+
         this.startingSatis = 40;
+        this.decay = -0.1f;
     }
 
     /**
@@ -19,8 +23,14 @@ public class Satisfaction {
     }
 
     public float getSatis(){
-        return startingSatis;
+        String startingSatis2dp = String.format("%.2f", startingSatis);
+        return Float.parseFloat(startingSatis2dp);
     }
+    public void incrementDecay(){
+        decay -= 0.05f;
+
+    }
+    public void decay(){startingSatis = Math.max(startingSatis + decay, 0);}
 
     public void increaseSatis(float amount){startingSatis = Math.min(startingSatis + amount, 100);}
 }

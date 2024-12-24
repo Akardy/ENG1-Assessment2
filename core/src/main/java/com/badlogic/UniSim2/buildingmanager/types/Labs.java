@@ -37,7 +37,7 @@ public class Labs extends Building {
         return satisfactionPerStudent;
     }
     public String getStats(){
-        return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() +
+        return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +
             "\nCapacity: " + capacity + "\nHow many students use: " + getHowFull() +
              "\nSatisfaction per student per 30s: " + satisfactionPerStudent;
     }

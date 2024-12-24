@@ -38,6 +38,7 @@ public class GameScreen implements Screen {
     boolean hasEnded = false;
 
     private int lastProcessedSecond;
+    private int lastProcessedMinute;
 
     private Map map;
     public GameScreen(Main game){
@@ -66,11 +67,16 @@ public class GameScreen implements Screen {
         update();
         if(((int)timer.getElapsedTime()) % 10 == 0 && ((int)timer.getElapsedTime()) != (lastProcessedSecond)){
             lastProcessedSecond = (int)timer.getElapsedTime();
-            //System.out.println(lastProcessedSecond);
             map.getBuildingManager().gainSatisfactionAndCurrency(((int)timer.getElapsedTime()) % 30 == 0);
+            satisfaction.decay();
 
         }
-        //map.getBuildingManager().gainSatisfactionAndCurrency(false);
+        if((int)timer.getElapsedTime() % 60 == 0 && (int)timer.getElapsedTime() != lastProcessedMinute){
+            lastProcessedMinute = (int)timer.getElapsedTime();
+            satisfaction.incrementDecay();
+
+        }
+
         if (hasEnded) return;
         draw();
         NPCManager.update(delta);

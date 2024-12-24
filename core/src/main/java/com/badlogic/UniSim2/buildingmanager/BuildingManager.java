@@ -50,6 +50,8 @@ public class BuildingManager {
 
     private NPCManager npcManager;
 
+    private float libraryMultiplier;
+
     private Money money;
     private Satisfaction satisfaction;
     private Timer timer;
@@ -77,6 +79,7 @@ public class BuildingManager {
         this.stage = new Stage();
         this.scaleX = 1.28F;
         this.scaleY = 1.4210526F;
+        libraryMultiplier = 1.2f;
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         initialiseStatsLabel();
     }
@@ -402,6 +405,7 @@ public class BuildingManager {
         int totalCapacity = 0;
         int totalRooms = 0;
         int libraryCount = 0;
+        // count Buildings
         for (Building building : placed){
             if(building.getType() != BuildingTypes.LIBRARY ){
                 totalCapacity += building.getCapacity();
@@ -410,6 +414,8 @@ public class BuildingManager {
                 libraryCount += 1;}
 
         }
+        // Update currency/stats from buildings
+        float libraryGain = 0;
         float studentFillBuildingPercent = Math.min(1, (float) totalRooms / totalCapacity);
         for (Building building : placed){
             int studentsInBuilding = (int) (building.getCapacity() * studentFillBuildingPercent);
@@ -419,7 +425,8 @@ public class BuildingManager {
                 building.updateMoneyGenerated(currencyGain);
             }
             else if(building.getType() == BuildingTypes.PIAZZA || building.getType() == BuildingTypes.CENTRALHALL) { // TODO: change to lecture
-                satisfactionGain = studentsInBuilding * building.getSatisfaction() * (1 + (libraryCount * building.getMultiplierEffect()));
+                satisfactionGain = studentsInBuilding * building.getSatisfaction() * (libraryCount * libraryMultiplier);
+                libraryGain += studentsInBuilding * building.getSatisfaction() * (libraryCount * (libraryMultiplier - 1));
                 building.updateSatisfactionGenerated(satisfactionGain);
             }
             else if ((building.getType() == BuildingTypes.SOFTWARELABS || building.getType() == BuildingTypes.HARDWARELABS) && isThirtySeconds){ // TODO: Change to labs
@@ -434,6 +441,12 @@ public class BuildingManager {
             }
             satisfaction.increaseSatis(satisfactionGain);
             money.increaseMoney(currencyGain);
+        }
+        float libraryGainPer = libraryGain / libraryCount;
+        for (Building building: placed){
+            if (building.getType() == BuildingTypes.LIBRARY){
+                building.updateSatisfactionGenerated(libraryGainPer);
+            }
         }
 
 

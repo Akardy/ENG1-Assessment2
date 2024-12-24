@@ -4,6 +4,9 @@ import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.graphics.Texture;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * A building which represents a place where students can eat food.
  * @see Building
@@ -47,8 +50,9 @@ public class FoodZone extends Building{
     }
 
     public String getStats(){
-        return "Building: " + getType() + "\nMoney earned: " + getMoneyGenerated() + "\nSatisfaction earned: " + getSatisfactionGenerated() +
+        String formattedValue = String.format("%.4f", satisfactionPerStudent); // needed otherwise gets 5.0E-X format
+        return "Building: " + getType() + "\nMoney earned: " + getMoneyGenerated() + "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +
             "\nCapacity: " + capacity + "\nHow many students use: " + getHowFull() +
-            "\nIncome per student per 10s: " + incomePerStudent + "\nSatisfaction per student per 10s: " + satisfactionPerStudent;
+            "\nIncome per student per 10s: " + incomePerStudent + "\nSatisfaction per student per 10s: " + formattedValue;
     }
 }

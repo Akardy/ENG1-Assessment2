@@ -38,7 +38,7 @@ public class LectureHall extends Building{
     }
 
     public String getStats(){
-        return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() +
+        return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +
             "\nCapacity: " + capacity + "\nHow many students use: " + getHowFull() +
             "\nSatisfaction per student per 10s: " + satisfactionPerStudent;
     }
