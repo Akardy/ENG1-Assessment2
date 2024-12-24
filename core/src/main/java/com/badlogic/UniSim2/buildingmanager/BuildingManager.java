@@ -370,6 +370,8 @@ public class BuildingManager {
         }
         return null;
     }
+
+
     public void displayBuildingStats(Building building) { // TODO: THIS NEEDS TO BE DISPLAYED AFTER NPCs - they go over
         String stats = building.getStats();
         statsLabel.setText(stats); // Update label text
@@ -416,15 +418,15 @@ public class BuildingManager {
                 currencyGain = building.getRooms() * building.getIncome();
                 building.updateMoneyGenerated(currencyGain);
             }
-            if(building.getType() == BuildingTypes.PIAZZA || building.getType() == BuildingTypes.CENTRALHALL) { // TODO: change to lecture
+            else if(building.getType() == BuildingTypes.PIAZZA || building.getType() == BuildingTypes.CENTRALHALL) { // TODO: change to lecture
                 satisfactionGain = studentsInBuilding * building.getSatisfaction() * (1 + (libraryCount * building.getMultiplierEffect()));
                 building.updateSatisfactionGenerated(satisfactionGain);
             }
-            if ((building.getType() == BuildingTypes.SOFTWARELABS || building.getType() == BuildingTypes.HARDWARELABS) && isThirtySeconds){ // TODO: Change to labs
+            else if ((building.getType() == BuildingTypes.SOFTWARELABS || building.getType() == BuildingTypes.HARDWARELABS) && isThirtySeconds){ // TODO: Change to labs
                 satisfactionGain = studentsInBuilding * building.getSatisfaction();
                 building.updateSatisfactionGenerated(satisfactionGain);
             }
-            if (building.getType() != BuildingTypes.LIBRARY){
+            else if (building.getType() != BuildingTypes.LIBRARY){
                 currencyGain = studentsInBuilding * building.getIncome();
                 satisfactionGain = studentsInBuilding * building.getSatisfaction();
                 building.updateMoneyGenerated(currencyGain);
