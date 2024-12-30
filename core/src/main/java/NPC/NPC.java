@@ -23,7 +23,7 @@ public class NPC {
     private Vector2 currentPosition;
     private Vector2 direction;
 
-    private float speed = 0.08f; // 10% per frame
+    private float speed = 0.05f; // 10% per frame
     private Grid grid;
     private boolean isMoving;
 
@@ -110,7 +110,7 @@ public class NPC {
 
 
     private void moveTowardsTarget() {
-        Vector2 movement = direction.cpy().scl(speed * CELL_SIZE * scaleX);
+        Vector2 movement = direction.cpy().scl(speed * CELL_SIZE * scaleX * scaleY);
         currentPosition.add(movement);
 
         // Check if the target position has been reached
