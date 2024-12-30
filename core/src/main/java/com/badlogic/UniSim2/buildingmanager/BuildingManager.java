@@ -454,6 +454,7 @@ public class BuildingManager {
             satisfaction.increaseSatis(satisfactionGain);
             money.increaseMoney(currencyGain);
         }
+        // calculate how much satisfaction gained through libraries
         float libraryGainPer = libraryGain / libraryCount;
         for (Building building: placed){
             if (building.getType() == BuildingTypes.LIBRARY){
