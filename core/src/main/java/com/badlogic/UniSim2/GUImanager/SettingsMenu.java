@@ -6,6 +6,7 @@ import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.resources.SoundManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -85,6 +86,7 @@ public class SettingsMenu implements Screen {
     public void musicSlider() {
         // Music volume slider
         Label.LabelStyle musicLabelStyle = new Label.LabelStyle();
+        musicLabelStyle.font = new BitmapFont(); // Create a default font
         Label musicLabel = new Label("Music Volume", musicLabelStyle);
         musicLabel.setFontScale(1);
         musicLabel.setAlignment(Align.center);
