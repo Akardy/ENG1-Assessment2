@@ -24,12 +24,14 @@ public class StartScreen implements Screen {
     private StretchViewport viewport;
     private Stage stage;
     private ImageButton startButton;
+    private ImageButton creditsButton;
 
-    public StartScreen(Main game){
+    public StartScreen(Main game) {
         this.game = game;
         viewport = game.getViewport();
         stage = new Stage(viewport);
         addStartButton();
+        addCreditsButton();
     }
 
     @Override
@@ -40,17 +42,28 @@ public class StartScreen implements Screen {
     /**
      * Adds a start button to the menu.
      */
-    private void addStartButton(){
+    private void addStartButton() {
         setupStartButton(); // Initializes startButton with the correct textures, size, and position
-        addStartButtonClick(); // Adds a click listener to start button 
+        addStartButtonClick(); // Adds a click listener to start button
     }
 
-    // Initializes startButton 
-    private void setupStartButton(){
+    /**
+     * Adds a credits button to the menu.
+     */
+    private void addCreditsButton() {
+        setupCreditsButton(); // Initializes creditsButton with the correct textures, size, and position
+        addCreditsButtonClick(); // Adds a click listener to credits button
+    }
+
+    // Initializes startButton
+    private void setupStartButton() {
 
         // Setting up the textures
-        Drawable startButtonUpDrawable = new TextureRegionDrawable(Assets.startButtonUpTexture); // Texture when not hovering or clicking
-        Drawable startButtonDownDrawable = new TextureRegionDrawable(Assets.startButtonDownTexture); // Texture when hovering or clicking
+        Drawable startButtonUpDrawable = new TextureRegionDrawable(Assets.startButtonUpTexture); // Texture when not
+                                                                                                 // hovering or clicking
+        Drawable startButtonDownDrawable = new TextureRegionDrawable(Assets.startButtonDownTexture); // Texture when
+                                                                                                     // hovering or
+                                                                                                     // clicking
         ImageButton.ImageButtonStyle startButtonStyle = new ImageButton.ImageButtonStyle();
         startButtonStyle.up = startButtonUpDrawable;
         startButtonStyle.down = startButtonDownDrawable;
@@ -65,10 +78,10 @@ public class StartScreen implements Screen {
     /**
      * Ensures that when the start button is pressed, the game is played.
      */
-    private void addStartButtonClick(){
+    private void addStartButtonClick() {
         startButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 game.startGame();
                 dispose();
             }
@@ -76,8 +89,39 @@ public class StartScreen implements Screen {
         stage.addActor(startButton);
     }
 
+    /**
+     * Ensures that when the credits button is pressed, the credits are shown.
+     */
+    private void addCreditsButtonClick() {
+        creditsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.viewCredits();
+                dispose();
+            }
+        });
+        stage.addActor(creditsButton);
+    }
+
+    // Initializes creditsButton
+    private void setupCreditsButton() {
+
+        // Setting up the textures
+        Drawable creditsButtonDrawable = new TextureRegionDrawable(Assets.creditsButtonTexture); // Texture of credits
+                                                                                                 // button
+        ImageButton.ImageButtonStyle startButtonStyle = new ImageButton.ImageButtonStyle();
+        startButtonStyle.up = creditsButtonDrawable;
+        startButtonStyle.down = creditsButtonDrawable;
+        startButtonStyle.over = creditsButtonDrawable;
+
+        // Initializing startButton and setting its size and position
+        creditsButton = new ImageButton(startButtonStyle);
+        creditsButton.setSize(Consts.CREDITS_BUTTON_WIDTH, Consts.CREDITS_BUTTON_HEIGHT);
+        creditsButton.setPosition(Consts.CREDITS_BUTTON_X, Consts.CREDITS_BUTTON_Y);
+    }
+
     // Draws the background of the start menu
-    private void drawBackground(){
+    private void drawBackground() {
         SpriteBatch spriteBatch = new SpriteBatch();
         ScreenUtils.clear(Consts.BACKGROUND_COLOR);
         viewport.apply();
@@ -85,7 +129,7 @@ public class StartScreen implements Screen {
         spriteBatch.begin();
         spriteBatch.draw(Assets.startBackgroundTexture, 0, 0, Consts.WORLD_WIDTH, Consts.WORLD_HEIGHT);
         spriteBatch.end();
-        
+
     }
 
     @Override

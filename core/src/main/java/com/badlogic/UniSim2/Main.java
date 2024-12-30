@@ -1,7 +1,9 @@
 package com.badlogic.UniSim2;
 
+import com.badlogic.UniSim2.GUImanager.CreditsScreen;
 import com.badlogic.UniSim2.GUImanager.EndScreen;
 import com.badlogic.UniSim2.GUImanager.GameScreen;
+import com.badlogic.UniSim2.GUImanager.SettingsMenu;
 import com.badlogic.UniSim2.GUImanager.StartScreen;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.Game;
@@ -20,11 +22,13 @@ public class Main extends Game {
     private StartScreen startScreen;
     private GameScreen gameScreen;
     private EndScreen endScreen;
+    private CreditsScreen creditsScreen;
+    private SettingsMenu settingsScreen;
 
     @Override
     public void create() {
         Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4,
-            Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 4);
+                Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 4);
         Assets.loadTextures();
         startScreen = new StartScreen(this);
         setScreen(startScreen);
@@ -58,5 +62,34 @@ public class Main extends Game {
         endScreen = new EndScreen(this, 0);
         setScreen(endScreen);
         gameScreen.dispose();
+    }
+
+    /**
+     * Displays the credits by setting the screen to {@link #creditsScreen}.
+     */
+    public void viewCredits() {
+        creditsScreen = new CreditsScreen(this);
+        setScreen(creditsScreen);
+        startScreen.dispose();
+    }
+
+    /**
+     * Displays the settings screen by setting the screen to
+     * {@link #settingsScreen}.
+     */
+    public void settings() {
+        settingsScreen = new SettingsMenu(this);
+        setScreen(settingsScreen);
+        gameScreen.dispose();
+    }
+
+    /**
+     * Resumes the game by setting the screen to the {@link #gameScreen}. Should be
+     * called by the {@link StartScreen} when the resume button is clicked.
+     */
+    public void returnToGame() {
+        // gameScreen = new GameScreen(this);
+        setScreen(gameScreen);
+        settingsScreen.dispose();
     }
 }
