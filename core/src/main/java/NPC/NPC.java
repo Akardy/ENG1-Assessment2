@@ -23,7 +23,7 @@ public class NPC {
     private Vector2 currentPosition;
     private Vector2 direction;
 
-    private float speed = 0.1f; // 10% per frame
+    private float speed = 0.08f; // 10% per frame
     private Grid grid;
     private boolean isMoving;
 
@@ -38,9 +38,16 @@ public class NPC {
 
     Random random = new Random();
 
+    private float scaleX;
+    private float scaleY;
 
-    public NPC(Grid grid) {
+
+    public NPC(Grid grid, float scaleX, float scaleY) {
         this.grid = grid;
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+        System.out.println(scaleX);
+        System.out.println(1);
 
 
 
@@ -58,9 +65,9 @@ public class NPC {
 
 
         // Initialize position
-        startPosition = new Vector2(56, 37);
+        startPosition = new Vector2(40, 27);
         targetPosition = new Vector2(startPosition.x + randomDirection, startPosition.y);
-        currentPosition = new Vector2(startPosition.x * CELL_SIZE, startPosition.y * CELL_SIZE);
+        currentPosition = new Vector2(startPosition.x * CELL_SIZE * scaleX, startPosition.y * CELL_SIZE * scaleY);
 
 
         isMoving = true;
@@ -103,11 +110,11 @@ public class NPC {
 
 
     private void moveTowardsTarget() {
-        Vector2 movement = direction.cpy().scl(speed * CELL_SIZE);
+        Vector2 movement = direction.cpy().scl(speed * CELL_SIZE * scaleX);
         currentPosition.add(movement);
 
         // Check if the target position has been reached
-        Vector2 targetCoordinate = new Vector2(targetPosition.x * CELL_SIZE, targetPosition.y * CELL_SIZE);
+        Vector2 targetCoordinate = new Vector2(targetPosition.x * CELL_SIZE * scaleX, targetPosition.y * CELL_SIZE * scaleY);
         if (currentPosition.dst(targetCoordinate) <= speed * CELL_SIZE) {
             currentPosition.set(targetCoordinate);
             isMoving = false;
@@ -129,19 +136,22 @@ public class NPC {
 
 
         }
+        // choose a possible path at random
         if (possibleDirections.size > 0) {
             direction = possibleDirections.random();
             startPosition.set(targetPosition);
             targetPosition.set(startPosition.x + direction.x, startPosition.y + direction.y);
             isMoving = true;
         }
-        else if(currentPosition.x % CELL_SIZE == 0 && currentPosition.y % CELL_SIZE == 0){
+        // if NPC is at the end of the path and no connecting paths
+        else{
 
             Vector2 tempVector = new Vector2(currentPosition.x, currentPosition.y);
-            startPosition.x = currentPosition.x / CELL_SIZE;
-            startPosition.y = currentPosition.y / CELL_SIZE;
-            targetPosition.set(tempVector.x / CELL_SIZE, tempVector.y / CELL_SIZE);
+            startPosition.x = currentPosition.x / (CELL_SIZE * scaleX);
+            startPosition.y = currentPosition.y / (CELL_SIZE * scaleY);
+            targetPosition.set(tempVector.x / (CELL_SIZE * scaleX), tempVector.y / (CELL_SIZE * scaleY));
         }
+
 
 
     }
@@ -188,11 +198,7 @@ public class NPC {
         return currentPosition;
     }
     // returns half the size of the character, so it is displayed correctly
-    public float getHalfSize(){
-        if (getState() == State.RUN_LEFT || getState() == State.RUN_RIGHT){
-            return (float) standUp.getRegionHeight() / 2;}
-        else{
-            return (float) standUp.getRegionWidth() / 2;
-        }
-    }
+    public float getWidth(){ return 14f;}
+    public float getHeight(){return 18;}
+
 }

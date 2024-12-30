@@ -29,9 +29,9 @@ public class Grid {
     private ShapeRenderer shapeRenderer; // Used to draw lines onto the screen.
 
     public Grid() {
-        rows = Consts.GRID_ROWS + 15;
+        rows = Consts.GRID_ROWS;// + 15;
         //System.out.println(rows);
-        cols = Consts.GRID_COLS + 21;
+        cols = Consts.GRID_COLS;// + 21;
         grid = new Status[rows][cols];
         cellSize = Consts.CELL_SIZE;
         gridColor = Consts.GRID_COLOR;

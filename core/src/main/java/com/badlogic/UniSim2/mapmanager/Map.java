@@ -37,14 +37,14 @@ public class Map {
     private BuildingCounts counts;
     //private Viewport viewport;
 
-    public Map(Main game, BuildingCounts counts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer) {
+    public Map(Main game, BuildingCounts counts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer, float scaleX, float scaleY) {
         width = Consts.WORLD_WIDTH;
         height = Consts.WORLD_HEIGHT;
         this.counts = counts;
 
         grid = new Grid();
 
-        buildings = new BuildingManager(counts, npcManager, money, satisfaction, timer);
+        buildings = new BuildingManager(counts, npcManager, money, satisfaction, timer, scaleX, scaleY);
         collidableSprites = new Array<Sprite>();
         Paths.createPaths();
 

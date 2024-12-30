@@ -42,6 +42,9 @@ public class GameScreen implements Screen {
 
     private Map map;
 
+    private float scaleX;
+    private float scaleY;
+
     public GameScreen(Main game) {
         this.game = game;
         viewport = game.getViewport();
@@ -50,10 +53,13 @@ public class GameScreen implements Screen {
         money = new Money();
         satisfaction = new Satisfaction();
         num = new NPCCount();
-        NPCManager = new NPCManager();
-        map = new Map(game, counts, NPCManager, money, satisfaction, timer);
+        scaleX = viewport.getScreenWidth() / viewport.getWorldWidth();
+        scaleY = viewport.getScreenHeight() / viewport.getWorldHeight();
+        NPCManager = new NPCManager(scaleX, scaleY);
+        map = new Map(game, counts, NPCManager, money, satisfaction, timer, scaleX, scaleY);
         menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts);
         SoundManager.playMusic();
+
 
     }
 
@@ -95,6 +101,8 @@ public class GameScreen implements Screen {
         viewport.unproject(mousePos); // Convert screen coordinates to world coordinates
 
         Building hoveredBuilding = map.getBuildingManager().getHoveredBuilding(mousePos);
+
+
 
         if (hoveredBuilding != null) {
             map.getBuildingManager().displayBuildingStats(hoveredBuilding);
