@@ -8,7 +8,8 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class Consts {
 
-    private Consts(){}
+    private Consts() {
+    }
 
     /**
      * Size of each cell in pixels, everything scales to the cell size.
@@ -17,12 +18,14 @@ public class Consts {
 
     /**
      * Scales a value according to the size of each grid cell.
+     * 
      * @param value The value to scale.
      * @return value * {@link #CELL_SIZE}.
      */
-    private static int scaleToCellSize(int value){
+    private static int scaleToCellSize(int value) {
         return value * CELL_SIZE;
     }
+
     public static final int WORLD_WIDTH = scaleToCellSize(75);
     public static final int WORLD_HEIGHT = scaleToCellSize(38);
 
@@ -30,6 +33,16 @@ public class Consts {
     public static final int START_BUTTON_HEIGHT = scaleToCellSize(6);
     public static final int START_BUTTON_X = WORLD_WIDTH / 2 - START_BUTTON_WIDTH / 2;
     public static final int START_BUTTON_Y = WORLD_HEIGHT / 2 - START_BUTTON_HEIGHT / 2 - scaleToCellSize(5);
+
+    public static final int CREDITS_BUTTON_WIDTH = scaleToCellSize(10);
+    public static final int CREDITS_BUTTON_HEIGHT = scaleToCellSize(6);
+    public static final int CREDITS_BUTTON_X = WORLD_WIDTH / 3 - CREDITS_BUTTON_WIDTH / 2;
+    public static final int CREDITS_BUTTON_Y = WORLD_HEIGHT / 2 - CREDITS_BUTTON_HEIGHT - scaleToCellSize(5);
+
+    public static final int MAIN_MENU_BUTTON_WIDTH = scaleToCellSize(10);
+    public static final int MAIN_MENU_BUTTON_HEIGHT = scaleToCellSize(4);
+    public static final int MAIN_MENU_BUTTON_X = 4;
+    public static final int MAIN_MENU_BUTTON_Y = WORLD_HEIGHT - scaleToCellSize(5);
 
     public static final Color BACKGROUND_COLOR = new Color(Color.BLACK);
 
@@ -59,7 +72,7 @@ public class Consts {
     public static final int V_PATH_4_Y = scaleToCellSize(0);
     public static final int V_PATH_4_HEIGHT = WORLD_HEIGHT;
 
-    public static final Color GRID_COLOR = new Color(0.28f,0.56f,0.11f, 1);
+    public static final Color GRID_COLOR = new Color(0.28f, 0.56f, 0.11f, 1);
     public static final int GRID_ROWS = WORLD_HEIGHT / CELL_SIZE;
     public static final int GRID_COLS = WORLD_WIDTH / CELL_SIZE;
 
@@ -103,10 +116,14 @@ public class Consts {
     public static final int NUM_SIZE = 2;
     public static final Color NUM_COLOR = new Color(Color.WHITE);
 
+    public static final int PAUSE_X = scaleToCellSize(69);
+    public static final int PAUSE_Y = WORLD_HEIGHT - scaleToCellSize(36);
+    public static final Color PAUSE_COLOR = new Color(Color.WHITE);
+
     public static final int SCORE_LABEL_WIDTH = scaleToCellSize(6);
     public static final int SCORE_LABEL_HEIGHT = scaleToCellSize(2);
-    public static final int SCORE_LABEL_X = (WORLD_WIDTH/2) - scaleToCellSize(4);
-    public static final int SCORE_LABEL_Y = (WORLD_HEIGHT/2) - scaleToCellSize(4);
+    public static final int SCORE_LABEL_X = (WORLD_WIDTH / 2) - scaleToCellSize(4);
+    public static final int SCORE_LABEL_Y = (WORLD_HEIGHT / 2) - scaleToCellSize(4);
 
     public static final Color COUNT_COLOR = new Color(Color.BLACK);
     public static final int COUNT_SIZE = 2;
