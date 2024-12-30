@@ -41,7 +41,8 @@ public class GameScreen implements Screen {
     private int lastProcessedMinute;
 
     private Map map;
-    public GameScreen(Main game){
+
+    public GameScreen(Main game) {
         this.game = game;
         viewport = game.getViewport();
         this.counts = new BuildingCounts();
@@ -65,19 +66,20 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         input();
         update();
-        if(((int)timer.getElapsedTime()) % 10 == 0 && ((int)timer.getElapsedTime()) != (lastProcessedSecond)){
-            lastProcessedSecond = (int)timer.getElapsedTime();
-            map.getBuildingManager().gainSatisfactionAndCurrency(((int)timer.getElapsedTime()) % 30 == 0);
+        if (((int) timer.getElapsedTime()) % 10 == 0 && ((int) timer.getElapsedTime()) != (lastProcessedSecond)) {
+            lastProcessedSecond = (int) timer.getElapsedTime();
+            map.getBuildingManager().gainSatisfactionAndCurrency(((int) timer.getElapsedTime()) % 30 == 0);
             satisfaction.decay();
 
         }
-        if((int)timer.getElapsedTime() % 60 == 0 && (int)timer.getElapsedTime() != lastProcessedMinute){
-            lastProcessedMinute = (int)timer.getElapsedTime();
+        if ((int) timer.getElapsedTime() % 60 == 0 && (int) timer.getElapsedTime() != lastProcessedMinute) {
+            lastProcessedMinute = (int) timer.getElapsedTime();
             satisfaction.incrementDecay();
 
         }
 
-        if (hasEnded) return;
+        if (hasEnded)
+            return;
         draw();
         NPCManager.update(delta);
 
@@ -100,12 +102,11 @@ public class GameScreen implements Screen {
             map.getBuildingManager().hideBuildingStats();
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (isPaused) {
                 isPaused = false;
                 menu.resume();
-            }
-            else {
+            } else {
                 isPaused = true;
                 menu.pause();
             }
@@ -138,7 +139,6 @@ public class GameScreen implements Screen {
         menu.draw();
     }
 
-
     @Override
     public void resize(int width, int height) {
         map.resize(width, height);
@@ -156,7 +156,6 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
     }
-
 
     @Override
     public void dispose() {

@@ -1,10 +1,11 @@
 package com.badlogic.UniSim2.GUImanager;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.resources.Assets;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -13,66 +14,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * This screen should be shown when the game ends.
+ * This screen should be shown when the user presses a button on the start menu.
  */
-public class EndScreen implements Screen {
+public class CreditsScreen implements Screen {
     private Main game;
     private StretchViewport viewport;
     private Stage stage;
-    private Label scoreLabel;
+    private Label credits;
     private final Skin skin;
-    private int score;
     private ImageButton menuButton;
 
     SpriteBatch spriteBatch = new SpriteBatch();
 
-    public EndScreen(Main game, int score) {
+    public CreditsScreen(Main game) {
         this.game = game;
         this.viewport = game.getViewport();
         this.stage = new Stage(this.viewport);
         this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        this.score = score;
-        createScoreLabel();
+        CreditsLabel();
         addMenuButton();
-    }
-
-    // Adds a label to the middle of the screen displaying the score that the player
-    // managed to get throughout the game.
-    private void createScoreLabel() {
-        // Initialize scoreLabel
-        scoreLabel = new Label("Score : " + score, skin);
-        scoreLabel.setFontScale(3);
-        scoreLabel.setAlignment(Align.center);
-        scoreLabel.setColor(Consts.TIMER_COLOR);
-
-        // Position the label at the top center of the screen
-        scoreLabel.setPosition(Consts.SCORE_LABEL_X, Consts.SCORE_LABEL_Y, Align.center);
-
-        // Add the label to the stage
-        stage.addActor(scoreLabel);
-    }
-
-    // Initializes menuButton
-    private void setupStartMenuButton() {
-
-        // Setting up the textures
-        Drawable menuButtonDrawable = new TextureRegionDrawable(Assets.startMenuButtonTexture); // Texture of credits
-                                                                                                // button
-        ImageButton.ImageButtonStyle startButtonStyle = new ImageButton.ImageButtonStyle();
-        startButtonStyle.up = menuButtonDrawable;
-        startButtonStyle.down = menuButtonDrawable;
-        startButtonStyle.over = menuButtonDrawable;
-
-        // Initializing startButton and setting its size and position
-        menuButton = new ImageButton(startButtonStyle);
-        menuButton.setSize(Consts.MAIN_MENU_BUTTON_WIDTH, Consts.MAIN_MENU_BUTTON_HEIGHT);
-        menuButton.setPosition(Consts.MAIN_MENU_BUTTON_X, Consts.MAIN_MENU_BUTTON_Y);
     }
 
     /**
@@ -97,23 +62,66 @@ public class EndScreen implements Screen {
         stage.addActor(menuButton);
     }
 
+    // Adds the list of credits to the screen
+    private void CreditsLabel() {
+        // Initialize scoreLabel
+        credits = new Label(
+                "We used several 3rd-party libraries and assets to enhance functionality in the UniSim game system. Below is a list of these resources\n"
+                        +
+                        "LibGDX\n" +
+                        "Gradle" +
+                        "Assets: \n" +
+                        "Pix2d - https://pix2d.com/\n" +
+                        "Music - https://uppbeat.io/t/vocalista/quest-of-legends\n" +
+                        "Click - https://uppbeat.io/sfx/click-soft-ui/7130/23080\n" +
+                        "Lucidchart - https://www.lucidchart.com\n" +
+                        "\nGame Developed by: Juliet Urquhart, Katie Schilling, Matias Duplock, Mohammed Elijack, Nora Wu and Theo Coleman",
+                skin);
+        credits.setFontScale(1);
+        credits.setAlignment(Align.center);
+        credits.setColor(Consts.TIMER_COLOR);
+
+        // Position the label at the top center of the screen
+        credits.setPosition(Consts.SCORE_LABEL_X, Consts.SCORE_LABEL_Y, Align.center);
+
+        // Add the label to the stage
+        stage.addActor(credits);
+    }
+
+    // Initializes menuButton
+    private void setupStartMenuButton() {
+
+        // Setting up the textures
+        Drawable menuButtonDrawable = new TextureRegionDrawable(Assets.startMenuButtonTexture); // Texture of credits
+                                                                                                // button
+        ImageButton.ImageButtonStyle startButtonStyle = new ImageButton.ImageButtonStyle();
+        startButtonStyle.up = menuButtonDrawable;
+        startButtonStyle.down = menuButtonDrawable;
+        startButtonStyle.over = menuButtonDrawable;
+
+        // Initializing startButton and setting its size and position
+        menuButton = new ImageButton(startButtonStyle);
+        menuButton.setSize(Consts.MAIN_MENU_BUTTON_WIDTH, Consts.MAIN_MENU_BUTTON_HEIGHT);
+        menuButton.setPosition(Consts.MAIN_MENU_BUTTON_X, Consts.MAIN_MENU_BUTTON_Y);
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
     }
 
-    // Draws the background of the start menu
+    // Draws the background of the credits menu
     private void drawBackground() {
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
+        viewport.apply();
         spriteBatch.begin();
-        spriteBatch.draw(Assets.startBackgroundTexture, 0, 0, Consts.WORLD_WIDTH, Consts.WORLD_HEIGHT);
+        spriteBatch.draw(Assets.backgroundTexture, 0, 0, Consts.WORLD_WIDTH, Consts.WORLD_HEIGHT);
         spriteBatch.end();
 
     }
 
     @Override
     public void render(float delta) {
-        viewport.apply();
         ScreenUtils.clear(Consts.BACKGROUND_COLOR);
         drawBackground();
         stage.act(delta);
