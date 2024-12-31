@@ -25,6 +25,7 @@ public class StartScreen implements Screen {
     private Stage stage;
     private ImageButton startButton;
     private ImageButton creditsButton;
+    private ImageButton settingsButton;
 
     public StartScreen(Main game) {
         this.game = game;
@@ -32,6 +33,7 @@ public class StartScreen implements Screen {
         stage = new Stage(viewport);
         addStartButton();
         addCreditsButton();
+        addSettingsButton();
     }
 
     @Override
@@ -118,6 +120,45 @@ public class StartScreen implements Screen {
         creditsButton = new ImageButton(startButtonStyle);
         creditsButton.setSize(Consts.CREDITS_BUTTON_WIDTH, Consts.CREDITS_BUTTON_HEIGHT);
         creditsButton.setPosition(Consts.CREDITS_BUTTON_X, Consts.CREDITS_BUTTON_Y);
+    }
+
+    /**
+     * Adds a settings button to the menu.
+     */
+    private void addSettingsButton() {
+        setupSettingsButton(); // Initializes creditsButton with the correct textures, size, and position
+        addSettingsButtonClick(); // Adds a click listener to credits button
+    }
+
+    // Initializes startButton
+    private void setupSettingsButton() {
+
+        // Setting up the textures
+        Drawable settingsButtonDrawable = new TextureRegionDrawable(Assets.settingsButtonTexture);
+
+        ImageButton.ImageButtonStyle settingsButtonStyle = new ImageButton.ImageButtonStyle();
+        settingsButtonStyle.up = settingsButtonDrawable;
+        settingsButtonStyle.down = settingsButtonDrawable;
+        settingsButtonStyle.over = settingsButtonDrawable;
+
+        // Initializing startButton and setting its size and position
+        settingsButton = new ImageButton(settingsButtonStyle);
+        settingsButton.setSize(Consts.MAIN_MENU_BUTTON_WIDTH, Consts.MAIN_MENU_BUTTON_HEIGHT);
+        settingsButton.setPosition(Consts.MAIN_MENU_BUTTON_X, Consts.MAIN_MENU_BUTTON_Y);
+    }
+
+    /**
+     * Ensures that when the start button is pressed, goes to settings menu.
+     */
+    private void addSettingsButtonClick() {
+        startButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.settings("start");
+                dispose();
+            }
+        });
+        stage.addActor(settingsButton);
     }
 
     // Draws the background of the start menu

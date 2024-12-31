@@ -125,6 +125,9 @@ public class Consts {
     public static final int SCORE_LABEL_X = (WORLD_WIDTH / 2) - scaleToCellSize(4);
     public static final int SCORE_LABEL_Y = (WORLD_HEIGHT / 2) - scaleToCellSize(4);
 
+    public static final int MUSIC_SLIDER_LABEL_X = (WORLD_WIDTH / 2) - scaleToCellSize(4);
+    public static final int MUSIC_SLIDER_LABEL_Y = (WORLD_HEIGHT / 2) - scaleToCellSize(8);
+
     public static final Color COUNT_COLOR = new Color(Color.BLACK);
     public static final int COUNT_SIZE = 2;
 

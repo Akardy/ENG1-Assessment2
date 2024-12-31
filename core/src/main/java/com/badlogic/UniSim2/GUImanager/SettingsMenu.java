@@ -32,11 +32,13 @@ public class SettingsMenu implements Screen {
     private SoundManager music;
     private final Skin skin;
     private ImageButton resumeButton;
+    private String screen;
 
     SpriteBatch spriteBatch = new SpriteBatch();
 
-    public SettingsMenu(Main game) {
+    public SettingsMenu(Main game, String screen) {
         this.game = game;
+        this.screen = screen;
         this.viewport = game.getViewport();
         this.stage = new Stage(this.viewport);
         this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -59,7 +61,11 @@ public class SettingsMenu implements Screen {
         resumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.returnToGame();
+                if (screen == "start") {
+                    game.create();
+                } else {
+                    game.returnToGame();
+                }
                 dispose();
             }
         });
@@ -85,9 +91,7 @@ public class SettingsMenu implements Screen {
 
     public void musicSlider() {
         // Music volume slider
-        Label.LabelStyle musicLabelStyle = new Label.LabelStyle();
-        musicLabelStyle.font = new BitmapFont(); // Create a default font
-        Label musicLabel = new Label("Music Volume", musicLabelStyle);
+        Label musicLabel = new Label("Music Volume", skin);
         musicLabel.setFontScale(1);
         musicLabel.setAlignment(Align.center);
         musicLabel.setColor(Consts.TIMER_COLOR);
@@ -108,7 +112,7 @@ public class SettingsMenu implements Screen {
         });
 
         // Position the slider below the label
-        musicSlider.setPosition(Consts.SCORE_LABEL_X, Consts.SCORE_LABEL_Y, Align.center);
+        musicSlider.setPosition(Consts.MUSIC_SLIDER_LABEL_X, Consts.MUSIC_SLIDER_LABEL_Y, Align.center);
 
         // Add the slider to the stage
         stage.addActor(musicSlider);

@@ -27,6 +27,8 @@ public class Assets {
 
     public static Texture resumeButtonTexture;
 
+    public static Texture settingsButtonTexture;
+
     public static Texture backgroundTexture;
     public static Texture pathTexture;
 
@@ -194,6 +196,8 @@ public class Assets {
         startMenuButtonTexture = new Texture("textures/buttons/startMenuButton.png");
 
         resumeButtonTexture = new Texture("textures/buttons/resumeButton.png");
+
+        settingsButtonTexture = new Texture("textures/buttons/settingsButton.png");
 
         // Background texture
         backgroundTexture = new Texture("background.png");
