@@ -77,10 +77,14 @@ public class Main extends Game {
      * Displays the settings screen by setting the screen to
      * {@link #settingsScreen}.
      */
-    public void settings() {
-        settingsScreen = new SettingsMenu(this);
+    public void settings(String screen) {
+        settingsScreen = new SettingsMenu(this, screen);
         setScreen(settingsScreen);
-        gameScreen.dispose();
+        if (screen == "start") {
+            startScreen.dispose();
+        } else {
+            gameScreen.dispose();
+        }
     }
 
     /**

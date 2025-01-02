@@ -146,7 +146,7 @@ public class GameMenu {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.settings();
+                game.settings("game");
                 popupWindow.remove();
             }
         });
