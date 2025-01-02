@@ -3,7 +3,6 @@ package NPC;
 import com.badlogic.UniSim2.resources.Assets;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import static com.badlogic.UniSim2.resources.Consts.*;
@@ -23,7 +22,6 @@ public class NPC {
     private Vector2 currentPosition;
     private Vector2 direction;
 
-    private float speed = 0.05f; // 10% per frame
     private Grid grid;
     private boolean isMoving;
 
@@ -46,8 +44,6 @@ public class NPC {
         this.grid = grid;
         this.scaleX = scaleX;
         this.scaleY = scaleY;
-        System.out.println(scaleX);
-        System.out.println(1);
 
 
 
@@ -110,12 +106,12 @@ public class NPC {
 
 
     private void moveTowardsTarget() {
-        Vector2 movement = direction.cpy().scl(speed * CELL_SIZE * scaleX * scaleY);
+        Vector2 movement = direction.cpy().scl(NPCSpeed * CELL_SIZE * scaleX * scaleY);
         currentPosition.add(movement);
 
         // Check if the target position has been reached
         Vector2 targetCoordinate = new Vector2(targetPosition.x * CELL_SIZE * scaleX, targetPosition.y * CELL_SIZE * scaleY);
-        if (currentPosition.dst(targetCoordinate) <= speed * CELL_SIZE) {
+        if (currentPosition.dst(targetCoordinate) <= NPCSpeed * CELL_SIZE) {
             currentPosition.set(targetCoordinate);
             isMoving = false;
         }
@@ -157,6 +153,7 @@ public class NPC {
     }
 
     public TextureRegion getFrame(float delta) {
+        // get current frame - image state
         currentState = getState();
         TextureRegion region;
 

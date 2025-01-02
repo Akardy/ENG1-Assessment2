@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * A class which represents a building that can be placed on the map.
  * Each building can be stored in the {@link BuildingManager}.
@@ -226,5 +229,15 @@ public abstract class Building extends Sprite {
     }
 
     public void calculateDiscountRate(float x, float y) {
+    }
+
+    public static double roundToSignificantFigures(double value, int sigFig) {
+        if (value == 0) {
+            return 0;
+        }
+        BigDecimal bd = new BigDecimal(value);
+        int scale = sigFig - 1 - (int) Math.floor(Math.log10(Math.abs(value)));
+        bd = bd.setScale(scale, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

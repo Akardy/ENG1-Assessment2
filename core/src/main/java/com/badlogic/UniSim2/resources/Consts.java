@@ -18,7 +18,7 @@ public class Consts {
 
     /**
      * Scales a value according to the size of each grid cell.
-     * 
+     *
      * @param value The value to scale.
      * @return value * {@link #CELL_SIZE}.
      */
@@ -153,4 +153,6 @@ public class Consts {
 
     public static final int NATURE_WIDTH = scaleToCellSize(4);
     public static final int NATURE_HEIGHT = scaleToCellSize(5);
+
+    public static float NPCSpeed = 0.05f; // 10% per frame
 }

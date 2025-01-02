@@ -28,7 +28,7 @@ public class Library extends Building{
     }
 
 
-    public String getStats(){ // TODO: this one is not done - show how many lecture halls this effect, and the extra money made from it because of it
+    public String getStats(){
         return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +
             "\nMultiplier effect: " + multiplierEffect;
     }

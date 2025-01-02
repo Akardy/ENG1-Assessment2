@@ -63,18 +63,10 @@ public class Recreational extends Building{
     public float getSatisfaction(){
         return satisfactionPerStudent;
     }
-    public static double roundToSignificantFigures(double value, int sigFig) {
-        if (value == 0) {
-            return 0;
-        }
-        BigDecimal bd = new BigDecimal(value);
-        int scale = sigFig - 1 - (int) Math.floor(Math.log10(Math.abs(value)));
-        bd = bd.setScale(scale, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
+
 
     public String getStats(){
-        return "Building: " + getType() + "\nAccomodation Proximity Discount: -" + bestDiscountRate + "%" +
+        return "Building: " + getType() + "\nAccomodation Proximity Discount: -" + roundToSignificantFigures(bestDiscountRate, 3) + "%" +
             "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +
             "\nCapacity: " + capacity + "\nHow many students use: " + getHowFull() +
             "\nOriginal satisfaction per student per 10s: " + originSatisfactionPerStudent +

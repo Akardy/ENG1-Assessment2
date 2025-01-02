@@ -7,7 +7,7 @@ public class SoundManager {
 
     public static void playMusic() {
         // Assets.music.setVolume(.5f);
-        Assets.music.setVolume(.0f); // annoying me while testing
+        Assets.music.setVolume(0.5f); // annoying me while testing
         Assets.music.setLooping(true);
         Assets.music.play();
     }

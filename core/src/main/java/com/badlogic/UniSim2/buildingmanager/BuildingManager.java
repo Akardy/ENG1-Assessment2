@@ -66,6 +66,9 @@ public class BuildingManager {
 
     private Skin skin;
 
+    private Label errorLabel;
+    private float errorTimer = 0; // Timer for hiding the label
+
 
 
     public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer, float scaleX, float scaleY) {
@@ -82,7 +85,27 @@ public class BuildingManager {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         this.scaleX = scaleX;
         this.scaleY = scaleY;
+        initialiseUI();
+
+    }
+
+    public void initialiseUI(){
         initialiseStatsLabel();
+        initialiseErrorLabel();
+    }
+    public void initialiseErrorLabel() {
+        // Create the error label
+        errorLabel = new Label("", skin); // Initially empty
+        errorLabel.setColor(Color.RED); // Red text for error
+        errorLabel.setFontScale(4); // Increase size
+        errorLabel.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() - 50); // Top center
+        errorLabel.setVisible(false); // Hidden by default
+        stage.addActor(errorLabel); // Add to the stage
+    }
+    public void showError(String message) {
+        errorLabel.setText(message); // Set the message text
+        errorLabel.setVisible(true); // Show the label
+        errorTimer = 2.0f; // Display for 2 seconds
     }
 
     /**
@@ -157,6 +180,7 @@ public class BuildingManager {
                 // Update aggregate count for Accomodation
                 if (currentBuilding instanceof Accomodation) {
                     buildingCounts.incrementAccomadation(currentBuilding.getType().ordinal());
+                    // add NPCs (one NPC per 50 students)
                     int npcCount = ((Accomodation) currentBuilding).getRooms() / 50;
                     NPCManager.addNPC(npcCount);
                     // checks for new discount Rates on recreational buildings
@@ -197,13 +221,31 @@ public class BuildingManager {
                 BuildingMenu.updateCountLabel(currentBuilding);
 
                 // Reset current building and selection state
+                addBuilding(currentBuilding); // Adds currentBuilding to the buildings array and to collidableSprites array
+                currentBuilding = null;
+                currentlySelecting = false;
+            }
+            else if (!isColliding(currentBuilding) && money.getMoney() < currentBuilding.getCost()) {
+                showError("Cannot afford building");
                 currentBuilding = null;
                 currentlySelecting = false;
             }
 
+
             placingInProgress = false; // Reset the guard
         }
+
     }
+    public void updateErrorLabel(float delta) {
+        // Hide error label after timer expires
+        if (errorTimer > 0) {
+            errorTimer -= delta;
+            if (errorTimer <= 0) {
+                errorLabel.setVisible(false);
+            }
+        }
+    }
+
 
     /**
      * Called when a building button has been pressed. Deals with placing a new
@@ -218,7 +260,6 @@ public class BuildingManager {
         currentlySelecting = true; // Sets currently selecting to true as we have selected a building to drag and
                                    // place
         currentBuilding.selectBuilding(); // Selects building
-        addBuilding(currentBuilding); // Adds currentBuilding to the buildings array and to collidableSprites array
     }
 
     /**

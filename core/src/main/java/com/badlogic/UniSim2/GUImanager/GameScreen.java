@@ -72,17 +72,20 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         input();
         update();
-        if (((int) timer.getElapsedTime()) % 10 == 0 && ((int) timer.getElapsedTime()) != (lastProcessedSecond)) {
-            lastProcessedSecond = (int) timer.getElapsedTime();
-            map.getBuildingManager().gainSatisfactionAndCurrency(((int) timer.getElapsedTime()) % 30 == 0);
-            satisfaction.decay();
-
-        }
+        // update satisfaction decay
         if ((int) timer.getElapsedTime() % 60 == 0 && (int) timer.getElapsedTime() != lastProcessedMinute) {
             lastProcessedMinute = (int) timer.getElapsedTime();
             satisfaction.incrementDecay();
 
         }
+        // update currency/satisfaction every ten seconds
+        if (((int) timer.getElapsedTime()) % 10 == 0 && ((int) timer.getElapsedTime()) != (lastProcessedSecond)) {
+            lastProcessedSecond = (int) timer.getElapsedTime();
+            map.getBuildingManager().gainSatisfactionAndCurrency(((int) timer.getElapsedTime()) % 30 == 0);
+            satisfaction.decay();
+        }
+        // show if there is an error message
+        map.getBuildingManager().updateErrorLabel(delta);
 
         if (hasEnded)
             return;
