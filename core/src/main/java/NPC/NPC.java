@@ -95,7 +95,7 @@ public class NPC {
         standUp = new TextureRegion(texture, 1, 28, 14, 18);
     }
 
-    public void update(float delta) {
+    public void update() {
         if (isMoving) {
             moveTowardsTarget();
         } else {

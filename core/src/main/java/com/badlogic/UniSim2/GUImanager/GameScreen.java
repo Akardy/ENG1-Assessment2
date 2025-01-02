@@ -91,15 +91,6 @@ public class GameScreen implements Screen {
             return;
         draw();
         NPCManager.update(delta);
-
-    }
-
-    /**
-     * Processes input. Will pause/resume the game if the space is pressed.
-     */
-    private void input() {
-        menu.input();
-        map.input();
         Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         viewport.unproject(mousePos); // Convert screen coordinates to world coordinates
 
@@ -112,6 +103,18 @@ public class GameScreen implements Screen {
         } else {
             map.getBuildingManager().hideBuildingStats();
         }
+
+
+
+    }
+
+    /**
+     * Processes input. Will pause/resume the game if the space is pressed.
+     */
+    private void input() {
+        menu.input();
+        map.input();
+
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (isPaused) {

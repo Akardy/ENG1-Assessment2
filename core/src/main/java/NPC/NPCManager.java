@@ -38,7 +38,7 @@ public class NPCManager {
     }
     public void update(float delta) {
         for (NPC npc : NPCList) {
-            npc.update(delta); // Update each NPC
+            npc.update(); // Update each NPC
             batch.begin();
             // draw and adjust NPC size
             batch.draw(npc.getFrame(delta), npc.getPosition().x - (Consts.CELL_SIZE * scaleX / 2), npc.getPosition().y - (Consts.CELL_SIZE * scaleX / 2), 0, 0, npc.getWidth(), npc.getHeight(), scaleX, scaleY, 0);
