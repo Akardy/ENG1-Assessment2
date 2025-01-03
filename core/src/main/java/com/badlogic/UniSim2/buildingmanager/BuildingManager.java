@@ -286,43 +286,43 @@ public class BuildingManager {
                     Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 2500, "Piazza", BuildingTypes.PIAZZA, 200, 0.001f);
                 break;
             case CENTRALHALL:
-                currentBuilding = new LectureHall(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                currentBuilding = new LectureHall(Assets.centralHallPlacedTexture, Assets.centralHallCollisionTexture, Assets.centralHallDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Central Hall", BuildingTypes.CENTRALHALL, 400, 0.0012f);
                 break;
             case SOFTWARELABS:
-                currentBuilding = new Labs(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                currentBuilding = new Labs(Assets.softwareLabsPlacedTexture, Assets.softwareLabsCollisionTexture, Assets.softwareLabsDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Software labs", BuildingTypes.SOFTWARELABS, 100, 0.005f);
                 break;
             case HARDWARELABS:
-                currentBuilding = new Labs(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                currentBuilding = new Labs(Assets.hardwareLabsPlacedTexture, Assets.hardwareLabsCollisionTexture, Assets.hardwareLabsDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Hardware Labs", BuildingTypes.HARDWARELABS, 150, 0.006f);
                 break;
             case NISA:
-                currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                currentBuilding = new FoodZone(Assets.nisaPlacedTexture, Assets.nisaCollisionTexture, Assets.nisaDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 1000, "Nisa", BuildingTypes.NISA, 200, 2, 0.0005f);
                 break;
             case GREGGS:
-                currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                currentBuilding = new FoodZone(Assets.greggsPlacedTexture, Assets.greggsCollisionTexture, Assets.greggsDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Greggs", BuildingTypes.GREGGS, 300, 2.5f, 0.0008f);
                 break;
             case DERWENTDINING:
-                currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                currentBuilding = new FoodZone(Assets.derwentDiningPlacedTexture, Assets.derwentDiningCollisionTexture, Assets.derwentDiningDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3000, "Derwent Dining", BuildingTypes.DERWENTDINING, 500, 3.2f, 0.001f);
                 break;
             case NATURE:
-                currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                currentBuilding = new Recreational(Assets.naturePlacedTexture, Assets.natureCollisionTexture, Assets.natureDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 1000, "Nature", BuildingTypes.NATURE, 100, 0.05f);
                 break;
             case GYM:
-                currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                currentBuilding = new Recreational(Assets.gymPlacedTexture, Assets.gymCollisionTexture, Assets.gymDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Gym", BuildingTypes.GYM, 150, 0.07f);
                 break;
             case SOCIETYBUILDING:
-                currentBuilding = new Recreational(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                currentBuilding = new Recreational(Assets.societyBuildingPlacedTexture, Assets.societyBuildingCollisionTexture, Assets.societyBuildingDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3000, "Society Building", BuildingTypes.SOCIETYBUILDING, 250, 0.01f);
                 break;
             case LIBRARY:
-                currentBuilding = new Library(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
+                currentBuilding = new Library(Assets.libraryPlacedTexture, Assets.libraryCollisionTexture, Assets.libraryDraggingTexture,
                     Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Library", BuildingTypes.LIBRARY);
                 break;
             default:
