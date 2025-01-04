@@ -3,6 +3,7 @@ package com.badlogic.UniSim2.GUImanager;
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
 import com.badlogic.UniSim2.resources.Consts;
+import com.badlogic.UniSim2.resources.SoundManager;
 import com.badlogic.UniSim2.stats.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -36,9 +37,10 @@ public class GameMenu {
     private Label pauseLabel;
     private boolean isPaused;
     private Window popupWindow;
+    private GameScreen gameScreen;
 
     public GameMenu(Main game, Timer timer, Money money, Satisfaction satisfaction, NPCCount num,
-            BuildingManager buildings, BuildingCounts counts) {
+            BuildingManager buildings, BuildingCounts counts, GameScreen gameScreen) {
         stage = new Stage(game.getViewport());
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         buildingMenu = new BuildingMenu(stage, buildings, counts);
@@ -48,6 +50,7 @@ public class GameMenu {
         this.satisfaction = satisfaction;
         this.num = num;
         isPaused = false;
+        this.gameScreen = gameScreen;
         createMenu();
     }
 
@@ -122,7 +125,7 @@ public class GameMenu {
         popupWindow = new Window("Pause", skin);
 
         popupWindow.setSize(400, 300);
-        popupWindow.setPosition(200, 300);
+        popupWindow.setPosition(600, 250);
         popupWindow.setMovable(true);
 
         popupWindow.getTitleTable().padTop(20).center();
@@ -132,6 +135,7 @@ public class GameMenu {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                SoundManager.stopMusic();
                 game.create();
                 popupWindow.remove();
                 dispose();
@@ -146,7 +150,7 @@ public class GameMenu {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.settings("game");
+                game.settingsFromGame(gameScreen, GameMenu.this);
                 popupWindow.remove();
             }
         });
@@ -278,6 +282,11 @@ public class GameMenu {
      */
     public boolean getPaused() {
         return isPaused;
+    }
+
+    // Getter for stage
+    public Stage getStage() {
+        return stage;
     }
 
     /**

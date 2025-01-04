@@ -39,10 +39,16 @@ public class Consts {
     public static final int CREDITS_BUTTON_X = WORLD_WIDTH / 3 - CREDITS_BUTTON_WIDTH / 2;
     public static final int CREDITS_BUTTON_Y = WORLD_HEIGHT / 2 - CREDITS_BUTTON_HEIGHT - scaleToCellSize(5);
 
-    public static final int MAIN_MENU_BUTTON_WIDTH = scaleToCellSize(10);
-    public static final int MAIN_MENU_BUTTON_HEIGHT = scaleToCellSize(4);
-    public static final int MAIN_MENU_BUTTON_X = 4;
-    public static final int MAIN_MENU_BUTTON_Y = WORLD_HEIGHT - scaleToCellSize(5);
+    public static final int TOP_LEFT_BUTTON_WIDTH = scaleToCellSize(10);
+    public static final int TOP_LEFT_BUTTON_HEIGHT = scaleToCellSize(4);
+    public static final int TOP_LEFT_BUTTON_X = 4;
+    public static final int TOP_LEFT_BUTTON_Y = WORLD_HEIGHT - scaleToCellSize(5);
+
+    public static final int SETTINGS_BUTTON_WIDTH = scaleToCellSize(10);
+    public static final int SETTINGS_BUTTON_HEIGHT = scaleToCellSize(4);
+    public static final int SETTINGS_BUTTON_X = WORLD_WIDTH / 3 + SETTINGS_BUTTON_WIDTH * 2 - scaleToCellSize(1);
+    public static final int SETTINGS_BUTTON_Y = WORLD_HEIGHT / 2 - SETTINGS_BUTTON_HEIGHT - scaleToCellSize(7);
+    ;
 
     public static final Color BACKGROUND_COLOR = new Color(Color.BLACK);
 
@@ -126,7 +132,28 @@ public class Consts {
     public static final int SCORE_LABEL_Y = (WORLD_HEIGHT / 2) - scaleToCellSize(4);
 
     public static final int MUSIC_SLIDER_LABEL_X = (WORLD_WIDTH / 2) - scaleToCellSize(4);
-    public static final int MUSIC_SLIDER_LABEL_Y = (WORLD_HEIGHT / 2) - scaleToCellSize(8);
+    public static final int MUSIC_SLIDER_LABEL_Y = WORLD_HEIGHT - scaleToCellSize(4);
+
+    public static final int MUSIC_SLIDER_X = (WORLD_WIDTH / 2) - scaleToCellSize(4);
+    public static final int MUSIC_SLIDER_Y = WORLD_HEIGHT - scaleToCellSize(6);
+
+    public static final int RES720_WIDTH = scaleToCellSize(10);
+    public static final int RES720_HEIGHT = scaleToCellSize(4);
+    public static final int RES720_X = (WORLD_WIDTH / 2) - scaleToCellSize(20);
+    public static final int RES720_Y = WORLD_HEIGHT - scaleToCellSize(30);
+
+    public static final int RES1080_WIDTH = scaleToCellSize(10);
+    public static final int RES1080_HEIGHT = scaleToCellSize(4);
+    public static final int RES1080_X = (WORLD_WIDTH / 2);
+    public static final int RES1080_Y = WORLD_HEIGHT - scaleToCellSize(30);
+
+    public static final int RES1440_WIDTH = scaleToCellSize(10);
+    public static final int RES1440_HEIGHT = scaleToCellSize(4);
+    public static final int RES1440_X = (WORLD_WIDTH / 2) + scaleToCellSize(20);
+    public static final int RES1440_Y = WORLD_HEIGHT - scaleToCellSize(30);
+
+    public static final int RES_LABEL_X = (WORLD_WIDTH / 2) - scaleToCellSize(4);
+    public static final int RES_LABEL_Y = WORLD_HEIGHT - scaleToCellSize(20);
 
     public static final Color COUNT_COLOR = new Color(Color.BLACK);
     public static final int COUNT_SIZE = 2;

@@ -1,10 +1,6 @@
 package com.badlogic.UniSim2;
 
-import com.badlogic.UniSim2.GUImanager.CreditsScreen;
-import com.badlogic.UniSim2.GUImanager.EndScreen;
-import com.badlogic.UniSim2.GUImanager.GameScreen;
-import com.badlogic.UniSim2.GUImanager.SettingsMenu;
-import com.badlogic.UniSim2.GUImanager.StartScreen;
+import com.badlogic.UniSim2.GUImanager.*;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -24,6 +20,7 @@ public class Main extends Game {
     private EndScreen endScreen;
     private CreditsScreen creditsScreen;
     private SettingsMenu settingsScreen;
+    private GameMenu gameMenu;
 
     @Override
     public void create() {
@@ -77,23 +74,41 @@ public class Main extends Game {
      * Displays the settings screen by setting the screen to
      * {@link #settingsScreen}.
      */
-    public void settings(String screen) {
+    public void settingsFromGame(GameScreen screen, GameMenu gameMenu) {
+        settingsScreen = new SettingsMenu(this, screen, gameMenu);
+        setScreen(settingsScreen);
+        gameScreen.dispose();
+    }
+
+    /**
+     * Displays the settings screen by setting the screen to
+     * {@link #settingsScreen}.
+     */
+    public void settingsFromStart(StartScreen screen) {
         settingsScreen = new SettingsMenu(this, screen);
         setScreen(settingsScreen);
-        if (screen == "start") {
-            startScreen.dispose();
-        } else {
-            gameScreen.dispose();
-        }
+        startScreen.dispose();
     }
+
+
+    /**
+     * Resumes the game by setting the screen to the {@link #gameScreen}. Should be
+     * called by the {@link GameScreen} when the resume button is clicked.
+     */
+     public void returnToGame(GameScreen gameScreen, GameMenu menu) {
+         setScreen(gameScreen);
+         menu.pause();
+         Gdx.input.setInputProcessor(menu.getStage());
+         settingsScreen.dispose();
+     }
 
     /**
      * Resumes the game by setting the screen to the {@link #gameScreen}. Should be
      * called by the {@link StartScreen} when the resume button is clicked.
      */
-    public void returnToGame() {
-        // gameScreen = new GameScreen(this);
-        setScreen(gameScreen);
+    public void returnToStart(StartScreen startScreen) {
+        setScreen(startScreen);
+        Gdx.input.setInputProcessor(startScreen.getStage());
         settingsScreen.dispose();
     }
 }
