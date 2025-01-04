@@ -42,8 +42,10 @@ public abstract class Building extends Sprite {
 
     private int howFull;
 
+    private int examSpace;
+
     public Building(Texture placedTexture, Texture collisionTexture, Texture draggingTexture, int width, int height,
-                    float cost, String name, BuildingTypes type) {
+                    float cost, String name, BuildingTypes type, int examSpace) {
 
         this.placedTexture = placedTexture;
         this.collisionTexture = collisionTexture;
@@ -54,6 +56,7 @@ public abstract class Building extends Sprite {
         this.name= name;
         this.type = type;
         this.studentsInBuilding = 0;
+        this.examSpace = examSpace;
         isSelected = true;
         isPlaced = false;
         moneyGenerated = 0;
@@ -239,5 +242,9 @@ public abstract class Building extends Sprite {
         int scale = sigFig - 1 - (int) Math.floor(Math.log10(Math.abs(value)));
         bd = bd.setScale(scale, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    public int getExamSpace(){
+        return examSpace;
     }
 }

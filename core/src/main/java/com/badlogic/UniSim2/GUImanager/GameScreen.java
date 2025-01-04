@@ -1,6 +1,8 @@
 package com.badlogic.UniSim2.GUImanager;
 
 import NPC.NPCManager;
+import com.badlogic.UniSim2.Events.Announcement;
+import com.badlogic.UniSim2.Events.Exam;
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.mapmanager.Map;
@@ -10,7 +12,6 @@ import com.badlogic.UniSim2.stats.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -30,6 +31,8 @@ public class GameScreen implements Screen {
     private NPCManager NPCManager;
     private BuildingCounts counts;
 
+    private Exam events;
+
     private GameMenu menu; // Used to make and display the game menu
 
     boolean isPaused = false;
@@ -45,6 +48,8 @@ public class GameScreen implements Screen {
     private float scaleX;
     private float scaleY;
 
+    private Announcement announcement;
+
     public GameScreen(Main game) {
         this.game = game;
         viewport = game.getViewport();
@@ -59,6 +64,8 @@ public class GameScreen implements Screen {
         map = new Map(game, counts, NPCManager, money, satisfaction, timer, scaleX, scaleY);
         menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts);
         SoundManager.playMusic();
+        announcement = new Announcement();
+        events = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);
 
 
     }
@@ -71,17 +78,17 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         input();
-        update();
+        update(delta);
         // update satisfaction decay
-        if ((int) timer.getElapsedTime() % 60 == 0 && (int) timer.getElapsedTime() != lastProcessedMinute) {
-            lastProcessedMinute = (int) timer.getElapsedTime();
+        if ((int) timer.getTimeLeft() % 60 == 0 && (int) timer.getTimeLeft() != lastProcessedMinute) {
+            lastProcessedMinute = (int) timer.getTimeLeft();
             satisfaction.incrementDecay();
 
         }
         // update currency/satisfaction every ten seconds
-        if (((int) timer.getElapsedTime()) % 10 == 0 && ((int) timer.getElapsedTime()) != (lastProcessedSecond)) {
-            lastProcessedSecond = (int) timer.getElapsedTime();
-            map.getBuildingManager().gainSatisfactionAndCurrency(((int) timer.getElapsedTime()) % 30 == 0);
+        if (((int) timer.getTimeLeft()) % 10 == 0 && ((int) timer.getTimeLeft()) != (lastProcessedSecond)) {
+            lastProcessedSecond = (int) timer.getTimeLeft();
+            map.getBuildingManager().gainSatisfactionAndCurrency(((int) timer.getTimeLeft()) % 30 == 0);
             satisfaction.decay();
         }
         // show if there is an error message
@@ -132,9 +139,11 @@ public class GameScreen implements Screen {
      * Will update the timer or not (depending on whether the game is paused)
      * and will end the game if the timer has reached its max time.
      */
-    private void update() {
+    private void update(float delta) {
         if (isPaused == false) {
             timer.update();
+            events.checkTriggeringEvent(delta);
+            announcement.update(delta);
             if (timer.hasReachedMaxTime()) {
                 game.endGame();
                 hasEnded = true;
@@ -151,6 +160,8 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Consts.BACKGROUND_COLOR);
         map.draw();
         menu.draw();
+        events.draw();
+        announcement.draw();
     }
 
     @Override

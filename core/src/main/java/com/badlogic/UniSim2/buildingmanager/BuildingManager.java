@@ -38,8 +38,6 @@ import java.util.List;
  */
 public class BuildingManager {
 
-    private List<Building> buildings;
-
     private Array<Building> placed; // Array of all the buildings on the map in order of when placed
 
     private Building currentBuilding; // References the building currently selected
@@ -135,7 +133,7 @@ public class BuildingManager {
             else{
                 handleDragging(mousePos); // Otherwise continue dragging the building
             }
-        } 
+        }
 
     }
 
@@ -272,19 +270,19 @@ public class BuildingManager {
                 break;
             case PIAZZA:
                 currentBuilding = new LectureHall(Assets.piazzaPlacedTexture, Assets.piazzaCollisionTexture, Assets.piazzaDraggingTexture,
-                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 2500, "Piazza", BuildingTypes.PIAZZA, 200, 0.001f);
+                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 2500, "Piazza", BuildingTypes.PIAZZA, 200, 0.001f, 100);
                 break;
             case CENTRALHALL:
                 currentBuilding = new LectureHall(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Central Hall", BuildingTypes.CENTRALHALL, 400, 0.0012f);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Central Hall", BuildingTypes.CENTRALHALL, 400, 0.0012f, 1000);
                 break;
             case SOFTWARELABS:
                 currentBuilding = new Labs(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Software labs", BuildingTypes.SOFTWARELABS, 100, 0.005f);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Software labs", BuildingTypes.SOFTWARELABS, 100, 0.005f, 1000);
                 break;
             case HARDWARELABS:
                 currentBuilding = new Labs(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Hardware Labs", BuildingTypes.HARDWARELABS, 150, 0.006f);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Hardware Labs", BuildingTypes.HARDWARELABS, 150, 0.006f, 1000);
                 break;
             case NISA:
                 currentBuilding = new FoodZone(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
@@ -312,7 +310,7 @@ public class BuildingManager {
                 break;
             case LIBRARY:
                 currentBuilding = new Library(Assets.goodrickePlacedTexture, Assets.goodrickeCollisionTexture, Assets.goodrickeDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Library", BuildingTypes.LIBRARY);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Library", BuildingTypes.LIBRARY, 1000);
                 break;
             default:
                 throw new IllegalArgumentException("Unhandled BuildingType: " + type);
@@ -511,5 +509,9 @@ public class BuildingManager {
         for (Building building : placed) {
             building.dispose();
         }
+    }
+
+    public Array<Building> getPlaced() {
+        return placed;
     }
 }

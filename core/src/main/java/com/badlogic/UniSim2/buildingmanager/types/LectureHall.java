@@ -16,7 +16,7 @@ public class LectureHall extends Building{
 
     public LectureHall(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
                        int width, int height, float cost, String name, BuildingTypes type, int capacity,
-                       float satisfactionPerStudent) {
+                       float satisfactionPerStudent, int examSpace) {
         super(
             placedTexture,
             collisionTexture,
@@ -25,7 +25,8 @@ public class LectureHall extends Building{
             height,
             cost,
             name,
-            type
+            type,
+            examSpace
         );
         this.capacity = capacity;
         this.satisfactionPerStudent = satisfactionPerStudent;
@@ -40,7 +41,8 @@ public class LectureHall extends Building{
     public String getStats(){
         return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +
             "\nCapacity: " + capacity + "\nHow many students use: " + getHowFull() +
-            "\nSatisfaction per student per 10s: " + satisfactionPerStudent;
+            "\nSatisfaction per student per 10s: " + satisfactionPerStudent +
+            "\nExam Space: " + getExamSpace();
     }
 
 }

@@ -35,7 +35,8 @@ public class Recreational extends Building{
             height,
             cost,
             name,
-            type
+            type,
+            0
         );
         this.capacity = capacity;
         this.originSatisfactionPerStudent = satisfactionPerStudent;

@@ -13,7 +13,7 @@ public class Library extends Building{
     private final float multiplierEffect;
 
     public Library(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
-                   int width, int height, float cost, String name, BuildingTypes type) {
+                   int width, int height, float cost, String name, BuildingTypes type, int examSpace) {
         super(
             placedTexture,
             collisionTexture,
@@ -22,14 +22,15 @@ public class Library extends Building{
             height,
             cost,
             name,
-            type
+            type,
+            examSpace
         );
         this.multiplierEffect = 1.2f;
     }
 
-
     public String getStats(){
         return "Building: " + getType() + "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +
-            "\nMultiplier effect: " + multiplierEffect;
+            "\nMultiplier effect: " + multiplierEffect +
+            "\nExam Space: " + getExamSpace();
     }
 }

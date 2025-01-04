@@ -31,7 +31,8 @@ public class FoodZone extends Building{
             height,
             cost,
             name,
-            type
+            type,
+            0
         );
         this.moneyGenerated = 0;
         this.capacity = capacity;

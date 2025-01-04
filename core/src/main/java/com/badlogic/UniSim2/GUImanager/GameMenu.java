@@ -88,7 +88,7 @@ public class GameMenu {
      * the timer.
      */
     private void updateTimerLabel() {
-        float elapsedTime = timer.getElapsedTime();
+        float elapsedTime = timer.getTimeLeft();
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText(String.format("%02d:%02d", minutes, seconds));

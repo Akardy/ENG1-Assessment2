@@ -27,7 +27,8 @@ public class Accomodation extends Building{
             height,
             cost,
             name,
-            type
+            type,
+            0
         );
         this.rooms = rooms;
         this.incomePerStudent = incomePerStudent;
