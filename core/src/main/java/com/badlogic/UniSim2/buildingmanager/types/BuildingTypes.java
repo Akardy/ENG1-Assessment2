@@ -14,5 +14,10 @@ public enum BuildingTypes {
     SOFTWARELABS,
     HARDWARELABS,
     NATURE,
-    LIBRARY
+    LIBRARY,
+    ACCOMODATION,
+    LECTUREHALL,
+    LABS,
+    FOODZONE,
+    RECREATIONAL
 }
