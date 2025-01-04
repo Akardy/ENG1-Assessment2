@@ -4,7 +4,6 @@ import com.badlogic.UniSim2.GUImanager.*;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -64,8 +63,8 @@ public class Main extends Game {
     /**
      * Displays the credits by setting the screen to {@link #creditsScreen}.
      */
-    public void viewCredits() {
-        creditsScreen = new CreditsScreen(this);
+    public void viewCredits(StartScreen startScreen) {
+        creditsScreen = new CreditsScreen(this, startScreen);
         setScreen(creditsScreen);
         startScreen.dispose();
     }
@@ -95,7 +94,7 @@ public class Main extends Game {
      * Resumes the game by setting the screen to the {@link #gameScreen}. Should be
      * called by the {@link GameScreen} when the resume button is clicked.
      */
-     public void returnToGame(GameScreen gameScreen, GameMenu menu) {
+     public void returnToGameSettings(GameScreen gameScreen, GameMenu menu) {
          setScreen(gameScreen);
          menu.pause();
          Gdx.input.setInputProcessor(menu.getStage());
@@ -106,9 +105,15 @@ public class Main extends Game {
      * Resumes the game by setting the screen to the {@link #gameScreen}. Should be
      * called by the {@link StartScreen} when the resume button is clicked.
      */
-    public void returnToStart(StartScreen startScreen) {
+    public void returnToStartSettings(StartScreen startScreen) {
         setScreen(startScreen);
         Gdx.input.setInputProcessor(startScreen.getStage());
         settingsScreen.dispose();
+    }
+
+    public void returnToStartCredits(StartScreen startScreen) {
+        setScreen(startScreen);
+        Gdx.input.setInputProcessor(startScreen.getStage());
+        creditsScreen.dispose();
     }
 }

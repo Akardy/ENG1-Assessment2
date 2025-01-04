@@ -83,9 +83,9 @@ public class SettingsMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (gameScreen != null) {
-                    game.returnToGame(gameScreen, gameMenu);
+                    game.returnToGameSettings(gameScreen, gameMenu);
                 } else if (startScreen != null) {
-                    game.returnToStart(startScreen);
+                    game.returnToStartSettings(startScreen);
                 }
             }
         });

@@ -31,11 +31,14 @@ public class CreditsScreen implements Screen {
 
     SpriteBatch spriteBatch = new SpriteBatch();
 
-    public CreditsScreen(Main game) {
+    private StartScreen startScreen;
+
+    public CreditsScreen(Main game, StartScreen startScreen) {
         this.game = game;
         this.viewport = game.getViewport();
         this.stage = new Stage(this.viewport);
         this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        this.startScreen = startScreen;
         CreditsLabel();
         addMenuButton();
     }
@@ -55,8 +58,7 @@ public class CreditsScreen implements Screen {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.create();
-                dispose();
+                game.returnToStartCredits(startScreen);
             }
         });
         stage.addActor(menuButton);
