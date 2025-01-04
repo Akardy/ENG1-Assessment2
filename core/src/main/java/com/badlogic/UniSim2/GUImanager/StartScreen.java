@@ -116,7 +116,7 @@ public class StartScreen implements Screen {
         startButtonStyle.down = creditsButtonDrawable;
         startButtonStyle.over = creditsButtonDrawable;
 
-        // Initializing startButton and setting its size and position
+        // Initializing creditsButton and setting its size and position
         creditsButton = new ImageButton(startButtonStyle);
         creditsButton.setSize(Consts.CREDITS_BUTTON_WIDTH, Consts.CREDITS_BUTTON_HEIGHT);
         creditsButton.setPosition(Consts.CREDITS_BUTTON_X, Consts.CREDITS_BUTTON_Y);
@@ -126,11 +126,11 @@ public class StartScreen implements Screen {
      * Adds a settings button to the menu.
      */
     private void addSettingsButton() {
-        setupSettingsButton(); // Initializes creditsButton with the correct textures, size, and position
-        addSettingsButtonClick(); // Adds a click listener to credits button
+        setupSettingsButton(); // Initializes settingsButton with the correct textures, size, and position
+        addSettingsButtonClick(); // Adds a click listener to settings button
     }
 
-    // Initializes startButton
+    // Initializes settingsButton
     private void setupSettingsButton() {
 
         // Setting up the textures
@@ -141,21 +141,20 @@ public class StartScreen implements Screen {
         settingsButtonStyle.down = settingsButtonDrawable;
         settingsButtonStyle.over = settingsButtonDrawable;
 
-        // Initializing startButton and setting its size and position
+        // Initializing settingsButton and setting its size and position
         settingsButton = new ImageButton(settingsButtonStyle);
-        settingsButton.setSize(Consts.MAIN_MENU_BUTTON_WIDTH, Consts.MAIN_MENU_BUTTON_HEIGHT);
-        settingsButton.setPosition(Consts.MAIN_MENU_BUTTON_X, Consts.MAIN_MENU_BUTTON_Y);
+        settingsButton.setSize(Consts.SETTINGS_BUTTON_WIDTH, Consts.SETTINGS_BUTTON_HEIGHT);
+        settingsButton.setPosition(Consts.SETTINGS_BUTTON_X, Consts.SETTINGS_BUTTON_Y);
     }
 
     /**
      * Ensures that when the start button is pressed, goes to settings menu.
      */
     private void addSettingsButtonClick() {
-        startButton.addListener(new ClickListener() {
+        settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //game.settings("start");
-                game.startGame();
+                game.settingsFromStart(StartScreen.this);
                 dispose();
             }
         });
@@ -201,5 +200,10 @@ public class StartScreen implements Screen {
 
     @Override
     public void dispose() {
+    }
+
+    // Getter for stage
+    public Stage getStage() {
+        return stage;
     }
 }

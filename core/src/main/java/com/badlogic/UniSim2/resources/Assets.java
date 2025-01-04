@@ -29,6 +29,12 @@ public class Assets {
 
     public static Texture settingsButtonTexture;
 
+    public static Texture res720ButtonTexture;
+
+    public static Texture res1080ButtonTexture;
+
+    public static Texture res1440ButtonTexture;
+
     public static Texture backgroundTexture;
     public static Texture pathTexture;
 
@@ -198,6 +204,12 @@ public class Assets {
         resumeButtonTexture = new Texture("textures/buttons/resumeButton.png");
 
         settingsButtonTexture = new Texture("textures/buttons/settingsButton.png");
+
+        res720ButtonTexture = new Texture("textures/buttons/res720Button.png");
+
+        res1080ButtonTexture = new Texture("textures/buttons/res1080Button.png");
+
+        res1440ButtonTexture = new Texture("textures/buttons/res1440Button.png");
 
         // Background texture
         backgroundTexture = new Texture("background.png");

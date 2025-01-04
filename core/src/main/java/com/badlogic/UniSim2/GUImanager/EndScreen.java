@@ -62,17 +62,16 @@ public class EndScreen implements Screen {
     private void setupStartMenuButton() {
 
         // Setting up the textures
-        Drawable menuButtonDrawable = new TextureRegionDrawable(Assets.startMenuButtonTexture); // Texture of credits
-                                                                                                // button
+        Drawable menuButtonDrawable = new TextureRegionDrawable(Assets.startMenuButtonTexture);
         ImageButton.ImageButtonStyle startButtonStyle = new ImageButton.ImageButtonStyle();
         startButtonStyle.up = menuButtonDrawable;
         startButtonStyle.down = menuButtonDrawable;
         startButtonStyle.over = menuButtonDrawable;
 
-        // Initializing startButton and setting its size and position
+        // Initializing menuButton and setting its size and position
         menuButton = new ImageButton(startButtonStyle);
-        menuButton.setSize(Consts.MAIN_MENU_BUTTON_WIDTH, Consts.MAIN_MENU_BUTTON_HEIGHT);
-        menuButton.setPosition(Consts.MAIN_MENU_BUTTON_X, Consts.MAIN_MENU_BUTTON_Y);
+        menuButton.setSize(Consts.TOP_LEFT_BUTTON_WIDTH, Consts.TOP_LEFT_BUTTON_HEIGHT);
+        menuButton.setPosition(Consts.TOP_LEFT_BUTTON_X, Consts.TOP_LEFT_BUTTON_Y);
     }
 
     /**
