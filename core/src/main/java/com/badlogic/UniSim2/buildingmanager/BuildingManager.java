@@ -274,15 +274,15 @@ public class BuildingManager {
                 break;
             case CENTRALHALL:
                 currentBuilding = new LectureHall(Assets.centralHallPlacedTexture, Assets.centralHallCollisionTexture, Assets.centralHallDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Central Hall", BuildingTypes.CENTRALHALL, 400, 0.0012f);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 4000, "Central Hall", BuildingTypes.CENTRALHALL, 400, 0.0012f, 100);
                 break;
             case SOFTWARELABS:
                 currentBuilding = new Labs(Assets.softwareLabsPlacedTexture, Assets.softwareLabsCollisionTexture, Assets.softwareLabsDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Software labs", BuildingTypes.SOFTWARELABS, 100, 0.005f);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 2000, "Software labs", BuildingTypes.SOFTWARELABS, 100, 0.005f, 100);
                 break;
             case HARDWARELABS:
                 currentBuilding = new Labs(Assets.hardwareLabsPlacedTexture, Assets.hardwareLabsCollisionTexture, Assets.hardwareLabsDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Hardware Labs", BuildingTypes.HARDWARELABS, 150, 0.006f);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Hardware Labs", BuildingTypes.HARDWARELABS, 150, 0.006f, 100);
                 break;
             case NISA:
                 currentBuilding = new FoodZone(Assets.nisaPlacedTexture, Assets.nisaCollisionTexture, Assets.nisaDraggingTexture,
@@ -310,7 +310,7 @@ public class BuildingManager {
                 break;
             case LIBRARY:
                 currentBuilding = new Library(Assets.libraryPlacedTexture, Assets.libraryCollisionTexture, Assets.libraryDraggingTexture,
-                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Library", BuildingTypes.LIBRARY);
+                    Consts.ACCOMODATION_WIDTH, Consts.ACCOMODATION_HEIGHT, 3500, "Library", BuildingTypes.LIBRARY, 100);
                 break;
             default:
                 throw new IllegalArgumentException("Unhandled BuildingType: " + type);
