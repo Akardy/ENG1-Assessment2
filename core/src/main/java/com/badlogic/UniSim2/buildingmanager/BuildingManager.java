@@ -135,18 +135,7 @@ public class BuildingManager {
             else{
                 handleDragging(mousePos); // Otherwise continue dragging the building
             }
-        } else {
-            if(clicked) {
-                for (Building building : placed) {
-                    if (building.getBoundingRectangle().contains(mousePos)) {
-                        currentBuilding = building;  // Select the building under the mouse pos
-                        currentBuilding.selectBuilding();
-                        currentlySelecting = true;
-                        break; // Stop once a building is selected
-                    }
-                }
-            }
-        }
+        } 
 
     }
 
