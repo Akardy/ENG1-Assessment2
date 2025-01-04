@@ -53,6 +53,8 @@ public class BuildingCounts {
         return recreational;
     }
 
+    public int getTotalCount() {return total;}
+
     public void incrementAccomadation(int index) {
         accommodation++;
         total++;

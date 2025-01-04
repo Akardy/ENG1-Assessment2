@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
 
 public class Announcement {
 
@@ -26,8 +27,9 @@ public class Announcement {
         eventAnnouncement = new Label("", skin); // Initially empty
         eventAnnouncement.setColor(Color.BLUE); // Red text for error
         eventAnnouncement.setFontScale(10); // Increase size
-        eventAnnouncement.setPosition(Gdx.graphics.getWidth() / 3f, Gdx.graphics.getHeight() / 2f); // Top center
+        eventAnnouncement.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f); // Top center
         eventAnnouncement.setVisible(false); // Hidden by default
+        eventAnnouncement.setAlignment(Align.center);
         stage.addActor(eventAnnouncement); // Add to the stage
     }
 

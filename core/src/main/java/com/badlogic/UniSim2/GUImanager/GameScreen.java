@@ -1,6 +1,7 @@
 package com.badlogic.UniSim2.GUImanager;
 
 import NPC.NPCManager;
+import com.badlogic.UniSim2.Events.Achievements;
 import com.badlogic.UniSim2.Events.Announcement;
 import com.badlogic.UniSim2.Events.Exam;
 import com.badlogic.UniSim2.Main;
@@ -49,6 +50,7 @@ public class GameScreen implements Screen {
     private float scaleY;
 
     private Announcement announcement;
+    private Achievements achievements;
 
     public GameScreen(Main game) {
         this.game = game;
@@ -66,6 +68,7 @@ public class GameScreen implements Screen {
         SoundManager.playMusic();
         announcement = new Announcement();
         events = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);
+        achievements = new Achievements(announcement, map.getBuildingManager(), satisfaction, counts, timer, money);
 
 
     }
@@ -143,6 +146,7 @@ public class GameScreen implements Screen {
         if (isPaused == false) {
             timer.update();
             events.checkTriggeringEvent(delta);
+            achievements.updateAchievements();
             announcement.update(delta);
             if (timer.hasReachedMaxTime()) {
                 game.endGame();
