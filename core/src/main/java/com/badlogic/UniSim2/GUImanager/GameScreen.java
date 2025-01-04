@@ -14,6 +14,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -23,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class GameScreen implements Screen {
     private Main game;
     private StretchViewport viewport;
+    private Stage stage;
 
     private Timer timer;
     private Money money;
@@ -64,7 +66,7 @@ public class GameScreen implements Screen {
         scaleY = viewport.getScreenHeight() / viewport.getWorldHeight();
         NPCManager = new NPCManager(scaleX, scaleY);
         map = new Map(game, counts, NPCManager, money, satisfaction, timer, scaleX, scaleY);
-        menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts);
+        menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts, this);
         SoundManager.playMusic();
         announcement = new Announcement();
         events = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);
@@ -191,4 +193,5 @@ public class GameScreen implements Screen {
         map.dispose();
         menu.dispose();
     }
+
 }
