@@ -1,11 +1,15 @@
 package com.badlogic.UniSim2.GUImanager;
 
 import NPC.NPCManager;
+
+import java.util.List;
+
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.resources.SoundManager;
+import com.badlogic.UniSim2.resources.TaskGenerator.TaskGroup;
 import com.badlogic.UniSim2.stats.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -45,6 +49,10 @@ public class GameScreen implements Screen {
     private float scaleX;
     private float scaleY;
 
+    private List<TaskGroup> taskGroups;
+
+    private int lastProcessedTaskTime = -1;
+
     public GameScreen(Main game) {
         this.game = game;
         viewport = game.getViewport();
@@ -60,6 +68,7 @@ public class GameScreen implements Screen {
         menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts);
         SoundManager.playMusic();
 
+        taskGroups = game.getGameTasks();
 
     }
 
@@ -72,6 +81,13 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         input();
         update();
+
+        int currentTime = (int) timer.getElapsedTime();
+        if (currentTime != lastProcessedTaskTime) {
+            implementTasks(currentTime);
+            lastProcessedTaskTime = currentTime;
+        }
+
         // update satisfaction decay
         if ((int) timer.getElapsedTime() % 60 == 0 && (int) timer.getElapsedTime() != lastProcessedMinute) {
             lastProcessedMinute = (int) timer.getElapsedTime();
@@ -106,6 +122,23 @@ public class GameScreen implements Screen {
 
 
 
+    }
+
+    private void implementTasks(int currentTime) {
+        if (isPaused) return;
+        
+        for (TaskGroup taskGroup : taskGroups) {
+            if (taskGroup.getStartTime() == currentTime) {
+                // Print task group information
+                System.out.printf("Time: %ds, Duration: %ds, Task: %s%n",
+                    taskGroup.getStartTime(),
+                    taskGroup.getDuration(),
+                    taskGroup.getTask());
+                
+                // Here you could trigger UI updates
+                
+            }
+        }
     }
 
     /**
