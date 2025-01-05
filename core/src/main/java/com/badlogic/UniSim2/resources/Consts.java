@@ -185,4 +185,6 @@ public class Consts {
     public static final int NATURE_HEIGHT = scaleToCellSize(5);
 
     public static float NPCSpeed = 0.05f; // 10% per frame
+
+    public static float STARTING_SECONDS = 300f;
 }

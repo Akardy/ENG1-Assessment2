@@ -16,7 +16,7 @@ public class Timer {
 
     public Timer() {
         this.endTime = Consts.MAX_TIME;
-        this.startTime = 300;
+        this.startTime = Consts.STARTING_SECONDS;
         this.timeLeft = this.startTime;
         reachedMaxTime = false;
     }

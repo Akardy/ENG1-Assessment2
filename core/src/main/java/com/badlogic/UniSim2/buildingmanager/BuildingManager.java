@@ -459,29 +459,28 @@ public class BuildingManager {
         float libraryGain = 0;
         float studentFillBuildingPercent = Math.min(1, (float) totalRooms / totalCapacity);
         for (Building building : placed){
-            int studentsInBuilding = (int) (building.getCapacity() * studentFillBuildingPercent);
-            building.setHowFull(studentsInBuilding);
-            if(building.getType() == BuildingTypes.DERWENT || building.getType() == BuildingTypes.GOODRICKE || building.getType() == BuildingTypes.CONSTANTINE) { // TODO: change to accom
-                currencyGain = building.getRooms() * building.getIncome();
-                building.updateMoneyGenerated(currencyGain);
+            if (!building.isBroken()) {
+                int studentsInBuilding = (int) (building.getCapacity() * studentFillBuildingPercent);
+                building.setHowFull(studentsInBuilding);
+                if (building instanceof Accomodation) { // TODO: change to accom
+                    currencyGain = building.getRooms() * building.getIncome();
+                    building.updateMoneyGenerated(currencyGain);
+                } else if (building instanceof LectureHall) { // TODO: change to lecture
+                    satisfactionGain = studentsInBuilding * building.getSatisfaction() * (libraryCount * libraryMultiplier);
+                    libraryGain += studentsInBuilding * building.getSatisfaction() * (libraryCount * (libraryMultiplier - 1));
+                    building.updateSatisfactionGenerated(satisfactionGain);
+                } else if (building instanceof Labs && isThirtySeconds) { // TODO: Change to labs
+                    satisfactionGain = studentsInBuilding * building.getSatisfaction();
+                    building.updateSatisfactionGenerated(satisfactionGain);
+                } else if (building.getType() != BuildingTypes.LIBRARY) {
+                    currencyGain = studentsInBuilding * building.getIncome();
+                    satisfactionGain = studentsInBuilding * building.getSatisfaction();
+                    building.updateMoneyGenerated(currencyGain);
+                    building.updateSatisfactionGenerated(satisfactionGain);
+                }
+                satisfaction.increaseSatis(satisfactionGain);
+                money.increaseMoney(currencyGain);
             }
-            else if(building.getType() == BuildingTypes.PIAZZA || building.getType() == BuildingTypes.CENTRALHALL) { // TODO: change to lecture
-                satisfactionGain = studentsInBuilding * building.getSatisfaction() * (libraryCount * libraryMultiplier);
-                libraryGain += studentsInBuilding * building.getSatisfaction() * (libraryCount * (libraryMultiplier - 1));
-                building.updateSatisfactionGenerated(satisfactionGain);
-            }
-            else if ((building.getType() == BuildingTypes.SOFTWARELABS || building.getType() == BuildingTypes.HARDWARELABS) && isThirtySeconds){ // TODO: Change to labs
-                satisfactionGain = studentsInBuilding * building.getSatisfaction();
-                building.updateSatisfactionGenerated(satisfactionGain);
-            }
-            else if (building.getType() != BuildingTypes.LIBRARY){
-                currencyGain = studentsInBuilding * building.getIncome();
-                satisfactionGain = studentsInBuilding * building.getSatisfaction();
-                building.updateMoneyGenerated(currencyGain);
-                building.updateSatisfactionGenerated(satisfactionGain);
-            }
-            satisfaction.increaseSatis(satisfactionGain);
-            money.increaseMoney(currencyGain);
         }
         // calculate how much satisfaction gained through libraries
         float libraryGainPer = libraryGain / libraryCount;

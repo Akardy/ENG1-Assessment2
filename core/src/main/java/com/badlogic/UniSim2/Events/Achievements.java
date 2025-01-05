@@ -63,7 +63,7 @@ public class Achievements {
             doneBusyUni = true;
         }
 
-        if (buildingCounts.getLabsCount() == 0 && satisfaction.getSatis() > 30 && !doneSatisfactionAndNoLab){
+        if (buildingCounts.getLabsCount() == 0 && satisfaction.getSatis() > 79 && !doneSatisfactionAndNoLab){
             announcement.showAnnouncement("Achievement:\nSo Good No Lab");
             doneSatisfactionAndNoLab = true;
         }

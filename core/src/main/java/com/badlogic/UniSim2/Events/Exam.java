@@ -135,10 +135,12 @@ public class Exam {
         int amountOfStudents = 0;
 
         for (Building building : placed) {
-            examSpace += building.getExamSpace();
+            if (!building.isBroken()) {
+                examSpace += building.getExamSpace();
 
-            if (building instanceof Accomodation) {
-                amountOfStudents += ((Accomodation) building).getRooms();
+                if (building instanceof Accomodation) {
+                    amountOfStudents += ((Accomodation) building).getRooms();
+                }
             }
         }
 

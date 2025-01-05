@@ -44,6 +44,8 @@ public abstract class Building extends Sprite {
 
     private int examSpace;
 
+    private boolean isBroken;
+
     public Building(Texture placedTexture, Texture collisionTexture, Texture draggingTexture, int width, int height,
                     float cost, String name, BuildingTypes type, int examSpace) {
 
@@ -62,6 +64,7 @@ public abstract class Building extends Sprite {
         moneyGenerated = 0;
         satisfactionGenerated = 0;
         howFull = 0;
+        isBroken = false;
 
 
         setSize(width, height);
@@ -233,6 +236,8 @@ public abstract class Building extends Sprite {
 
     public void calculateDiscountRate(float x, float y) {
     }
+    public boolean isBroken() {return isBroken;}
+    public void setBroken(boolean isBroken) {this.isBroken = isBroken;}
 
     public static double roundToSignificantFigures(double value, int sigFig) {
         if (value == 0) {
