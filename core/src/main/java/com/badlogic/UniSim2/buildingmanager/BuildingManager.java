@@ -462,14 +462,14 @@ public class BuildingManager {
             if (!building.isBroken()) {
                 int studentsInBuilding = (int) (building.getCapacity() * studentFillBuildingPercent);
                 building.setHowFull(studentsInBuilding);
-                if (building instanceof Accomodation) { // TODO: change to accom
+                if (building instanceof Accomodation) {
                     currencyGain = building.getRooms() * building.getIncome();
                     building.updateMoneyGenerated(currencyGain);
-                } else if (building instanceof LectureHall) { // TODO: change to lecture
+                } else if (building instanceof LectureHall) {
                     satisfactionGain = studentsInBuilding * building.getSatisfaction() * (libraryCount * libraryMultiplier);
                     libraryGain += studentsInBuilding * building.getSatisfaction() * (libraryCount * (libraryMultiplier - 1));
                     building.updateSatisfactionGenerated(satisfactionGain);
-                } else if (building instanceof Labs && isThirtySeconds) { // TODO: Change to labs
+                } else if (building instanceof Labs && isThirtySeconds) {
                     satisfactionGain = studentsInBuilding * building.getSatisfaction();
                     building.updateSatisfactionGenerated(satisfactionGain);
                 } else if (building.getType() != BuildingTypes.LIBRARY) {
