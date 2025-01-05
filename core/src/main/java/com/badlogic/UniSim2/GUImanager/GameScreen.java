@@ -3,6 +3,7 @@ package com.badlogic.UniSim2.GUImanager;
 import NPC.NPCManager;
 import com.badlogic.UniSim2.Events.Achievements;
 import com.badlogic.UniSim2.Events.Announcement;
+import com.badlogic.UniSim2.Events.BrokenBuilding;
 import com.badlogic.UniSim2.Events.Exam;
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.Building;
@@ -34,7 +35,7 @@ public class GameScreen implements Screen {
     private NPCManager NPCManager;
     private BuildingCounts counts;
 
-    private Exam events;
+    private Exam examEvent;
 
     private GameMenu menu; // Used to make and display the game menu
 
@@ -53,6 +54,7 @@ public class GameScreen implements Screen {
 
     private Announcement announcement;
     private Achievements achievements;
+    private BrokenBuilding brokenBuildingEvent;
 
     public GameScreen(Main game) {
         this.game = game;
@@ -69,10 +71,9 @@ public class GameScreen implements Screen {
         menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts, this);
         SoundManager.playMusic();
         announcement = new Announcement();
-        events = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);
+        examEvent = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);
         achievements = new Achievements(announcement, map.getBuildingManager(), satisfaction, counts, timer, money);
-
-
+        brokenBuildingEvent = new BrokenBuilding(timer, map.getBuildingManager(), counts);
     }
 
     @Override
@@ -116,7 +117,9 @@ public class GameScreen implements Screen {
             map.getBuildingManager().hideBuildingStats();
         }
 
-
+        if(brokenBuildingEvent.doRender()) {
+            brokenBuildingEvent.renderCross();
+        }
 
     }
 
@@ -147,9 +150,10 @@ public class GameScreen implements Screen {
     private void update(float delta) {
         if (isPaused == false) {
             timer.update();
-            events.checkTriggeringEvent(delta);
+            examEvent.checkTriggeringEvent(delta);
             achievements.updateAchievements();
             announcement.update(delta);
+            brokenBuildingEvent.checkTriggeringEvent();
             if (timer.hasReachedMaxTime()) {
                 game.endGame();
                 hasEnded = true;
@@ -166,7 +170,7 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Consts.BACKGROUND_COLOR);
         map.draw();
         menu.draw();
-        events.draw();
+        examEvent.draw();
         announcement.draw();
     }
 

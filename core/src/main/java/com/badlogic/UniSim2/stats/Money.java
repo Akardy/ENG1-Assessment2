@@ -12,7 +12,7 @@ public class Money {
     private float startingMoney;
 
     public Money() {
-        this.startingMoney = 10000000;
+        this.startingMoney = 10000;
     }
 
     /**
