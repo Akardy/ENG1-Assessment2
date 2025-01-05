@@ -17,7 +17,6 @@ import java.util.Random;
 
 public class BrokenBuilding {
 
-    private Random random;
     private ShapeRenderer shapeRenderer;
 
     private float goOfSeconds;
@@ -46,7 +45,6 @@ public class BrokenBuilding {
         renderLine = false;
         this.timer = timer;
         this.buildingManager = buildingManager;
-        random = new Random();
 
         scalex = (float) Gdx.graphics.getWidth() / Consts.WORLD_WIDTH;
         scaley = (float) Gdx.graphics.getHeight() / Consts.WORLD_HEIGHT;
@@ -57,9 +55,8 @@ public class BrokenBuilding {
     }
 
     private void selectTimeGoOf() {
-        //assert random != null;
-        //goOfSeconds = random.nextInt((int)Consts.STARTING_SECONDS - 20 + 1) + 20;
-        goOfSeconds = 5;
+        Random random = new Random();
+        goOfSeconds = random.nextInt(280) + 20;
     }
 
     public void checkTriggeringEvent(){
@@ -101,6 +98,7 @@ public class BrokenBuilding {
     }
 
     private void pickBuilding(){
+        Random random = new Random();
         indexOfBuilding = random.nextInt(buildingManager.getPlaced().size);
 
         x = buildingManager.getPlaced().get(indexOfBuilding).getX();
