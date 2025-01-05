@@ -440,7 +440,7 @@ public class BuildingManager {
         statsLabel.setVisible(false);
     }
 
-    public void gainSatisfactionAndCurrency(boolean isThirtySeconds){ // TODO: recreational do not have their distance boost yet
+    public void gainSatisfactionAndCurrency(boolean isThirtySeconds){ //
         float satisfactionGain = 0f;
         float currencyGain = 0f;
         int totalCapacity = 0;
