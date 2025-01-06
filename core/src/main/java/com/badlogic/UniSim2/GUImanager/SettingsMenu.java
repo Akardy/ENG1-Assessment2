@@ -35,7 +35,7 @@ public class SettingsMenu implements Screen {
     private final Skin skin;
     private ImageButton resumeButton;
     private GameScreen gameScreen;
-    private GameMenu gameMenu;
+    private Hud gameMenu;
     private StartScreen startScreen;
     private ImageButton res720Button;
     private ImageButton res1080Button;
@@ -43,7 +43,7 @@ public class SettingsMenu implements Screen {
 
     SpriteBatch spriteBatch = new SpriteBatch();
 
-    public SettingsMenu(Main game, GameScreen gameScreen, GameMenu gameMenu) {
+    public SettingsMenu(Main game, GameScreen gameScreen, Hud gameMenu) {
         this.game = game;
         this.gameScreen = gameScreen;
         this.gameMenu = gameMenu;

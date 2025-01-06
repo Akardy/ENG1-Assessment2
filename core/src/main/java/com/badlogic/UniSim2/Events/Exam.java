@@ -163,7 +163,7 @@ public class Exam {
             satisfaction.increaseSatis(10);
         }else {
             announcement.showAnnouncement("Exam Failed! \n- 10% Satisfaction!");
-            satisfaction.increaseSatis(-10);
+            satisfaction.decreaseSatis(10);
         }
     }
 }

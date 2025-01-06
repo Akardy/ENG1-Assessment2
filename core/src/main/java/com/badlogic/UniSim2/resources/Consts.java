@@ -119,13 +119,13 @@ public class Consts {
 
     public static final int NUM_WIDTH = scaleToCellSize(6);
     public static final int NUM_HEIGHT = scaleToCellSize(2);
-    public static final int NUM_X = scaleToCellSize(74);
-    public static final int NUM_Y = WORLD_HEIGHT - scaleToCellSize(37);
+    public static final int NUM_X = scaleToCellSize(73);
+    public static final int NUM_Y = WORLD_HEIGHT - scaleToCellSize(5);
     public static final int NUM_SIZE = 2;
     public static final Color NUM_COLOR = new Color(Color.WHITE);
 
     public static final int PAUSE_X = scaleToCellSize(69);
-    public static final int PAUSE_Y = WORLD_HEIGHT - scaleToCellSize(36);
+    public static final int PAUSE_Y = WORLD_HEIGHT - scaleToCellSize(37);
     public static final Color PAUSE_COLOR = new Color(Color.WHITE);
 
     public static final int SCORE_LABEL_WIDTH = scaleToCellSize(6);

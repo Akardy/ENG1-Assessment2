@@ -37,7 +37,7 @@ public class GameScreen implements Screen {
 
     private Exam examEvent;
 
-    private GameMenu menu; // Used to make and display the game menu
+    private Hud hud; // Used to make and display the game hud
 
     boolean isPaused = false;
 
@@ -68,17 +68,17 @@ public class GameScreen implements Screen {
         scaleY = viewport.getScreenHeight() / viewport.getWorldHeight();
         NPCManager = new NPCManager(scaleX, scaleY);
         map = new Map(game, counts, NPCManager, money, satisfaction, timer, scaleX, scaleY);
-        menu = new GameMenu(game, timer, money, satisfaction, num, map.getBuildingManager(), counts, this);
+        hud = new Hud(game, timer, money, satisfaction, num, map.getBuildingManager(), counts, this);
         SoundManager.playMusic();
         announcement = new Announcement();
         examEvent = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);
         achievements = new Achievements(announcement, map.getBuildingManager(), satisfaction, counts, timer, money);
-        brokenBuildingEvent = new BrokenBuilding(timer, map.getBuildingManager(), counts, announcement, money);
+        brokenBuildingEvent = new BrokenBuilding(timer, map.getBuildingManager(), counts, announcement, money, satisfaction);
     }
 
     @Override
     public void show() {
-        menu.activate();
+        hud.activate();
     }
 
     @Override
@@ -102,7 +102,7 @@ public class GameScreen implements Screen {
 
         if (hasEnded)
             return;
-        draw();
+        draw(delta);
         NPCManager.update(delta);
         Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         viewport.unproject(mousePos); // Convert screen coordinates to world coordinates
@@ -122,17 +122,17 @@ public class GameScreen implements Screen {
      * Processes input. Will pause/resume the game if the space is pressed.
      */
     private void input() {
-        menu.input();
+        hud.input();
         map.input();
 
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             if (isPaused) {
                 isPaused = false;
-                menu.resume();
+                hud.resume();
             } else {
                 isPaused = true;
-                menu.pause();
+                hud.pause();
             }
         }
 
@@ -143,7 +143,7 @@ public class GameScreen implements Screen {
      * and will end the game if the timer has reached its max time.
      */
     private void update(float delta) {
-        if (isPaused == false) {
+        if (!isPaused) {
             timer.update();
             examEvent.checkTriggeringEvent(delta);
             achievements.updateAchievements();
@@ -157,16 +157,16 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Draws the game. This means drawing the game menu, building menu and game
+     * Draws the game. This means drawing the game hud, building hud and game
      * map.
      */
-    private void draw() {
+    private void draw(float delta) {
         viewport.apply();
         ScreenUtils.clear(Consts.BACKGROUND_COLOR);
         map.draw();
-        menu.draw();
+        hud.draw();
         if(brokenBuildingEvent.doRender()) {
-            brokenBuildingEvent.renderCross();
+            brokenBuildingEvent.renderCross(delta);
         }
         examEvent.draw();
         announcement.draw();
@@ -193,7 +193,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         map.dispose();
-        menu.dispose();
+        hud.dispose();
     }
 
 }

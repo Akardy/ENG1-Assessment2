@@ -7,6 +7,7 @@ import com.badlogic.UniSim2.buildingmanager.types.BuildingTypes;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.stats.BuildingCounts;
 import com.badlogic.UniSim2.stats.Money;
+import com.badlogic.UniSim2.stats.Satisfaction;
 import com.badlogic.UniSim2.stats.Timer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
 
 import java.util.Random;
 
@@ -39,11 +41,18 @@ public class BrokenBuilding {
     private Money money;
 
     private Label prompt;
-    private Label outline;
+    private Label satTickPrompt;
     private Skin skin;
 
+    private float satTickPromptTimer;
+    private float brokenBuildingTickTimer;
+    private final float TICK_TIME = 5;
+
+    private Satisfaction satisfaction;
+
+
     public BrokenBuilding(Timer timer, BuildingManager buildingManager, BuildingCounts buildingCounts,
-                          Announcement announcement, Money money) {
+                          Announcement announcement, Money money, Satisfaction satisfaction) {
         shapeRenderer = new ShapeRenderer();
         selectTimeGoOf();
         hasGoneOf = false;
@@ -58,12 +67,14 @@ public class BrokenBuilding {
         this.announcement = announcement;
         this.money = money;
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        brokenBuildingTickTimer = TICK_TIME;
+        satTickPromptTimer = TICK_TIME / 2;
+        this.satisfaction = satisfaction;
     }
 
     private void selectTimeGoOf() {
-        //Random random = new Random();
-        //goOfSeconds = random.nextInt(280) + 20;
-        goOfSeconds = 2;
+        Random random = new Random();
+        goOfSeconds = random.nextInt(280) + 20;
     }
 
     public void checkTriggeringEvent(){
@@ -75,7 +86,7 @@ public class BrokenBuilding {
         }
     }
 
-    public void renderCross(){
+    public void renderCross(float delta){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
 
@@ -90,6 +101,21 @@ public class BrokenBuilding {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F)){
             endEvent();
         }
+
+        if(brokenBuildingTickTimer > 0){
+            brokenBuildingTickTimer -= delta;
+        }else {
+            satDecay();
+            brokenBuildingTickTimer = TICK_TIME;
+        }
+
+        if(satTickPrompt.isVisible() && satTickPromptTimer > 0){
+            satTickPromptTimer -= delta;
+        }else if(satTickPrompt.isVisible()){
+            satTickPrompt.setVisible(false);
+            satTickPromptTimer = TICK_TIME /2;
+        }
+
     }
 
     public boolean doRender(){
@@ -100,13 +126,21 @@ public class BrokenBuilding {
         pickBuilding();
         renderLine = true;
         disableBuilding();
-        addDecayAndMoney();
         announcement.showAnnouncement("Building Broke!!");
+
         prompt = new Label("Press F\nto fix\nBuilding", skin);
         prompt.setFontScale(2);
         prompt.setPosition((x * scalex) + 10, (y * scaley) + 65);
         prompt.setVisible(true);
         announcement.addNewLabel(prompt);
+
+        satTickPrompt = new Label("-1 Satisfaction" , skin);
+        satTickPrompt.setFontScale(2);
+        satTickPrompt.setAlignment(Align.bottomLeft);
+        satTickPrompt.setPosition(x * scalex, (y * scaley) + height + 50);
+        satTickPrompt.setColor(Color.RED);
+        satTickPrompt.setVisible(false);
+        announcement.addNewLabel(satTickPrompt);
     }
 
     private void pickBuilding(){
@@ -156,8 +190,9 @@ public class BrokenBuilding {
         disabledBuilding.setBroken(true);
     }
 
-    private void addDecayAndMoney(){
-
+    private void satDecay(){
+        satisfaction.decreaseSatis(1f);
+        satTickPrompt.setVisible(true);
     }
 
     private void endEvent(){

@@ -2,7 +2,6 @@ package com.badlogic.UniSim2.GUImanager;
 
 import com.badlogic.UniSim2.buildingmanager.types.*;
 import com.badlogic.UniSim2.stats.BuildingCounts;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
@@ -19,7 +18,7 @@ import com.badlogic.gdx.utils.Align;
 
 /**
  * A menu which can be used to place new buildings onto the map. This menu is
- * a part of the {@link GameMenu} game menu. It shows all the types of buildings
+ * a part of the {@link Hud} game menu. It shows all the types of buildings
  * that can be placed and how many of them are already placed.
  *
  * In this version, we display sub-options for each main building type
@@ -204,7 +203,7 @@ public class BuildingMenu {
                 break;
 
             case LABS:
-                // In Script 1, "showCoursePopup" was for "Labs"? 
+                // In Script 1, "showCoursePopup" was for "Labs"?
                 // Adjust if needed. The user has "SOFTWARELABS" & "HARDWARELABS" as sub-types.
                 labels = new String[] { "Software Labs", "Hardware Labs" };
                 subTypes = new BuildingTypes[] {
@@ -242,41 +241,41 @@ public class BuildingMenu {
             final BuildingTypes subType = subTypes[i];
             // Step 1: get cost
             float cost = getCostOfType(subType);
-        
+
             // Step 2: build multiline text
             String line1 = labels[i];     // e.g. "Greggs"
             String line2 = "£" + cost;    // e.g. "£2000"
-            String buttonText = line1 + "\n" + line2; 
+            String buttonText = line1 + "\n" + line2;
             // or any format you like
-        
+
             // Step 3: create the button
             TextButton button = new TextButton(buttonText, skin);
-        
+
             // Let the label wrap and center
             button.getLabel().setWrap(true);
             button.getLabel().setAlignment(Align.center);
             button.getLabel().setFontScale(1.2f);
-        
+
             // Step 4: create a stack for the count label
             Stack stack = new Stack();
             stack.add(button);
-        
+
             // existing code: set up subCount in top‑right corner
             int subCount = buildingCounts.getBuildingCounts(subType.ordinal());
             Label countLabel = new Label(String.valueOf(subCount), skin);
             countLabel.setColor(Consts.COUNT_COLOR);
             countLabel.setFontScale(1.4f);
-        
+
             Container<Label> countContainer = new Container<>(countLabel);
             countContainer.align(Align.topRight);
             countContainer.padTop(-10).padRight(-10);
-        
+
             stack.add(countContainer);
-        
+
             // Step 5: add the stack to the table
             menuTable.add(stack).colspan(2).pad(20).width(150).height(80).fillX();
             menuTable.row();
-        
+
             // Step 6: add click listener to place the building
             button.addListener(new ClickListener() {
                 @Override
@@ -306,57 +305,57 @@ public class BuildingMenu {
         // Step 1: Pick the correct up/down textures for this main type
         Texture buttonUpTexture;
         Texture buttonDownTexture;
-    
+
         switch (type) {
             case ACCOMODATION:
                 buttonUpTexture = Assets.accomodationButtonUpTexture;
                 buttonDownTexture = Assets.accomodationButtonDownTexture;
                 break;
-    
+
             case LECTUREHALL:
                 buttonUpTexture = Assets.lectureHallButtonUpTexture;
                 buttonDownTexture = Assets.lectureHallButtonDownTexture;
                 break;
-    
+
             case LIBRARY:
                 buttonUpTexture = Assets.libraryButtonUpTexture;
                 buttonDownTexture = Assets.libraryButtonDownTexture;
                 break;
-    
+
             case LABS:
                 // If you have dedicated labsMainUp/down, use them.
                 // Otherwise re-use "course" textures or something suitable.
-                buttonUpTexture = Assets.courseButtonUpTexture;  
+                buttonUpTexture = Assets.courseButtonUpTexture;
                 buttonDownTexture = Assets.courseButtonDownTexture;
                 break;
-    
+
             case FOODZONE:
                 buttonUpTexture = Assets.foodZoneButtonUpTexture;
                 buttonDownTexture = Assets.foodZoneButtonDownTexture;
                 break;
-    
+
             case RECREATIONAL:
                 buttonUpTexture = Assets.recreationalButtonUpTexture;
                 buttonDownTexture = Assets.recreationalButtonDownTexture;
                 break;
-    
+
             default:
-                // If you have no other main categories, just pick an existing texture 
+                // If you have no other main categories, just pick an existing texture
                 // or create a real fallback in Assets (not mandatory).
-                buttonUpTexture = Assets.accomodationButtonUpTexture; 
+                buttonUpTexture = Assets.accomodationButtonUpTexture;
                 buttonDownTexture = Assets.accomodationButtonDownTexture;
                 break;
         }
-    
+
         // Step 2: Build ImageButton style
         Drawable buttonUpDrawable = new TextureRegionDrawable(buttonUpTexture);
         Drawable buttonDownDrawable = new TextureRegionDrawable(buttonDownTexture);
-    
+
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         style.up = buttonUpDrawable;
         style.down = buttonDownDrawable;
         // You can also set style.over = something if you want a "hover" effect
-    
+
         // Step 3: Create and return the ImageButton
         ImageButton button = new ImageButton(style);
         button.setSize(Consts.BUILDING_BUTTON_WIDTH, Consts.BUILDING_BUTTON_HEIGHT);

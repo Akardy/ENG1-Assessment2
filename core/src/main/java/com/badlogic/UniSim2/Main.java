@@ -19,7 +19,7 @@ public class Main extends Game {
     private EndScreen endScreen;
     private CreditsScreen creditsScreen;
     private SettingsMenu settingsScreen;
-    private GameMenu gameMenu;
+    private Hud gameMenu;
 
     @Override
     public void create() {
@@ -73,7 +73,7 @@ public class Main extends Game {
      * Displays the settings screen by setting the screen to
      * {@link #settingsScreen}.
      */
-    public void settingsFromGame(GameScreen screen, GameMenu gameMenu) {
+    public void settingsFromGame(GameScreen screen, Hud gameMenu) {
         settingsScreen = new SettingsMenu(this, screen, gameMenu);
         setScreen(settingsScreen);
         gameScreen.dispose();
@@ -94,7 +94,7 @@ public class Main extends Game {
      * Resumes the game by setting the screen to the {@link #gameScreen}. Should be
      * called by the {@link GameScreen} when the resume button is clicked.
      */
-     public void returnToGameSettings(GameScreen gameScreen, GameMenu menu) {
+     public void returnToGameSettings(GameScreen gameScreen, Hud menu) {
          setScreen(gameScreen);
          menu.pause();
          Gdx.input.setInputProcessor(menu.getStage());

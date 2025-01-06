@@ -1,7 +1,9 @@
 package com.badlogic.UniSim2.GUImanager;
 
 import com.badlogic.UniSim2.Main;
+import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
+import com.badlogic.UniSim2.buildingmanager.types.Accomodation;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.resources.SoundManager;
 import com.badlogic.UniSim2.stats.*;
@@ -21,7 +23,7 @@ import com.badlogic.gdx.utils.Align;
  * menu}
  * which can be used to place new buildings.
  */
-public class GameMenu {
+public class Hud {
     private Stage stage;
     private Main game;
     private final Skin skin;
@@ -33,14 +35,16 @@ public class GameMenu {
     private Label timerLabel;
     private Label moneyLabel;
     private Label satisLabel;
-    private Label numLabel;
+    private Label studentLabel;
     private Label pauseLabel;
     private boolean isPaused;
     private Window popupWindow;
     private GameScreen gameScreen;
+    private boolean hasStudentChanged;
+    private BuildingManager buildingManager;
 
-    public GameMenu(Main game, Timer timer, Money money, Satisfaction satisfaction, NPCCount num,
-            BuildingManager buildings, BuildingCounts counts, GameScreen gameScreen) {
+    public Hud(Main game, Timer timer, Money money, Satisfaction satisfaction, NPCCount num,
+               BuildingManager buildings, BuildingCounts counts, GameScreen gameScreen) {
         stage = new Stage(game.getViewport());
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         buildingMenu = new BuildingMenu(stage, buildings, counts);
@@ -51,6 +55,8 @@ public class GameMenu {
         this.num = num;
         isPaused = false;
         this.gameScreen = gameScreen;
+        hasStudentChanged = false;
+        buildingManager = buildings;
         createMenu();
     }
 
@@ -67,7 +73,7 @@ public class GameMenu {
         createMoneyLabel();
         createSatisLabel();
         createPauseLabel();
-        createNumLabel();
+        createStudentLabel();
     }
 
     // Adds a label at the top of the screen displaying the time
@@ -150,7 +156,7 @@ public class GameMenu {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.settingsFromGame(gameScreen, GameMenu.this);
+                game.settingsFromGame(gameScreen, Hud.this);
                 popupWindow.remove();
             }
         });
@@ -165,13 +171,13 @@ public class GameMenu {
     private void createMoneyLabel() {
 
         // Initialize timerLabel
-        moneyLabel = new Label("£0.00", skin);
+        moneyLabel = new Label("Money: £0.00", skin);
         moneyLabel.setFontScale(2);
-        moneyLabel.setAlignment(Align.center);
+        moneyLabel.setAlignment(Align.right);
         moneyLabel.setColor(Consts.MONEY_COLOR);
 
         // Position the label at the top center of the screen
-        moneyLabel.setPosition(Consts.MONEY_X, Consts.MONEY_Y, Align.right);
+        moneyLabel.setPosition(Consts.MONEY_X + 10, Consts.MONEY_Y, Align.center);
 
         // Add the label to the stage
         stage.addActor(moneyLabel);
@@ -185,20 +191,20 @@ public class GameMenu {
         float updatedMoney = money.getMoney();
         int pounds = (int) (updatedMoney);
         int pence = (int) ((updatedMoney - ((int) updatedMoney)) * 100);
-        moneyLabel.setText(String.format("£" + "%02d.%02d", pounds, pence));
+        moneyLabel.setText(String.format("Money: £" + "%02d.%02d", pounds, pence));
     }
 
     // Adds a label at the top right of the screen displaying the satisfaction stat
     private void createSatisLabel() {
 
         // Initialize satisLabel
-        satisLabel = new Label("0%", skin);
+        satisLabel = new Label("Satisfaction: 0%", skin);
         satisLabel.setFontScale(2);
-        satisLabel.setAlignment(Align.center);
+        satisLabel.setAlignment(Align.right);
         satisLabel.setColor(Consts.SATIS_COLOR);
 
         // Position the label at the top center of the screen
-        satisLabel.setPosition(Consts.SATIS_X, Consts.SATIS_Y, Align.center);
+        satisLabel.setPosition(Consts.SATIS_X - 10, Consts.SATIS_Y, Align.center);
 
         // Add the label to the stage
         stage.addActor(satisLabel);
@@ -210,33 +216,45 @@ public class GameMenu {
      */
     private void updateSatisLabel() {
         float updatedSatis = satisfaction.getSatis();
-        satisLabel.setText(String.format("%s", updatedSatis + "%"));
+        satisLabel.setText(String.format("Satisfaction: %s", updatedSatis + "%"));
     }
 
     // Adds a label at the bottom right of the screen displaying the number of
     // students
-    private void createNumLabel() {
+    private void createStudentLabel() {
 
-        // Initialize numLabel
-        numLabel = new Label("0", skin);
-        numLabel.setFontScale(2);
-        numLabel.setAlignment(Align.center);
-        numLabel.setColor(Consts.NUM_COLOR);
+        // Initialize studentLabel
+        studentLabel = new Label("Students: 0", skin);
+        studentLabel.setFontScale(2);
+        studentLabel.setAlignment(Align.right);
+        studentLabel.setColor(Consts.NUM_COLOR);
 
         // Position the label at the top center of the screen
-        numLabel.setPosition(Consts.NUM_X, Consts.NUM_Y, Align.center);
+        studentLabel.setPosition(Consts.NUM_X, Consts.NUM_Y, Align.center);
 
         // Add the label to the stage
-        stage.addActor(numLabel);
+        stage.addActor(studentLabel);
     }
 
     /**
      * Updates the number of stuents shown on the label to the value got
      * from the NPCCount variable class.
      */
-    private void updateNumLabel() {
-        int updatedNum = num.getNum();
-        numLabel.setText(String.format("%s", updatedNum));
+    private void updateStudentLabel() {
+        if (hasStudentChanged && !buildingManager.getCurrentlySelecting()){
+            int updatedStudent = calculateStudents();
+            studentLabel.setText("Students: " + updatedStudent);
+        }
+    }
+
+    private int calculateStudents() {
+        int amount = 0;
+        for(Building building : buildingManager.getPlaced()){
+            if(building instanceof Accomodation){
+                amount += ((Accomodation)building).getRooms();
+            }
+        }
+        return amount;
     }
 
     // Adds a label at the bottom right of the screen displaying the pause
@@ -267,11 +285,14 @@ public class GameMenu {
      * Updates and draws the menu.
      */
     public void draw() {
-        if (isPaused == false) {
+        if (!isPaused) {
+            if(buildingManager.getCurrentlySelecting() && !hasStudentChanged){
+                hasStudentChanged = true;
+            }
             updateTimerLabel();
             updateMoneyLabel();
             updateSatisLabel();
-            updateNumLabel();
+            updateStudentLabel();
         }
         buildingMenu.draw();
         stage.draw();
