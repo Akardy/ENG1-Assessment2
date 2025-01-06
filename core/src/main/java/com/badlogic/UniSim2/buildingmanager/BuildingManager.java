@@ -155,7 +155,7 @@ public class BuildingManager {
         if (currentlySelecting && currentBuilding != null && !placingInProgress) {
             placingInProgress = true; // Prevent duplicate execution
 
-            if (!isColliding(currentBuilding) && money.getMoney() > currentBuilding.getCost()) {
+            if (!isColliding(currentBuilding) && money.getMoney() >= currentBuilding.getCost()) {
 
                 money.reduceMoney(currentBuilding.getCost());
 

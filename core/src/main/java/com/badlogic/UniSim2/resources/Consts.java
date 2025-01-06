@@ -52,6 +52,8 @@ public class Consts {
 
     public static final Color BACKGROUND_COLOR = new Color(Color.BLACK);
 
+    public static final float STARTING_MONEY = 10000;
+
     public static final int PATH_SIZE = scaleToCellSize(2);
 
     public static final int H_PATH_1_X = scaleToCellSize(9);

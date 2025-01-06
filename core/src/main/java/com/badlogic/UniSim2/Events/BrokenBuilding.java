@@ -149,10 +149,13 @@ public class BrokenBuilding {
     }
 
     private void endEvent(){
-        enableBuilding();
-        renderLine = false;
-        money.reduceMoney(500);
-        announcement.showAnnouncement("Fixed Building!\n-£500");
+        if(money.reduceMoney(500)){
+            announcement.showAnnouncement("Fixed Building!\n-£500");
+            enableBuilding();
+            renderLine = false;
+        }else{
+            buildingManager.showError("Can't afford to fix the Building!");
+        }
     }
 
     private void enableBuilding(){
