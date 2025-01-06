@@ -150,7 +150,7 @@ public class GameScreen implements Screen {
             announcement.update(delta);
             brokenBuildingEvent.checkTriggeringEvent();
             if (timer.hasReachedMaxTime()) {
-                game.endGame();
+                game.endGame(satisfaction);
                 hasEnded = true;
             }
         }

@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.GUImanager;
 
+import com.badlogic.UniSim2.stats.Satisfaction;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.resources.Assets;
@@ -27,26 +29,27 @@ public class EndScreen implements Screen {
     private Stage stage;
     private Label scoreLabel;
     private final Skin skin;
-    private int score;
+    private Satisfaction satisfaction;
     private ImageButton menuButton;
 
     SpriteBatch spriteBatch = new SpriteBatch();
 
-    public EndScreen(Main game, int score) {
+    public EndScreen(Main game, Satisfaction satisfaction) {
         this.game = game;
         this.viewport = game.getViewport();
         this.stage = new Stage(this.viewport);
         this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        this.score = score;
+        this.satisfaction = satisfaction;
         createScoreLabel();
         addMenuButton();
+        saveSatisfaction();
     }
 
     // Adds a label to the middle of the screen displaying the score that the player
     // managed to get throughout the game.
     private void createScoreLabel() {
         // Initialize scoreLabel
-        scoreLabel = new Label("Score : " + score, skin);
+        scoreLabel = new Label("Score : " + satisfaction.toString(), skin);
         scoreLabel.setFontScale(3);
         scoreLabel.setAlignment(Align.center);
         scoreLabel.setColor(Consts.TIMER_COLOR);
@@ -108,6 +111,14 @@ public class EndScreen implements Screen {
         spriteBatch.draw(Assets.startBackgroundTexture, 0, 0, Consts.WORLD_WIDTH, Consts.WORLD_HEIGHT);
         spriteBatch.end();
 
+    }
+
+    private void saveSatisfaction() {
+        // Get a handle to the file in the local storage
+        FileHandle file = Gdx.files.local("assets/leaderboard.txt");
+        System.out.println("Saving to: " + file.file().getAbsolutePath());
+        // Append the satisfaction value to the file, followed by a newline for readability
+        file.writeString(satisfaction.getSatis() + "\n", true);
     }
 
     @Override

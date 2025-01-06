@@ -35,4 +35,10 @@ public class Satisfaction {
     public void increaseSatis(float amount){startingSatis = Math.min(startingSatis + amount, 100);}
 
     public void decreaseSatis(float amount){startingSatis = Math.max(startingSatis - amount, 0);}
+
+    @Override
+    public String toString() {
+        String output = String.format("%.2f", startingSatis);
+        return output + "%";
+    }
 }

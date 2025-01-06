@@ -4,15 +4,21 @@ import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * This is the screen that shows when the game starts. It holds a start game
@@ -26,6 +32,9 @@ public class StartScreen implements Screen {
     private ImageButton startButton;
     private ImageButton creditsButton;
     private ImageButton settingsButton;
+    private Table leaderboardTable;
+    private List<Float> leaderboredData;
+    private Skin skin;
 
     public StartScreen(Main game) {
         this.game = game;
@@ -34,6 +43,10 @@ public class StartScreen implements Screen {
         addStartButton();
         addCreditsButton();
         addSettingsButton();
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        leaderboredData = getLeaderboardData();
+        addLeaderBored();
+        addClearLeaderboard();
     }
 
     @Override
@@ -171,6 +184,100 @@ public class StartScreen implements Screen {
         spriteBatch.draw(Assets.startBackgroundTexture, 0, 0, Consts.WORLD_WIDTH, Consts.WORLD_HEIGHT);
         spriteBatch.end();
 
+    }
+
+    private void addLeaderBored() {
+        Table mainTable = new Table();
+        leaderboardTable = new Table();
+        leaderboardTable.top().left();
+
+        java.util.List<Float> sortedScores = leaderboredData;
+        sortedScores.sort(Comparator.reverseOrder());
+        int loop = Math.min(sortedScores.size(), 5);
+
+        Label rankHeader = new Label("Rank", skin);
+        Label satData = new Label("Satisfaction", skin);
+
+
+        leaderboardTable.add(rankHeader).pad(5).left();
+        leaderboardTable.add(satData).pad(5).expandX().center();
+        leaderboardTable.row();
+
+        for (int i = 0; i < loop; i++) {
+            Label rankLabel = new Label((i + 1) + ".", skin);
+            Label satLabel = new Label(String.format("%.2f", sortedScores.get(i)) + "% Satisfaction", skin);
+            rankLabel.setColor(Color.BLACK);
+            satLabel.setColor(Color.BLACK);
+            leaderboardTable.add(rankLabel).pad(5).left();
+            leaderboardTable.add(satLabel).pad(5).expandX().center();
+            leaderboardTable.row();
+        }
+
+        ScrollPane scrollPane = new ScrollPane(leaderboardTable, skin);
+        scrollPane.setSize(300, 200);
+        scrollPane.setPosition(50, Consts.WORLD_HEIGHT / 3f);
+        scrollPane.setFadeScrollBars(false);
+
+        stage.addActor(scrollPane);
+        stage.addActor(mainTable);
+
+    }
+
+    private java.util.List<Float> getLeaderboardData() {
+        java.util.List<Float> leaderboardSat = new ArrayList<>();
+        FileHandle file = Gdx.files.local("assets/leaderboard.txt");
+
+        if (file.exists()) {
+            // Read the entire file as a string
+            String fileContents = file.readString();
+            // Split file into lines (assuming each line is a satisfaction value)
+            String[] lines = fileContents.split("\n");
+
+            // Parse each line as a float and add it to the list
+            for (String line : lines) {
+                try {
+                    float satisfaction = Float.parseFloat(line.trim());  // Convert line to float
+                    leaderboardSat.add(satisfaction);
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing value: " + line);
+                }
+            }
+        }
+        return leaderboardSat;
+    }
+
+    private void addClearLeaderboard(){
+        TextButton clearLeaderboardButton = new TextButton("Clear Leaderboard", skin);
+
+        clearLeaderboardButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                clearLeaderboardSat();
+                leaderboardTable.clear();
+                Label rankHeader = new Label("Rank", skin);
+                Label timeHeader = new Label("Satisfaction", skin);
+
+                leaderboardTable.add(rankHeader).pad(5).left();
+                leaderboardTable.add(timeHeader).pad(5).expandX().center();
+                leaderboardTable.row();
+            }
+        });
+
+        clearLeaderboardButton.setSize(150, 25);
+        clearLeaderboardButton.setPosition(75, 275);
+
+        stage.addActor(clearLeaderboardButton);
+    }
+
+    /**
+     * Clears the leaderboard satisfaction scores from the file.
+     */
+    public void clearLeaderboardSat() {
+        // Get a handle to the file
+        FileHandle file = Gdx.files.local("assets/leaderboard.txt");
+
+        // Write an empty string to clear the file's content
+        file.writeString("", false);
     }
 
     @Override

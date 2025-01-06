@@ -2,6 +2,7 @@ package com.badlogic.UniSim2;
 
 import com.badlogic.UniSim2.GUImanager.*;
 import com.badlogic.UniSim2.resources.*;
+import com.badlogic.UniSim2.stats.Satisfaction;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -54,8 +55,8 @@ public class Main extends Game {
      * by
      * the {@link GameScreen} when the timer ends.
      */
-    public void endGame() {
-        endScreen = new EndScreen(this, 0);
+    public void endGame(Satisfaction satisfaction) {
+        endScreen = new EndScreen(this, satisfaction);
         setScreen(endScreen);
         gameScreen.dispose();
     }
