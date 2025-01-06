@@ -10,10 +10,10 @@ import com.badlogic.gdx.utils.Align;
 
 public class Announcement {
 
-    Stage stage;
-    Skin skin;
-    Label eventAnnouncement;
-    float eventAnnouncementTime;
+    private Stage stage;
+    private Skin skin;
+    private Label eventAnnouncement;
+    private float eventAnnouncementTime;
 
     public Announcement(){
         this.stage = new Stage();
@@ -56,5 +56,11 @@ public class Announcement {
     public void draw(){
         stage.act();
         stage.draw();
+    }
+
+    public void addNewLabel (Label newLabel){
+        eventAnnouncement.remove();
+        stage.addActor(newLabel);
+        stage.addActor(eventAnnouncement);
     }
 }

@@ -116,11 +116,6 @@ public class GameScreen implements Screen {
         } else {
             map.getBuildingManager().hideBuildingStats();
         }
-
-        if(brokenBuildingEvent.doRender()) {
-            brokenBuildingEvent.renderCross();
-        }
-
     }
 
     /**
@@ -170,6 +165,9 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Consts.BACKGROUND_COLOR);
         map.draw();
         menu.draw();
+        if(brokenBuildingEvent.doRender()) {
+            brokenBuildingEvent.renderCross();
+        }
         examEvent.draw();
         announcement.draw();
     }

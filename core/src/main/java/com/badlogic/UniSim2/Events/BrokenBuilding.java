@@ -12,6 +12,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.Random;
 
@@ -36,6 +38,9 @@ public class BrokenBuilding {
     private Building disabledBuilding;
     private Money money;
 
+    private Label prompt;
+    private Label outline;
+    private Skin skin;
 
     public BrokenBuilding(Timer timer, BuildingManager buildingManager, BuildingCounts buildingCounts,
                           Announcement announcement, Money money) {
@@ -52,11 +57,13 @@ public class BrokenBuilding {
         this.buildingCounts = buildingCounts;
         this.announcement = announcement;
         this.money = money;
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     }
 
     private void selectTimeGoOf() {
-        Random random = new Random();
-        goOfSeconds = random.nextInt(280) + 20;
+        //Random random = new Random();
+        //goOfSeconds = random.nextInt(280) + 20;
+        goOfSeconds = 2;
     }
 
     public void checkTriggeringEvent(){
@@ -95,6 +102,11 @@ public class BrokenBuilding {
         disableBuilding();
         addDecayAndMoney();
         announcement.showAnnouncement("Building Broke!!");
+        prompt = new Label("Press F\nto fix\nBuilding", skin);
+        prompt.setFontScale(2);
+        prompt.setPosition((x * scalex) + 10, (y * scaley) + 65);
+        prompt.setVisible(true);
+        announcement.addNewLabel(prompt);
     }
 
     private void pickBuilding(){
@@ -153,6 +165,7 @@ public class BrokenBuilding {
             announcement.showAnnouncement("Fixed Building!\n-£500");
             enableBuilding();
             renderLine = false;
+            prompt.remove();
         }else{
             buildingManager.showError("Can't afford to fix the Building!");
         }
