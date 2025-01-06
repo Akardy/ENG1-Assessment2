@@ -12,7 +12,7 @@ public class Satisfaction {
     public Satisfaction() {
 
         this.startingSatis = 40;
-        this.decay = -0.2f;
+        this.decay = -1f;
     }
 
     /**
@@ -27,7 +27,7 @@ public class Satisfaction {
         return Float.parseFloat(startingSatis2dp);
     }
     public void incrementDecay(){
-        decay -= 0.1f;
+        decay -= 1f;
 
     }
     public void decay(){startingSatis = Math.max(startingSatis + decay, 0);}

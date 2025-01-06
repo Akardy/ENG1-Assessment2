@@ -4,8 +4,16 @@ eclipse.project.name = appName + '-core'
 dependencies {
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+  testImplementation 'org.mockito:mockito-core:4.0.0'  // For core Mockito functionality
+  testImplementation 'org.mockito:mockito-junit-jupiter:4.0.0'  // For JUnit 5 integration
 
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
+}
+
+test {
+  useJUnitPlatform()
 }

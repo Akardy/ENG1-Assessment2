@@ -134,7 +134,7 @@ public class BrokenBuilding {
         prompt.setVisible(true);
         announcement.addNewLabel(prompt);
 
-        satTickPrompt = new Label("-1 Satisfaction" , skin);
+        satTickPrompt = new Label("-2% Satisfaction" , skin);
         satTickPrompt.setFontScale(2);
         satTickPrompt.setAlignment(Align.bottomLeft);
         satTickPrompt.setPosition(x * scalex, (y * scaley) + height + 50);
@@ -191,7 +191,7 @@ public class BrokenBuilding {
     }
 
     private void satDecay(){
-        satisfaction.decreaseSatis(1f);
+        satisfaction.decreaseSatis(2f);
         satTickPrompt.setVisible(true);
     }
 
@@ -201,6 +201,7 @@ public class BrokenBuilding {
             enableBuilding();
             renderLine = false;
             prompt.remove();
+            satTickPrompt.remove();
         }else{
             buildingManager.showError("Can't afford to fix the Building!");
         }

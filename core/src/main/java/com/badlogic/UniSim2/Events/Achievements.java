@@ -15,7 +15,6 @@ public class Achievements {
     private BuildingManager buildingManager;
     private Satisfaction satisfaction;
     private BuildingCounts buildingCounts;
-    private Timer timer;
     private Money money;
 
     boolean doneRichy;
@@ -27,12 +26,11 @@ public class Achievements {
     boolean check;
 
     public Achievements(Announcement announcement, BuildingManager buildingManager, Satisfaction satisfaction,
-                        BuildingCounts buildingCounts, Timer timer, Money money) {
+                        BuildingCounts buildingCounts, Money money) {
         this.announcement = announcement;
         this.buildingManager = buildingManager;
         this.satisfaction = satisfaction;
         this.buildingCounts = buildingCounts;
-        this.timer = timer;
         this.money = money;
         doneRichy = false;
         doneSatisfactionAndNoLab = false;
@@ -68,7 +66,7 @@ public class Achievements {
             doneSatisfactionAndNoLab = true;
         }
 
-        if (money.getMoney() > 100000 && !doneRichy){
+        if (money.getMoney() > 50000 && !doneRichy){
             announcement.showAnnouncement("Achievement:\nRich McGee");
             doneRichy = true;
         }

@@ -120,7 +120,7 @@ public class BuildingManager {
      * Used to determine what to do when the mouse moves or clicks.
      *
      * @param mousePos The position of the mouse in world coordinates.
-     * @param clicked  true if a click has happened and false if not.
+     * @param leftClicked  true if a click has happened and false if not.
      */
     public void input(Vector2 mousePos, boolean rightClicked, boolean leftClicked,boolean backspacePressed) {
         // If we're currently selecting a building
@@ -270,11 +270,11 @@ public class BuildingManager {
                 break;
             case PIAZZA:
                 currentBuilding = new LectureHall(Assets.piazzaPlacedTexture, Assets.piazzaCollisionTexture, Assets.piazzaDraggingTexture,
-                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 2500, "Piazza", BuildingTypes.PIAZZA, 200, 0.001f, 100);
+                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 2500, "Piazza", BuildingTypes.PIAZZA, 200, 0.001f, 200);
                 break;
             case CENTRALHALL:
                 currentBuilding = new LectureHall(Assets.centralHallPlacedTexture, Assets.centralHallCollisionTexture, Assets.centralHallDraggingTexture,
-                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 4000, "Central Hall", BuildingTypes.CENTRALHALL, 400, 0.0012f, 100);
+                    Consts.LECTUREHALL_WIDTH, Consts.LECTUREHALL_HEIGHT, 4000, "Central Hall", BuildingTypes.CENTRALHALL, 400, 0.0012f, 500);
                 break;
             case SOFTWARELABS:
                 currentBuilding = new Labs(Assets.softwareLabsPlacedTexture, Assets.softwareLabsCollisionTexture, Assets.softwareLabsDraggingTexture,

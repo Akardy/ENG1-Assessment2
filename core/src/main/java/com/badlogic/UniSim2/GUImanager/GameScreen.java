@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
         SoundManager.playMusic();
         announcement = new Announcement();
         examEvent = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);
-        achievements = new Achievements(announcement, map.getBuildingManager(), satisfaction, counts, timer, money);
+        achievements = new Achievements(announcement, map.getBuildingManager(), satisfaction, counts, money);
         brokenBuildingEvent = new BrokenBuilding(timer, map.getBuildingManager(), counts, announcement, money, satisfaction);
     }
 
