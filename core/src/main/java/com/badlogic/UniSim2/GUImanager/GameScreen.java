@@ -1,10 +1,7 @@
 package com.badlogic.UniSim2.GUImanager;
 
 import NPC.NPCManager;
-import com.badlogic.UniSim2.Events.Achievements;
-import com.badlogic.UniSim2.Events.Announcement;
-import com.badlogic.UniSim2.Events.BrokenBuilding;
-import com.badlogic.UniSim2.Events.Exam;
+import com.badlogic.UniSim2.Events.*;
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.mapmanager.Map;
@@ -55,6 +52,7 @@ public class GameScreen implements Screen {
     private Announcement announcement;
     private Achievements achievements;
     private BrokenBuilding brokenBuildingEvent;
+    private BuildingFrenzy buildingFrenzyEvent;
 
     public GameScreen(Main game) {
         this.game = game;
@@ -74,6 +72,8 @@ public class GameScreen implements Screen {
         examEvent = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);
         achievements = new Achievements(announcement, map.getBuildingManager(), satisfaction, counts, money);
         brokenBuildingEvent = new BrokenBuilding(timer, map.getBuildingManager(), counts, announcement, money, satisfaction);
+        buildingFrenzyEvent = new BuildingFrenzy(timer, satisfaction, map.getBuildingManager(), counts, announcement, game);
+
     }
 
     @Override
@@ -146,6 +146,7 @@ public class GameScreen implements Screen {
         if (!isPaused) {
             timer.update();
             examEvent.checkTriggeringEvent(delta);
+            buildingFrenzyEvent.checkForBuildingFrenzy(delta);
             achievements.updateAchievements();
             announcement.update(delta);
             brokenBuildingEvent.checkTriggeringEvent();
@@ -165,6 +166,7 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Consts.BACKGROUND_COLOR);
         map.draw();
         hud.draw();
+        buildingFrenzyEvent.draw();
         if(brokenBuildingEvent.doRender()) {
             brokenBuildingEvent.renderCross(delta);
         }

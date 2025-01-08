@@ -189,4 +189,16 @@ public class Consts {
     public static float NPCSpeed = 0.05f; // 10% per frame
 
     public static float STARTING_SECONDS = 300f;
+
+    public static final int FRENZY_TOP_X = scaleToCellSize(12);
+    public static final int FRENZY_TOP_Y = WORLD_HEIGHT - scaleToCellSize(33);
+
+    public static final int FRENZY_CENTER_X = scaleToCellSize(12);
+    public static final int FRENZY_CENTER_Y = WORLD_HEIGHT - scaleToCellSize(35);
+
+    public static final int FRENZY_BOTTOM_X = scaleToCellSize(12);
+    public static final int FRENZY_BOTTOM_Y = WORLD_HEIGHT - scaleToCellSize(37);
+
+    public static final int FRENZY_TIMER_X = scaleToCellSize(12);
+    public static final int FRENZY_TIMER_Y = WORLD_HEIGHT - scaleToCellSize(31);
 }
