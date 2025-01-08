@@ -4,6 +4,7 @@ import NPC.NPCManager;
 import com.badlogic.UniSim2.Events.Achievements;
 import com.badlogic.UniSim2.Events.Announcement;
 import com.badlogic.UniSim2.Events.BrokenBuilding;
+import com.badlogic.UniSim2.Events.BuildingMaintenance;
 import com.badlogic.UniSim2.Events.Exam;
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.Building;
@@ -55,6 +56,7 @@ public class GameScreen implements Screen {
     private Announcement announcement;
     private Achievements achievements;
     private BrokenBuilding brokenBuildingEvent;
+    private BuildingMaintenance buildingMaintenance;
 
     public GameScreen(Main game) {
         this.game = game;
@@ -74,6 +76,7 @@ public class GameScreen implements Screen {
         examEvent = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);
         achievements = new Achievements(announcement, map.getBuildingManager(), satisfaction, counts, money);
         brokenBuildingEvent = new BrokenBuilding(timer, map.getBuildingManager(), counts, announcement, money, satisfaction);
+        buildingMaintenance = new BuildingMaintenance(timer, map.getBuildingManager(), money, satisfaction, announcement);
     }
 
     @Override
@@ -99,6 +102,8 @@ public class GameScreen implements Screen {
         }
         // show if there is an error message
         map.getBuildingManager().updateErrorLabel(delta);
+
+        buildingMaintenance.render(delta);
 
         if (hasEnded)
             return;
@@ -149,6 +154,7 @@ public class GameScreen implements Screen {
             achievements.updateAchievements();
             announcement.update(delta);
             brokenBuildingEvent.checkTriggeringEvent();
+            buildingMaintenance.checkMaintenance();
             if (timer.hasReachedMaxTime()) {
                 game.endGame(satisfaction);
                 hasEnded = true;
@@ -194,6 +200,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         map.dispose();
         hud.dispose();
+        buildingMaintenance.dispose();
     }
 
 }
