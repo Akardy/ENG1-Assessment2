@@ -89,7 +89,7 @@ public class BuildingFrenzy {
 
     public void checkForBuildingFrenzy(float delta){
         //Check for exam time
-        if ((int)timer.getElapsedTime() % 60 == 2 && !eventTriggered){
+        if ((int)timer.getElapsedTime() % 60 == 25 && !eventTriggered){
             startEvent();
         }
 
