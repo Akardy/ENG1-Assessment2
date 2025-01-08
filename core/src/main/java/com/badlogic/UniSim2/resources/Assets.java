@@ -333,9 +333,9 @@ public class Assets {
         constantineCollisionTexture = new Texture("textures/buildings/constantineCollision.png");
         constantineDraggingTexture = new Texture("textures/buildings/constantineDragging.png");
 
-        lectureHallPlacedTexture = new Texture("textures/buildings/lectureHallPlaced.png");
-        lectureHallCollisionTexture = new Texture("textures/buildings/lectureHallCollision.png");
-        lectureHallDraggingTexture = new Texture("textures/buildings/lectureHallDragging.png");
+        lectureHallPlacedTexture = new Texture("textures/buildings/lecturehallPlaced.png");
+        lectureHallCollisionTexture = new Texture("textures/buildings/lecturehallCollision.png");
+        lectureHallDraggingTexture = new Texture("textures/buildings/lecturehallDragging.png");
 
         piazzaPlacedTexture = new Texture("textures/buildings/piazzaPlaced.png");
         piazzaCollisionTexture = new Texture("textures/buildings/piazzaCollision.png");
@@ -393,7 +393,7 @@ public class Assets {
         societyBuildingCollisionTexture = new Texture("textures/buildings/societyBuildingCollision.png");
         societyBuildingDraggingTexture = new Texture("textures/buildings/societyBuildingDragging.png");
 
-        NPCTexture = new TextureRegion(new Texture("textures/NPC.png"));
+        NPCTexture = new TextureRegion(new Texture("textures/npc.png"));
 
     }
 }
