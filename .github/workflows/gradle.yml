@@ -44,7 +44,7 @@ jobs:
       uses: actions/upload-artifact@v4.6.0
       with:
         name: lib.jar
-        path: core/build/libs/core-$prijectVersion.jar
+        path: lwjgl3/build/libs/UniSim2-1.0.0.0.jar
 
 
   dependency-submission:
