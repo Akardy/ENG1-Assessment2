@@ -32,6 +32,21 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
+    - name: Upload JaCoCo coverage report
+  
+      uses: actions/upload-artifact@v4.6.0
+      with:
+    # Artifact name
+       name: jacoco report
+    # A file, directory or wildcard pattern that describes what to upload
+       path: ENG1-Assessment2/core/build/reports/jacoco/test/html/
+
+    - name: Upload JAR
+      uses: upload-artifact@v4.6.0
+      with:
+        name: lib.jar
+        uses: ENG1-Assessment2/core/build/libs/core-$prijectVersion.jar
+
 
   dependency-submission:
 
