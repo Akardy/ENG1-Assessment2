@@ -41,7 +41,7 @@ jobs:
         path: ENG1-Assessment2/core/build/reports/jacoco/test/html/
 
     - name: Upload JAR
-      uses: upload-artifact@v4.6.0
+      uses: actions/upload-artifact@v4.6.0
       with:
         name: lib.jar
         path: ENG1-Assessment2/core/build/libs/core-$prijectVersion.jar
