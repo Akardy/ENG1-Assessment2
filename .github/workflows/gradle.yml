@@ -44,7 +44,7 @@ jobs:
       uses: upload-artifact@v4.6.0
       with:
         name: lib.jar
-        uses: ENG1-Assessment2/core/build/libs/core-$prijectVersion.jar
+        path: ENG1-Assessment2/core/build/libs/core-$prijectVersion.jar
 
 
   dependency-submission:
