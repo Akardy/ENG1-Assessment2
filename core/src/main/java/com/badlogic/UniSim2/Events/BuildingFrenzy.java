@@ -59,8 +59,6 @@ public class BuildingFrenzy {
         timerPrompt.setPosition(Consts.FRENZY_TIMER_X, Consts.FRENZY_TIMER_Y);
         timerPrompt.setVisible(false);
 
-
-
         Label topPrompt = new Label("", skin);
         topPrompt.setFontScale(2);
         topPrompt.setPosition(Consts.FRENZY_TOP_X,Consts.FRENZY_TOP_Y);
