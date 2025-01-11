@@ -77,7 +77,6 @@ public class Main extends Game {
     public void settingsFromGame(GameScreen screen, Hud gameMenu) {
         settingsScreen = new SettingsMenu(this, screen, gameMenu);
         setScreen(settingsScreen);
-        gameScreen.dispose();
     }
 
     /**
