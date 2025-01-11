@@ -486,7 +486,6 @@ public class BuildingMenu {
                 };
 
             default:
-                // If none match, just go back to main or do nothing
                 return new BuildingTypes[] {};
         }
     }

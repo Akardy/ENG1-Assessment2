@@ -69,6 +69,7 @@ public class BuildingManager {
 
 
 
+
     public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer, float scaleX, float scaleY) {
         placed = new Array<>();
         currentBuilding = null;
@@ -172,7 +173,7 @@ public class BuildingManager {
                     NPCManager.addNPC(npcCount);
                     // checks for new discount Rates on recreational buildings
                     for (Building building: placed){
-                        if (building.getType() == BuildingTypes.NATURE || building.getType() == BuildingTypes.GYM || building.getType() == BuildingTypes.SOCIETYBUILDING){ // TODO: Change to accomodation
+                        if (building instanceof Recreational){
                             building.calculateDiscountRate(currentBuilding.getX(), currentBuilding.getY());
                         }
                     }
@@ -186,7 +187,7 @@ public class BuildingManager {
                     buildingCounts.incrementRecreational(currentBuilding.getType().ordinal());
                     // calculate discount rate
                     for (Building building: placed){
-                        if (building.getType() == BuildingTypes.DERWENT || building.getType() == BuildingTypes.GOODRICKE || building.getType() == BuildingTypes.CONSTANTINE){ // TODO: Change to accomodation
+                        if (building instanceof Accomodation){
                             ((Recreational) currentBuilding).calculateDiscountRate(building.getX(), building.getY());
                         }
                     }
@@ -416,7 +417,7 @@ public class BuildingManager {
     }
 
 
-    public void displayBuildingStats(Building building) { // TODO: THIS NEEDS TO BE DISPLAYED AFTER NPCs - they go over
+    public void displayBuildingStats(Building building) {
         String stats = building.getStats();
         statsLabel.setText(stats); // Update label text
         float padding = 1.1f; // Padding around text

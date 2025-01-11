@@ -65,6 +65,8 @@ public class Recreational extends Building{
         return satisfactionPerStudent;
     }
 
+    public float getBestDiscountRate(){ return bestDiscountRate;}
+
 
     public String getStats(){
         return "Building: " + getType() + "\nAccomodation Proximity Discount: -" + roundToSignificantFigures(bestDiscountRate, 3) + "%" +

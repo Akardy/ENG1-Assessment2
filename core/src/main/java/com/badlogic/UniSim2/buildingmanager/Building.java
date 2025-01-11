@@ -230,6 +230,7 @@ public abstract class Building extends Sprite {
     public float getCost(){return cost;}
 
     public BuildingTypes getType(){return  type;}
+    public float getBestDiscountRate(){return 0f;}
 
     public void dispose() {
     }

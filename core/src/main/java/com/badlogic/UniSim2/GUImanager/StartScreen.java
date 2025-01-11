@@ -33,7 +33,7 @@ public class StartScreen implements Screen {
     private ImageButton creditsButton;
     private ImageButton settingsButton;
     private Table leaderboardTable;
-    private List<Float> leaderboredData;
+    private List<Float> leaderboardData;
     private Skin skin;
 
     public StartScreen(Main game) {
@@ -44,10 +44,12 @@ public class StartScreen implements Screen {
         addCreditsButton();
         addSettingsButton();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        leaderboredData = getLeaderboardData();
+        leaderboardData = getLeaderboardData();
         addLeaderBored();
         addClearLeaderboard();
     }
+
+
 
     @Override
     public void show() {
@@ -191,7 +193,7 @@ public class StartScreen implements Screen {
         leaderboardTable = new Table();
         leaderboardTable.top().left();
 
-        java.util.List<Float> sortedScores = leaderboredData;
+        java.util.List<Float> sortedScores = leaderboardData;
         sortedScores.sort(Comparator.reverseOrder());
         int loop = Math.min(sortedScores.size(), 5);
 
@@ -223,7 +225,7 @@ public class StartScreen implements Screen {
 
     }
 
-    private java.util.List<Float> getLeaderboardData() {
+    public java.util.List<Float> getLeaderboardData() {
         java.util.List<Float> leaderboardSat = new ArrayList<>();
         FileHandle file = Gdx.files.local("assets/leaderboard.txt");
 
