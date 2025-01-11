@@ -59,6 +59,10 @@ public class BuildingMenu {
             BuildingTypes.RECREATIONAL
     };
 
+    public BuildingMenu(Skin mockSkin) {
+        skin = mockSkin;
+    }
+
     private float getCostOfType(BuildingTypes type) {
         switch (type) {
             case DERWENT:         return 2500f;
@@ -101,6 +105,9 @@ public class BuildingMenu {
 
         stage.addActor(menuTable);
     }
+
+
+
 
     /**
      * Creates the building menu: the menu bar plus the main options.
@@ -437,5 +444,50 @@ public class BuildingMenu {
      */
     public void dispose() {
         // If you need to dispose anything, do it here.
+    }
+    public BuildingTypes[] getSubOptionList(BuildingTypes mainType){
+        switch (mainType) {
+            case ACCOMODATION:
+                return new BuildingTypes[] {
+                    BuildingTypes.DERWENT,
+                    BuildingTypes.GOODRICKE,
+                    BuildingTypes.CONSTANTINE
+                };
+
+            case LECTUREHALL:
+                return new BuildingTypes[] {
+                    BuildingTypes.PIAZZA,
+                    BuildingTypes.CENTRALHALL
+                };
+
+            case LIBRARY:
+                return new BuildingTypes[] {
+                    BuildingTypes.LIBRARY
+                };
+
+            case LABS:
+                return new BuildingTypes[] {
+                    BuildingTypes.SOFTWARELABS,
+                    BuildingTypes.HARDWARELABS
+                };
+
+            case FOODZONE:
+                return new BuildingTypes[] {
+                    BuildingTypes.NISA,
+                    BuildingTypes.GREGGS,
+                    BuildingTypes.DERWENTDINING
+                };
+
+            case RECREATIONAL:
+                return new BuildingTypes[] {
+                    BuildingTypes.NATURE,
+                    BuildingTypes.GYM,
+                    BuildingTypes.SOCIETYBUILDING
+                };
+
+            default:
+                // If none match, just go back to main or do nothing
+                return new BuildingTypes[] {};
+        }
     }
 }
