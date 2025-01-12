@@ -27,7 +27,7 @@ public class Main extends Game {
         Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4,
                 Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 4);
         Assets.loadTextures();
-        startScreen = new StartScreen(this);
+        startScreen = new StartScreen(this, Gdx.files.local("assets/leaderboard.txt"));
         setScreen(startScreen);
     }
 

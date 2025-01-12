@@ -31,7 +31,6 @@ public class Hud {
     private Timer timer;
     private Money money;
     private Satisfaction satisfaction;
-    private NPCCount num;
     private Label timerLabel;
     private Label moneyLabel;
     private Label satisLabel;
@@ -43,7 +42,7 @@ public class Hud {
     private boolean hasStudentChanged;
     private BuildingManager buildingManager;
 
-    public Hud(Main game, Timer timer, Money money, Satisfaction satisfaction, NPCCount num,
+    public Hud(Main game, Timer timer, Money money, Satisfaction satisfaction,
                BuildingManager buildings, BuildingCounts counts, GameScreen gameScreen) {
         stage = new Stage(game.getViewport());
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -52,7 +51,6 @@ public class Hud {
         this.timer = timer;
         this.money = money;
         this.satisfaction = satisfaction;
-        this.num = num;
         isPaused = false;
         this.gameScreen = gameScreen;
         hasStudentChanged = false;
@@ -101,9 +99,6 @@ public class Hud {
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
-        if (seconds == 0) {
-            money.loan();
-        }
     }
 
     /**

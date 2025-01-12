@@ -7,10 +7,6 @@ import com.badlogic.gdx.graphics.Color;
  * easy changes to be made to all constants within it.
  */
 public class Consts {
-
-    private Consts() {
-    }
-
     /**
      * Size of each cell in pixels, everything scales to the cell size.
      */
@@ -28,6 +24,10 @@ public class Consts {
 
     public static final int WORLD_WIDTH = scaleToCellSize(75);
     public static final int WORLD_HEIGHT = scaleToCellSize(38);
+
+    public static final float STARTING_SATISFACTION = 40;
+    public static final float STARTING_DECAY = -1f;
+    public static final float INCREMENT_DECAY_AMOUNT = 1f;
 
     public static final int START_BUTTON_WIDTH = scaleToCellSize(10);
     public static final int START_BUTTON_HEIGHT = scaleToCellSize(6);
