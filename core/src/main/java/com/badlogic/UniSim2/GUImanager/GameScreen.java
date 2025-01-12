@@ -27,7 +27,6 @@ public class GameScreen implements Screen {
     private Timer timer;
     private Money money;
     private Satisfaction satisfaction;
-    private NPCCount num;
 
     private NPCManager NPCManager;
     private BuildingCounts counts;
@@ -61,12 +60,11 @@ public class GameScreen implements Screen {
         timer = new Timer();
         money = new Money();
         satisfaction = new Satisfaction();
-        num = new NPCCount();
         scaleX = viewport.getScreenWidth() / viewport.getWorldWidth();
         scaleY = viewport.getScreenHeight() / viewport.getWorldHeight();
         NPCManager = new NPCManager(scaleX, scaleY);
         map = new Map(game, counts, NPCManager, money, satisfaction, timer, scaleX, scaleY);
-        hud = new Hud(game, timer, money, satisfaction, num, map.getBuildingManager(), counts, this);
+        hud = new Hud(game, timer, money, satisfaction, map.getBuildingManager(), counts, this);
         SoundManager.playMusic();
         announcement = new Announcement();
         examEvent = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);

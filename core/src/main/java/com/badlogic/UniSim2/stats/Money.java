@@ -4,7 +4,7 @@ import com.badlogic.UniSim2.resources.Consts;
 
 /**
  * Class controlling the money variable, stat shown on the top right
- * of the game screen and can be {@link #loan() updated}.
+ * of the game screen and can be {@link #increaseMoney(float)  updated}.
  */
 public class Money {
     private float money;
@@ -16,9 +16,6 @@ public class Money {
     /**
      * Update the money value by the amount spent or gained.
      */
-    public void loan() {
-        money += 0;
-    } // add later
 
     public float getMoney(){
         return money;

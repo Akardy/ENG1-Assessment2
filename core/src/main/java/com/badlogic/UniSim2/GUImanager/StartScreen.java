@@ -35,11 +35,13 @@ public class StartScreen implements Screen {
     private Table leaderboardTable;
     private List<Float> leaderboardData;
     private Skin skin;
+    private FileHandle file;
 
-    public StartScreen(Main game) {
+    public StartScreen(Main game, FileHandle file) {
         this.game = game;
         viewport = game.getViewport();
         stage = new Stage(viewport);
+        this.file = file;
         addStartButton();
         addCreditsButton();
         addSettingsButton();
@@ -227,7 +229,7 @@ public class StartScreen implements Screen {
 
     public java.util.List<Float> getLeaderboardData() {
         java.util.List<Float> leaderboardSat = new ArrayList<>();
-        FileHandle file = Gdx.files.local("assets/leaderboard.txt");
+        file = Gdx.files.local("assets/leaderboard.txt");
 
         if (file.exists()) {
             // Read the entire file as a string

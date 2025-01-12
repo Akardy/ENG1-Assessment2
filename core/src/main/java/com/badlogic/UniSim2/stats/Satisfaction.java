@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.stats;
 
+import com.badlogic.UniSim2.resources.Consts;
+
 /**
  * Class controlling the satisfaction variable, stat shown on the top right
  * of the game screen and can be {@link #update() updated}.
@@ -11,15 +13,8 @@ public class Satisfaction {
 
     public Satisfaction() {
 
-        this.startingSatis = 40;
-        this.decay = -1f;
-    }
-
-    /**
-     * Update the satisfaction value.
-     */
-    public void update() {
-        startingSatis += 0;
+        this.startingSatis = Consts.STARTING_SATISFACTION;
+        this.decay = Consts.STARTING_DECAY;
     }
 
     public float getSatis(){
@@ -27,8 +22,7 @@ public class Satisfaction {
         return Float.parseFloat(startingSatis2dp);
     }
     public void incrementDecay(){
-        decay -= 1f;
-
+        decay -= Consts.INCREMENT_DECAY_AMOUNT;
     }
     public void decay(){startingSatis = Math.max(startingSatis + decay, 0);}
 
