@@ -113,12 +113,13 @@ public class EndScreen implements Screen {
 
     }
 
-    private void saveSatisfaction() {
+    public void saveSatisfaction() {
         // Get a handle to the file in the local storage
         FileHandle file = Gdx.files.local("assets/leaderboard.txt");
         System.out.println("Saving to: " + file.file().getAbsolutePath());
         // Append the satisfaction value to the file, followed by a newline for readability
         file.writeString(satisfaction.getSatis() + "\n", true);
+        file.writeString("1" + "\n", true);
     }
 
     @Override
