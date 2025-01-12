@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * This class is used to simulate the grid structure of the game.
- * Currently the only method that should be called is {@link #draw(StretchViewport)}.
+ * Currently, the only method that should be called is {@link #draw(StretchViewport)}.
  */
 public class Grid {
 

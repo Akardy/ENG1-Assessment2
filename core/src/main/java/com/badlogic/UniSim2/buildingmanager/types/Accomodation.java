@@ -16,6 +16,23 @@ public class Accomodation extends Building{
     private final float incomePerStudent;
     private final int costToFix;
 
+    /**
+     * Constructs a new Accomodation building.
+     *
+     * @param placedTexture      texture when the accommodation is placed on the map
+     * @param collisionTexture   texture used when the accommodation collides with another object
+     * @param draggingTexture    texture used when dragging the accommodation for placement
+     * @param width              the width of the accommodation building
+     * @param height             the height of the accommodation building
+     * @param cost               the cost to place the accommodation
+     * @param name               the name of the accommodation building
+     * @param rooms              the number of rooms in the accommodation
+     * @param type               the specific building type enum for accommodations
+     * @param incomePerStudent   the income generated per student per 10 seconds
+     * @param breakDownChance    the chance that the building may break down
+     * @param costToFix          the cost to fix the building when broken
+     */
+
     public Accomodation(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
                         int width, int height, float cost, String name, int rooms, BuildingTypes type,
                         float incomePerStudent, int breakDownChance, int costToFix) {
@@ -44,7 +61,11 @@ public class Accomodation extends Building{
     public float getIncome(){
         return incomePerStudent;
     }
-
+    /**
+     * Returns a string containing detailed statistics about the accommodation building
+     *
+     * @return a formatted string with the accommodation's statistics.
+     */
     public String getStats(){
         return "Building: " + getType() + "\nMoney earned: " + getMoneyGenerated() + "\nStudents: "
             + rooms + "\nIncome per student per 10s: " + incomePerStudent;

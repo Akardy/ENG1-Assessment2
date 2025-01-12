@@ -52,7 +52,11 @@ public class GameScreen implements Screen {
     private Achievements achievements;
     private BrokenBuilding brokenBuildingEvent;
     private BuildingFrenzy buildingFrenzyEvent;
-
+    /**
+     * Constructs a new GameScreen, initializing all the game components, events, and managers.
+     *
+     * @param game the main game instance allowing for screen transitions.
+     */
     public GameScreen(Main game) {
         this.game = game;
         viewport = game.getViewport();
@@ -78,7 +82,12 @@ public class GameScreen implements Screen {
     public void show() {
         hud.activate();
     }
-
+    /**
+     * Renders the game screen, processes input, updates game state, and draws elements.
+     * Will check if it is time to update satisfaction from decay and building stats
+     *
+     * @param delta the time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         input();

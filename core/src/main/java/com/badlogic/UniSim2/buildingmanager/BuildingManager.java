@@ -69,7 +69,17 @@ public class BuildingManager {
 
 
 
-
+    /**
+     * Constructs a BuildingManager
+     *
+     * @param buildingCounts counts of buildings maintained by the game.
+     * @param npcManager manager responsible for NPCs.
+     * @param money player's money resource.
+     * @param satisfaction player's satisfaction resource.
+     * @param timer game timer.
+     * @param scaleX the horizontal scaling factor for the game grid.
+     * @param scaleY the vertical scaling factor for the game grid.
+     */
     public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer, float scaleX, float scaleY) {
         placed = new Array<>();
         currentBuilding = null;
@@ -87,11 +97,16 @@ public class BuildingManager {
         initialiseUI();
 
     }
-
+    /**
+     * Initializes the UI components including building stats and error labels.
+     */
     public void initialiseUI(){
         initialiseStatsLabel();
         initialiseErrorLabel();
     }
+    /**
+     * Initializes the error label used for displaying error messages.
+     */
     public void initialiseErrorLabel() {
         // Create the error label
         errorLabel = new Label("", skin); // Initially empty
@@ -101,6 +116,11 @@ public class BuildingManager {
         errorLabel.setVisible(false); // Hidden by default
         stage.addActor(errorLabel); // Add to the stage
     }
+    /**
+     * Displays an error message on the screen for a short duration.
+     *
+     * @param message the error message to display.
+     */
     public void showError(String message) {
         errorLabel.setText(message); // Set the message text
         errorLabel.setVisible(true); // Show the label
@@ -137,7 +157,9 @@ public class BuildingManager {
         }
 
     }
-
+    /**
+     * Removes the currently selected building from the map and internal lists.
+     */
     private void removeBuilding() {
         placed.removeValue(currentBuilding, true);
         Map.collidableSprites.removeValue(currentBuilding, true);
@@ -151,7 +173,11 @@ public class BuildingManager {
      */
 
     private boolean placingInProgress = false; // Guard to prevent duplicate calls
-
+    /**
+     * Attempts to place the currently selected building on the map if placement conditions are valid.
+     * Checks for collision and sufficient funds before finalizing placement.
+     * Places NPCs and calculates any discount rates if necessary
+     */
     private void handlePlacing() {
         if (currentlySelecting && currentBuilding != null && !placingInProgress) {
             placingInProgress = true; // Prevent duplicate execution
@@ -224,6 +250,11 @@ public class BuildingManager {
         }
 
     }
+    /**
+     * Updates the visibility of the error label based on a timer.
+     *
+     * @param delta the time elapsed since the last frame.
+     */
     public void updateErrorLabel(float delta) {
         // Hide error label after timer expires
         if (errorTimer > 0) {
@@ -381,7 +412,9 @@ public class BuildingManager {
     }
 
 
-
+    /**
+     * Initializes a label for displaying building stats.
+     */
     private void initialiseStatsLabel() {
         statsLabel = new Label("", skin);
         statsLabel.setVisible(false);
@@ -394,6 +427,12 @@ public class BuildingManager {
 
         stage.addActor(statsLabel);
     }
+    /**
+     * Creates a background drawable of a single color for the labels.
+     *
+     * @param color the Color to use for the background.
+     * @return a TextureRegionDrawable of the specified color.
+     */
     private TextureRegionDrawable createBackgroundColor(Color color) {
         // Create a Pixmap for the background
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -406,8 +445,13 @@ public class BuildingManager {
         return new TextureRegionDrawable(texture);
     }
 
-
-    public Building getHoveredBuilding(Vector2 mousePos) { // see if a building is being hovered over
+    /**
+     * Returns the building at the given mouse position if one is hovered over.
+     *
+     * @param mousePos the position of the mouse in world coordinates.
+     * @return the hovered Building or null if none.
+     */
+    public Building getHoveredBuilding(Vector2 mousePos) {
         for (Building building : placed) {
             if (building.getBoundingRectangle().contains(mousePos)) {
                 return building;
@@ -416,7 +460,13 @@ public class BuildingManager {
         return null;
     }
 
-
+    /**
+     * Displays the statistics of the specified building next to it.
+     * Checks if it goes out of borders, and adjusts it
+     * Finds correct size for the background label
+     *
+     * @param building the building whose stats are to be displayed.
+     */
     public void displayBuildingStats(Building building) {
         String stats = building.getStats();
         statsLabel.setText(stats); // Update label text
@@ -436,11 +486,18 @@ public class BuildingManager {
         statsLabel.setPosition(labelX, labelY);
         statsLabel.setVisible(true);
     }
-
+    /**
+     * Hides the building stats label.
+     */
     public void hideBuildingStats(){
         statsLabel.setVisible(false);
     }
-
+    /**
+     * Calculates and awards satisfaction and currency based on the buildings placed.
+     * This will distribute the amount of students equally over all buildings, earning stats per student for each
+     *
+     * @param isThirtySeconds flag indicating if the update occurs on a thirty-second interval - for the hardware lab.
+     */
     public void gainSatisfactionAndCurrency(boolean isThirtySeconds){ //
         float satisfactionGain = 0f;
         float currencyGain = 0f;
@@ -510,7 +567,9 @@ public class BuildingManager {
             building.dispose();
         }
     }
-
+    /**
+     * @return the array of placed buildings.
+     */
     public Array<Building> getPlaced() {
         return placed;
     }

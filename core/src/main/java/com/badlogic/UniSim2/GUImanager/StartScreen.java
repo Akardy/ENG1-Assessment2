@@ -37,6 +37,14 @@ public class StartScreen implements Screen {
     private Skin skin;
     private FileHandle file;
 
+    /**
+     * Constructs the start screen.
+     * Initializes UI elements, loads leaderboard data and sets up buttons.
+     *
+     * @param game the main game instance allowing for screen transitions.
+     * @param file the file handle for leaderboard data.
+     */
+
     public StartScreen(Main game, FileHandle file) {
         this.game = game;
         viewport = game.getViewport();
@@ -189,6 +197,10 @@ public class StartScreen implements Screen {
         spriteBatch.end();
 
     }
+    /**
+     * Adds and populates the leaderboard table.
+     * Displays the top satisfaction scores in descending order, labeled with rank.
+     */
 
     private void addLeaderBored() {
         Table mainTable = new Table();
@@ -226,6 +238,11 @@ public class StartScreen implements Screen {
         stage.addActor(mainTable);
 
     }
+    /**
+     * Reads leaderboard satisfaction scores from the leaderboard file.
+     *
+     * @return a list of satisfaction scores from the leaderboard file.
+     */
 
     public java.util.List<Float> getLeaderboardData() {
         java.util.List<Float> leaderboardSat = new ArrayList<>();
@@ -249,6 +266,10 @@ public class StartScreen implements Screen {
         }
         return leaderboardSat;
     }
+    /**
+     * Adds a button to clear the leaderboard data.
+     * When clicked, leaderboard scores are reset and the table is updated.
+     */
 
     private void addClearLeaderboard(){
         TextButton clearLeaderboardButton = new TextButton("Clear Leaderboard", skin);

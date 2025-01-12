@@ -1,12 +1,15 @@
 package com.badlogic.UniSim2.resources;
 
 public class SoundManager {
+    /**
+     * this is a utility class for managing game music.
+     * Provides static methods to play, stop, and adjust volume for the game music.
+     */
 
     private SoundManager() {
     };
 
     public static void playMusic() {
-        // Assets.music.setVolume(.5f);
         Assets.music.setVolume(0.5f); // annoying me while testing
         Assets.music.setLooping(true);
         Assets.music.play();

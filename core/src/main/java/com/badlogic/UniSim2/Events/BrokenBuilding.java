@@ -50,7 +50,16 @@ public class BrokenBuilding {
 
     private Satisfaction satisfaction;
 
-
+    /**
+     * Constructs a BrokenBuilding event.
+     *
+     * @param timer           the Timer tracking game time.
+     * @param buildingManager the manager for handling buildings.
+     * @param buildingCounts  the counts of various buildings.
+     * @param announcement    the Announcement system for displaying messages.
+     * @param money           the Money object for managing currency.
+     * @param satisfaction    the Satisfaction object to adjust player satisfaction.
+     */
     public BrokenBuilding(Timer timer, BuildingManager buildingManager, BuildingCounts buildingCounts,
                           Announcement announcement, Money money, Satisfaction satisfaction) {
         shapeRenderer = new ShapeRenderer();
@@ -71,12 +80,17 @@ public class BrokenBuilding {
         satTickPromptTimer = TICK_TIME / 2;
         this.satisfaction = satisfaction;
     }
-
+    /**
+     * Selects a random time, in seconds, when the next building will break
+     */
     private void selectTimeGoOf() {
         Random random = new Random();
         goOfSeconds = random.nextInt(280) + 20;
     }
-
+    /**
+     * Checks if it's time to trigger the broken building event, if so initiates
+     * the event.
+     */
     public void checkTriggeringEvent(){
         if ((int) timer.getElapsedTime() == goOfSeconds && !hasGoneOf) {
             hasGoneOf = true;
@@ -85,6 +99,12 @@ public class BrokenBuilding {
             }
         }
     }
+    /**
+     * Renders "cross" for the broken building, handles user input
+     * to fix the building, and applies satisfaction decay over time.
+     *
+     * @param delta the time elapsed since the last frame.
+     */
 
     public void renderCross(float delta){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -117,11 +137,18 @@ public class BrokenBuilding {
         }
 
     }
-
+    /**
+     * Indicates whether the broken building event's "cross" should be rendered.
+     *
+     * @return true if the broken building "cross" should be rendered, false otherwise.
+     */
     public boolean doRender(){
         return renderLine;
     }
-
+    /**
+     * Initiates the broken building event, selecting a building to break, disabling
+     * it, and setting up UI prompts.
+     */
     private void startEvent() {
         pickBuilding();
         renderLine = true;
@@ -142,7 +169,9 @@ public class BrokenBuilding {
         satTickPrompt.setVisible(false);
         announcement.addNewLabel(satTickPrompt);
     }
-
+    /**
+     * Randomly selects a building from the placed buildings to be broken.
+     */
     private void pickBuilding(){
         Random random = new Random();
         indexOfBuilding = random.nextInt(buildingManager.getPlaced().size);
@@ -152,7 +181,9 @@ public class BrokenBuilding {
         width = buildingManager.getPlaced().get(indexOfBuilding).getWidth();
         height = buildingManager.getPlaced().get(indexOfBuilding).getHeight();
     }
-
+    /**
+     * Disables the selected building, updates building counts, and marks it as broken.
+     */
     private void disableBuilding(){
         disabledBuilding = buildingManager.getPlaced().get(indexOfBuilding);
         BuildingTypes type = disabledBuilding.getType();
@@ -189,15 +220,20 @@ public class BrokenBuilding {
         BuildingMenu.updateCountLabel(disabledBuilding);
         disabledBuilding.setBroken(true);
     }
-
+    /**
+     * Applies satisfaction decay over time if the building does not get fixed.
+     */
     private void satDecay(){
-        satisfaction.decreaseSatis(2f);
+        satisfaction.decreaseSatis(Consts.SAT_DECAY_FROM_BROKEN_BUILDING);
         satTickPrompt.setVisible(true);
     }
-
+    /**
+     * Ends the broken building event by attempting to fix the building if
+     * the player can afford the repair cost, or displaying an error otherwise.
+     */
     private void endEvent(){
-        if(money.reduceMoney(500)){
-            announcement.showAnnouncement("Fixed Building!\n-£500");
+        if(money.reduceMoney(Consts.FIX_BUILDING_COST)){
+            announcement.showAnnouncement("Fixed Building!\n-£" + Consts.FIX_BUILDING_COST);
             enableBuilding();
             renderLine = false;
             prompt.remove();
@@ -206,7 +242,10 @@ public class BrokenBuilding {
             buildingManager.showError("Can't afford to fix the Building!");
         }
     }
-
+    /**
+     * Re-enables the previously broken building, updates building counts, and
+     * marks it as no longer broken.
+     */
     private void enableBuilding(){
         BuildingTypes type = disabledBuilding.getType();
         switch (type){

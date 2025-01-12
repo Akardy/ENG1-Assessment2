@@ -24,7 +24,15 @@ public class Achievements {
 
     Array<Integer> currentSates;
     boolean check;
-
+    /**
+     * Constructs an Achievements instance
+     *
+     * @param announcement    the Announcement system for displaying achievement messages.
+     * @param buildingManager the BuildingManager to access building-related data.
+     * @param satisfaction    the Satisfaction object to track player satisfaction.
+     * @param buildingCounts  the BuildingCounts object to monitor building counts.
+     * @param money           the Money object to check currency-related achievements.
+     */
     public Achievements(Announcement announcement, BuildingManager buildingManager, Satisfaction satisfaction,
                         BuildingCounts buildingCounts, Money money) {
         this.announcement = announcement;
@@ -39,7 +47,9 @@ public class Achievements {
         currentSates = new Array<>();
         updateStats();
     }
-
+    /**
+     * Updates achievement status based on current game state.
+     */
     public void updateAchievements() {
         if(buildingManager.getCurrentlySelecting()){
             check = true;
@@ -48,7 +58,10 @@ public class Achievements {
         }
         checkForAchievements();
     }
-
+    /**
+     * Checks specific conditions for each achievement and triggers an
+     * announcement if an achievement has been met.
+     */
     private void checkForAchievements() {
         if (buildingCounts.getFoodZoneCount() == 10 && !doneHungryHippo ||
             (buildingCounts.getTotalCount() == 1 && buildingCounts.getFoodZoneCount() == 1)){
@@ -71,7 +84,9 @@ public class Achievements {
             doneRichy = true;
         }
     }
-
+    /**
+     * Updates the current stats values used for achievement checks.
+     */
     private void updateStats() {
         int students = 0;
         for(Building building : buildingManager.getPlaced()){
