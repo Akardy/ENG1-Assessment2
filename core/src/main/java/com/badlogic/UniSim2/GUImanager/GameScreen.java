@@ -11,8 +11,10 @@ import com.badlogic.UniSim2.stats.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -73,7 +75,8 @@ public class GameScreen implements Screen {
         announcement = new Announcement();
         examEvent = new Exam(timer, map.getBuildingManager(), satisfaction, announcement);
         achievements = new Achievements(announcement, map.getBuildingManager(), satisfaction, counts, money);
-        brokenBuildingEvent = new BrokenBuilding(timer, map.getBuildingManager(), counts, announcement, money, satisfaction);
+        brokenBuildingEvent = new BrokenBuilding(timer, map.getBuildingManager(), counts, announcement, money, satisfaction,
+            new ShapeRenderer(), new Skin(Gdx.files.internal("ui/uiskin.json")));
         buildingFrenzyEvent = new BuildingFrenzy(timer, satisfaction, map.getBuildingManager(), counts, announcement, game);
 
     }

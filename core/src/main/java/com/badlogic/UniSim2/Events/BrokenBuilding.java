@@ -61,13 +61,15 @@ public class BrokenBuilding {
      * @param satisfaction    the Satisfaction object to adjust player satisfaction.
      */
     public BrokenBuilding(Timer timer, BuildingManager buildingManager, BuildingCounts buildingCounts,
-                          Announcement announcement, Money money, Satisfaction satisfaction) {
-        shapeRenderer = new ShapeRenderer();
+                          Announcement announcement, Money money, Satisfaction satisfaction, ShapeRenderer shapeRenderer,
+                          Skin skin) {
+        this.shapeRenderer = shapeRenderer;
         selectTimeGoOf();
         hasGoneOf = false;
         renderLine = false;
         this.timer = timer;
         this.buildingManager = buildingManager;
+        this.skin = skin;
 
         scalex = (float) Gdx.graphics.getWidth() / Consts.WORLD_WIDTH;
         scaley = (float) Gdx.graphics.getHeight() / Consts.WORLD_HEIGHT;
@@ -75,10 +77,15 @@ public class BrokenBuilding {
         this.buildingCounts = buildingCounts;
         this.announcement = announcement;
         this.money = money;
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         brokenBuildingTickTimer = TICK_TIME;
         satTickPromptTimer = TICK_TIME / 2;
         this.satisfaction = satisfaction;
+
+        prompt = new Label("", skin);
+        prompt.setFontScale(2);
+        prompt.setPosition((x * scalex) + 10, (y * scaley) + 65);
+        prompt.setVisible(true);
+        announcement.addNewLabel(prompt);
     }
     /**
      * Selects a random time 20 seconds onwards, in seconds, when the building will break
@@ -280,5 +287,13 @@ public class BrokenBuilding {
         }
         BuildingMenu.updateCountLabel(disabledBuilding);
         disabledBuilding.setBroken(false);
+    }
+
+    public float getGoOfSeconds(){
+        return goOfSeconds;
+    }
+
+    public boolean getHasGoneOff(){
+        return hasGoneOf;
     }
 }

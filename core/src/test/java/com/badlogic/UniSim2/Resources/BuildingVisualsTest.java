@@ -1,16 +1,27 @@
 package com.badlogic.UniSim2.Resources;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.badlogic.UniSim2.resources.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BuildingVisualsTest extends AbstractHeadlessGdxTest{
+
+    @BeforeEach
+    void setUp() {
+        //Gdx.files = mock(Files.class);
+        //when(Gdx.files.internal())
+    }
     @Test
     public void testCentralHallPlacedAssetExists() {
-        assertTrue(Gdx.files.internal(String.valueOf(Assets.centralHallPlacedTexture)).exists(),
-            "The asset for central hall placed should be available");
+        FileHandle fileHandle = Gdx.files.internal("assets/textures/buildings/centralHallPlacedTexture.png");
+        assertTrue(fileHandle.exists(), "The asset for central hall placed should be available");
     }
 
     @Test
