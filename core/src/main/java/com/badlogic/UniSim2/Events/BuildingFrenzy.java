@@ -49,18 +49,26 @@ public class BuildingFrenzy {
      * @param announcement    the Announcement system for displaying messages.
      * @param game            the Main game instance used to access the viewport.
      */
+
     public BuildingFrenzy(Timer timer, Satisfaction satisfaction, BuildingManager buildingManager,
-                          BuildingCounts buildingCounts, Announcement announcement, Main game) {
+                          BuildingCounts buildingCounts, Announcement announcement, Main game, Stage stage, Skin skin) {
         this.timer = timer;
         this.satisfaction = satisfaction;
         this.buildingManager = buildingManager;
         this.buildingCounts = buildingCounts;
         this.announcement = announcement;
-        this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        this.stage = new Stage(game.getViewport());
+        this.skin = skin;
+        this.stage = stage;
         this.eventTriggered = false;
         initialiseLabels();
     }
+
+    public BuildingFrenzy(Timer timer, Satisfaction satisfaction, BuildingManager buildingManager,
+                          BuildingCounts buildingCounts, Announcement announcement, Main game) {
+        this(timer, satisfaction, buildingManager, buildingCounts, announcement, game, new Stage(game.getViewport()),
+                new Skin(Gdx.files.internal("ui/uiskin.json")));
+    }
+
     /**
      * Initializes UI labels used during the Building Frenzy event.
      */
@@ -103,7 +111,8 @@ public class BuildingFrenzy {
      */
 
     public void checkForBuildingFrenzy(float delta){
-        //Check for exam time
+        // Check for exam time
+        int check =  (int)timer.getElapsedTime();
         if ((int)timer.getElapsedTime() % 60 == 25 && !eventTriggered){
             startEvent();
         }
@@ -180,7 +189,7 @@ public class BuildingFrenzy {
      */
     private BuildingTypes getRandomBuildingType(){
         int numberOfOptions = BuildingTypes.values().length - 5;
-        int random = new Random().nextInt(numberOfOptions);
+        int random = (new Random()).nextInt(numberOfOptions);
         return BuildingTypes.values()[random];
     }
     /**
@@ -206,8 +215,7 @@ public class BuildingFrenzy {
      * Randomly selects the number of building types requires for the next event.
      */
     private void pickAmountOfTypes(){
-        Random rand = new Random();
-        amountOfTypes = rand.nextInt(2) + 1;
+        amountOfTypes = (new Random()).nextInt(2) + 1;
     }
     /**
      * Updates the timer prompt label with the remaining event time left.

@@ -40,15 +40,23 @@ public class Exam {
      * @param satisfaction     the Satisfaction object for adjusting satisfaction levels.
      * @param announcement     the Announcement system for displaying messages.
      */
-    public Exam(Timer timer, BuildingManager buildingManager, Satisfaction satisfaction, Announcement announcement) {
-        this.stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+    public Exam(Timer timer, BuildingManager buildingManager, Satisfaction satisfaction, Announcement announcement, Stage stage, Skin skin) {
+        //this.stage = new Stage();
+        //skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        this.stage = stage;
+        this.skin = skin;
         this.timer = timer;
         examHasTriggered = false;
         this.buildingManager = buildingManager;
         this.timerTime = 0;
         this.satisfaction = satisfaction;
         this.announcement = announcement;
+    }
+    /**
+     * Used for testing, as mocking graphics/files can cause issues
+     */
+    public Exam(Timer timer, BuildingManager buildingManager, Satisfaction satisfaction, Announcement announcement) {
+        this(timer, buildingManager, satisfaction, announcement, new Stage(), new Skin(Gdx.files.internal("ui/uiskin.json")));
     }
     /**
      * Draws the exam-related UI elements.
@@ -64,6 +72,7 @@ public class Exam {
      * @param delta the time elapsed since the last check.
      */
     public void checkTriggeringEvent(float delta){
+        timerTime -= delta;
         if (timerTime > 0){
             timerTime -= delta;
             updateExamTimer();
@@ -84,6 +93,7 @@ public class Exam {
             announcement.showAnnouncement("EXAM TIME!!!");
             examEvent();
         }
+
     }
     /**
      * Initiates the exam event,
@@ -188,10 +198,6 @@ public class Exam {
      */
 
     private void endExamEvent(){
-        examHasTriggered = false;
-        examTimer.setVisible(false);
-        examSpaces.setVisible(false);
-        examStudents.setVisible(false);
 
         Array<Integer> stats = getExamStats();
 
@@ -202,5 +208,9 @@ public class Exam {
             announcement.showAnnouncement("Exam Failed! \n- 10% Satisfaction!");
             satisfaction.decreaseSatis(10);
         }
+        examHasTriggered = false;
+        examTimer.setVisible(false);
+        examSpaces.setVisible(false);
+        examStudents.setVisible(false);
     }
 }
