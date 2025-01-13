@@ -19,7 +19,7 @@ import java.util.Random;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class BuildingFrenzyTest {
+class BuildingFrenzyTest {
 
     private Timer mockTimer;
     private Satisfaction mockSatisfaction;
@@ -70,18 +70,35 @@ public class BuildingFrenzyTest {
     }
 
     @Test
-    public void testCheckForBuildingFrenzy() {
+    void testCheckForBuildingFrenzy() {
+        // Should ends with success when no building shoule be built
+        when(this.mockTimer.getElapsedTime()).thenReturn(-1f);
+        buildingFrenzy.setEventTriggered(true);
+
+        buildingFrenzy.checkForBuildingFrenzy(100);
+        verify(mockAnnouncement).showAnnouncement("Completed\nBuilding Frenzy!\n+15% Satisfaction");
 
         // Nothing happens when the timer doesn't satisfy the check
-        when(mockTimer.getElapsedTime()).thenReturn(60f);
+        when(this.mockTimer.getElapsedTime()).thenReturn(60f);
 
         buildingFrenzy.checkForBuildingFrenzy(100);
 
-        // Should output expected result when timer satisfies the check
+        // Should start frenzy announcement when timer satisfies the check
         when(mockTimer.getElapsedTime()).thenReturn(25f);
-
         buildingFrenzy.checkForBuildingFrenzy(5);
-
         verify(mockAnnouncement).showAnnouncement("Building Frenzy!");
     }
+
+    @Test
+    void testFailedToBuildDuringFrenzy() {
+        Array<Boolean> completedType = new Array<>();
+        completedType.add(false);
+        when(this.mockTimer.getElapsedTime()).thenReturn(-1f);
+        buildingFrenzy.setEventTriggered(true);
+        buildingFrenzy.updateCompletedType(completedType);
+
+        buildingFrenzy.checkForBuildingFrenzy(100);
+        verify(mockAnnouncement).showAnnouncement("Failed\nBuilding Frenzy!\n-15% Satisfaction");
+    }
+
 }
