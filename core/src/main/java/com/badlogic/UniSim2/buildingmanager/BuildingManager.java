@@ -80,7 +80,7 @@ public class BuildingManager {
      * @param scaleX the horizontal scaling factor for the game grid.
      * @param scaleY the vertical scaling factor for the game grid.
      */
-    public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer, float scaleX, float scaleY) {
+    public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer, float scaleX, float scaleY, Stage stage, Skin skin) {
         placed = new Array<>();
         currentBuilding = null;
         currentlySelecting = false;
@@ -89,13 +89,20 @@ public class BuildingManager {
         this.money = money;
         this.satisfaction = satisfaction;
         this.timer = timer;
-        this.stage = new Stage();
+        this.stage = stage;
         libraryMultiplier = 1.2f;
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        this.skin = skin;
         this.scaleX = scaleX;
         this.scaleY = scaleY;
-        initialiseUI();
 
+
+    }
+    /**
+     * Used for testing
+     */
+    public BuildingManager(BuildingCounts buildingCounts, NPCManager npcManager, Money money, Satisfaction satisfaction, Timer timer, float scaleX, float scaleY) {
+        this(buildingCounts, npcManager, money, satisfaction, timer, scaleX, scaleY, new Stage(), new Skin(Gdx.files.internal("ui/uiskin.json")));
+        initialiseUI();
     }
     /**
      * Initializes the UI components including building stats and error labels.
@@ -518,6 +525,8 @@ public class BuildingManager {
         float studentFillBuildingPercent = Math.min(1, (float) totalRooms / totalCapacity);
         for (Building building : placed){
             if (!building.isBroken()) {
+                satisfactionGain = 0;
+                currencyGain = 0;
                 int studentsInBuilding = (int) (building.getCapacity() * studentFillBuildingPercent);
                 building.setHowFull(studentsInBuilding);
                 if (building instanceof Accomodation) {
@@ -527,10 +536,10 @@ public class BuildingManager {
                     satisfactionGain = studentsInBuilding * building.getSatisfaction() * (libraryCount * libraryMultiplier);
                     libraryGain += studentsInBuilding * building.getSatisfaction() * (libraryCount * (libraryMultiplier - 1));
                     building.updateSatisfactionGenerated(satisfactionGain);
-                } else if (building instanceof Labs && isThirtySeconds) {
+                } else if ((building instanceof Labs) && isThirtySeconds) {
                     satisfactionGain = studentsInBuilding * building.getSatisfaction();
                     building.updateSatisfactionGenerated(satisfactionGain);
-                } else if (building.getType() != BuildingTypes.LIBRARY) {
+                } else if ((building.getType() != BuildingTypes.LIBRARY) && !(building instanceof Labs)) {
                     currencyGain = studentsInBuilding * building.getIncome();
                     satisfactionGain = studentsInBuilding * building.getSatisfaction();
                     building.updateMoneyGenerated(currencyGain);
