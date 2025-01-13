@@ -29,7 +29,6 @@ public class BuildingFrenzyTest {
     private Main mockGame;
     private Stage mockStage;
     private Skin mockSkin;
-    private Random mockrRand;
 
     private BuildingFrenzy buildingFrenzy;
 
@@ -41,7 +40,6 @@ public class BuildingFrenzyTest {
         mockSatisfaction = Mockito.mock(Satisfaction.class);
         mockBuildingCounts = Mockito.mock(BuildingCounts.class);
         mockGame = Mockito.mock(Main.class);
-        mockrRand = Mockito.mock(Random.class);
 
         // By default, let's say no building is being selected
         when(mockBuildingManager.getCurrentlySelecting()).thenReturn(false);
@@ -58,7 +56,6 @@ public class BuildingFrenzyTest {
         labelStyle.font = Mockito.mock(BitmapFont.class);
 
         when(mockSkin.get(LabelStyle.class)).thenReturn(labelStyle);
-        when(mockrRand.nextInt(2)).thenReturn(0);
 
         buildingFrenzy = new BuildingFrenzy(
             mockTimer,
@@ -68,8 +65,7 @@ public class BuildingFrenzyTest {
             mockAnnouncement,
             mockGame,
             mockStage,
-            mockSkin,
-            mockrRand
+            mockSkin
         );
     }
 

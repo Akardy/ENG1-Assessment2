@@ -38,7 +38,6 @@ public class BuildingFrenzy {
     private Array<Integer> originalAmounts;
     private Array<Integer> currentAmounts;
     private Array<Boolean> completedType;
-    private Random rand;
 
     /**
      * Constructs a BuildingFrenzy event.
@@ -52,7 +51,7 @@ public class BuildingFrenzy {
      */
 
     public BuildingFrenzy(Timer timer, Satisfaction satisfaction, BuildingManager buildingManager,
-                          BuildingCounts buildingCounts, Announcement announcement, Main game, Stage stage, Skin skin, Random rand) {
+                          BuildingCounts buildingCounts, Announcement announcement, Main game, Stage stage, Skin skin) {
         this.timer = timer;
         this.satisfaction = satisfaction;
         this.buildingManager = buildingManager;
@@ -61,14 +60,13 @@ public class BuildingFrenzy {
         this.skin = skin;
         this.stage = stage;
         this.eventTriggered = false;
-        this.rand = rand;
         initialiseLabels();
     }
 
     public BuildingFrenzy(Timer timer, Satisfaction satisfaction, BuildingManager buildingManager,
                           BuildingCounts buildingCounts, Announcement announcement, Main game) {
         this(timer, satisfaction, buildingManager, buildingCounts, announcement, game, new Stage(game.getViewport()),
-                new Skin(Gdx.files.internal("ui/uiskin.json")), new Random());
+                new Skin(Gdx.files.internal("ui/uiskin.json")));
     }
 
     /**
@@ -191,7 +189,7 @@ public class BuildingFrenzy {
      */
     private BuildingTypes getRandomBuildingType(){
         int numberOfOptions = BuildingTypes.values().length - 5;
-        int random = rand.nextInt(numberOfOptions);
+        int random = (new Random()).nextInt(numberOfOptions);
         return BuildingTypes.values()[random];
     }
     /**
@@ -217,7 +215,7 @@ public class BuildingFrenzy {
      * Randomly selects the number of building types requires for the next event.
      */
     private void pickAmountOfTypes(){
-        amountOfTypes = rand.nextInt(2) + 1;
+        amountOfTypes = (new Random()).nextInt(2) + 1;
     }
     /**
      * Updates the timer prompt label with the remaining event time left.
