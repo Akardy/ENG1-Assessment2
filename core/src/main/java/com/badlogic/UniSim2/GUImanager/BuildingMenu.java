@@ -31,7 +31,6 @@ public class BuildingMenu {
     private Image menuBar;
 
     /**
-     * We keep this from Script 1 to preserve how counts are stored/accessed.
      * All building counts are in this BuildingCounts object, with methods like
      * getAccommodationCount(), getLectureHallCount(), getFoodZoneCount(), etc.
      */
@@ -48,7 +47,6 @@ public class BuildingMenu {
     /**
      * Define the main building classes that we want to show in the first level
      * of our menu (like "Accommodation", "LectureHall", "Library", etc.).
-     * Adjust these to match your actual enum values in BuildingTypes.
      */
     private final BuildingTypes[] mainClasses = {
             BuildingTypes.ACCOMODATION,
@@ -58,7 +56,12 @@ public class BuildingMenu {
             BuildingTypes.FOODZONE,
             BuildingTypes.RECREATIONAL
     };
-
+    /**
+     * Retrieves the cost of a given building type.
+     *
+     * @param type the BuildingTypes enum value.
+     * @return the cost of the building type.
+     */
     private float getCostOfType(BuildingTypes type) {
         switch (type) {
             case DERWENT:         return 2500f;
@@ -82,7 +85,13 @@ public class BuildingMenu {
     }
 
 
-
+    /**
+     * Constructs a BuildingMenu so buildings can be purchased.
+     *
+     * @param stage          the stage for UI actors.
+     * @param buildings      the building manager handling building logic.
+     * @param buildingCounts the counts of various building types.
+     */
     public BuildingMenu(Stage stage, BuildingManager buildings, BuildingCounts buildingCounts) {
         this.stage = stage;
         Gdx.input.setInputProcessor(stage);
@@ -92,9 +101,9 @@ public class BuildingMenu {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         countLabels = new Array<>();
 
-        // Create a Table to hold the menu items (like Script 2).
+        // Create a Table to hold the menu items.
         menuTable = new Table();
-        menuTable.setDebug(false); // Set true if you want to see debug lines.
+        menuTable.setDebug(false);
         // Set position and size so it overlays your bar or sits on top of it.
         menuTable.setPosition(Consts.MENU_BAR_X, Consts.MENU_BAR_Y);
         menuTable.setSize(Consts.MENU_BAR_WIDTH, Consts.MENU_BAR_HEIGHT);
@@ -115,7 +124,7 @@ public class BuildingMenu {
     }
 
     /**
-     * Creates the menu bar graphic (just like Script 1).
+     * Creates the menu bar graphic.
      */
     private void createMenuBar() {
         menuBar = new Image(Assets.menuBarTexture);
@@ -138,7 +147,6 @@ public class BuildingMenu {
             // Create a Label that shows the count for that main type
             final Label countLabel = createMainTypeCountLabel(type);
 
-            // We'll stack the button and the label (similar to Script 2).
             Stack stack = new Stack();
             stack.add(button);
 
@@ -169,7 +177,7 @@ public class BuildingMenu {
 
     /**
      * Shows sub-options for the selected main building type, in the same Table.
-     * (This replaces the old "popup window" approach from Script 1.)
+     *
      */
     private void showSubOptions(BuildingTypes mainType) {
         // Clear out previous items and labels
@@ -206,8 +214,6 @@ public class BuildingMenu {
                 break;
 
             case LABS:
-                // In Script 1, "showCoursePopup" was for "Labs"?
-                // Adjust if needed. The user has "SOFTWARELABS" & "HARDWARELABS" as sub-types.
                 labels = new String[] { "Software Labs", "Hardware Labs" };
                 subTypes = new BuildingTypes[] {
                         BuildingTypes.SOFTWARELABS,
@@ -239,19 +245,18 @@ public class BuildingMenu {
                 return;
         }
 
-        // Now, populate the sub-menu
+        // populate the sub-menu
         for (int i = 0; i < subTypes.length; i++) {
             final BuildingTypes subType = subTypes[i];
-            // Step 1: get cost
+            // get cost
             float cost = getCostOfType(subType);
 
-            // Step 2: build multiline text
+            // build multiline text
             String line1 = labels[i];     // e.g. "Greggs"
             String line2 = "£" + cost;    // e.g. "£2000"
             String buttonText = line1 + "\n" + line2;
-            // or any format you like
 
-            // Step 3: create the button
+            // create the button
             TextButton button = new TextButton(buttonText, skin);
 
             // Let the label wrap and center
@@ -259,11 +264,11 @@ public class BuildingMenu {
             button.getLabel().setAlignment(Align.center);
             button.getLabel().setFontScale(1.2f);
 
-            // Step 4: create a stack for the count label
+            // create a stack for the count label
             Stack stack = new Stack();
             stack.add(button);
 
-            // existing code: set up subCount in top‑right corner
+            // set up subCount in top‑right corner
             int subCount = buildingCounts.getBuildingCounts(subType.ordinal());
             Label countLabel = new Label(String.valueOf(subCount), skin);
             countLabel.setColor(Consts.COUNT_COLOR);
@@ -275,16 +280,15 @@ public class BuildingMenu {
 
             stack.add(countContainer);
 
-            // Step 5: add the stack to the table
             menuTable.add(stack).colspan(2).pad(20).width(150).height(80).fillX();
             menuTable.row();
 
-            // Step 6: add click listener to place the building
+            // add click listener to place the building
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     buildings.handleSelection(subType);
-                    showMainOptions(); // or remain in sub-menu, your choice
+                    showMainOptions(); // or remain in sub-menu
                 }
             });
         }
@@ -303,9 +307,13 @@ public class BuildingMenu {
         });
     }
 
-
+    /**
+     * Creates an ImageButton for given main building type.
+     *
+     * @param type the main building type.
+     * @return an ImageButton for the given type.
+     */
     private ImageButton createImageButton(BuildingTypes type) {
-        // Step 1: Pick the correct up/down textures for this main type
         Texture buttonUpTexture;
         Texture buttonDownTexture;
 
@@ -326,8 +334,6 @@ public class BuildingMenu {
                 break;
 
             case LABS:
-                // If you have dedicated labsMainUp/down, use them.
-                // Otherwise re-use "course" textures or something suitable.
                 buttonUpTexture = Assets.courseButtonUpTexture;
                 buttonDownTexture = Assets.courseButtonDownTexture;
                 break;
@@ -343,23 +349,20 @@ public class BuildingMenu {
                 break;
 
             default:
-                // If you have no other main categories, just pick an existing texture
-                // or create a real fallback in Assets (not mandatory).
                 buttonUpTexture = Assets.accomodationButtonUpTexture;
                 buttonDownTexture = Assets.accomodationButtonDownTexture;
                 break;
         }
 
-        // Step 2: Build ImageButton style
+        // Build ImageButton style
         Drawable buttonUpDrawable = new TextureRegionDrawable(buttonUpTexture);
         Drawable buttonDownDrawable = new TextureRegionDrawable(buttonDownTexture);
 
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         style.up = buttonUpDrawable;
         style.down = buttonDownDrawable;
-        // You can also set style.over = something if you want a "hover" effect
 
-        // Step 3: Create and return the ImageButton
+        // Create and return the ImageButton
         ImageButton button = new ImageButton(style);
         button.setSize(Consts.BUILDING_BUTTON_WIDTH, Consts.BUILDING_BUTTON_HEIGHT);
         return button;
@@ -367,7 +370,7 @@ public class BuildingMenu {
 
 
     /**
-     * Creates a label showing how many of the given main type exist (like Script 1).
+     * Creates a label showing how many of the given main type exist.
      * For main types that are "composites" (e.g., Accommodation is made of DERWENT,
      * GOODRICKE, CONSTANTINE), we call the appropriate method from BuildingCounts.
      */
@@ -397,11 +400,15 @@ public class BuildingMenu {
     }
 
     /**
-     * Updates the label for counts whenever a building is placed (Script 1 approach).
+     * Updates the label for building counts whenever a building is placed.
      * Call this from wherever you handle building-placed events.
      */
     public static void updateCountLabel(Building currentBuilding) {
         // If the building is, for example, an Accomodation, update label 0
+        if (countLabels == null || countLabels.size < 6) {
+            // If in building sub menu then ignore
+            return;
+        }
         if (currentBuilding instanceof Accomodation) {
             countLabels.get(0).setText(buildingCounts.getAccommodationCount());
         }
@@ -428,7 +435,7 @@ public class BuildingMenu {
     }
 
     /**
-     * Draw the stage (same as both scripts).
+     * Draw the stage.
      */
     public void draw() {
         stage.act(Gdx.graphics.getDeltaTime());

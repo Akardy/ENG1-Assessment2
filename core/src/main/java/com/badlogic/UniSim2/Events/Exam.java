@@ -32,10 +32,19 @@ public class Exam {
     private Satisfaction satisfaction;
 
     private Announcement announcement;
-
-    public Exam(Timer timer, BuildingManager buildingManager, Satisfaction satisfaction, Announcement announcement) {
-        this.stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+    /**
+     * Constructs an Exam event.
+     *
+     * @param timer            the Timer object tracking game time.
+     * @param buildingManager  the BuildingManager handling building logic.
+     * @param satisfaction     the Satisfaction object for adjusting satisfaction levels.
+     * @param announcement     the Announcement system for displaying messages.
+     */
+    public Exam(Timer timer, BuildingManager buildingManager, Satisfaction satisfaction, Announcement announcement, Stage stage, Skin skin) {
+        //this.stage = new Stage();
+        //skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        this.stage = stage;
+        this.skin = skin;
         this.timer = timer;
         examHasTriggered = false;
         this.buildingManager = buildingManager;
@@ -43,13 +52,27 @@ public class Exam {
         this.satisfaction = satisfaction;
         this.announcement = announcement;
     }
-
+    /**
+     * Used for testing, as mocking graphics/files can cause issues
+     */
+    public Exam(Timer timer, BuildingManager buildingManager, Satisfaction satisfaction, Announcement announcement) {
+        this(timer, buildingManager, satisfaction, announcement, new Stage(), new Skin(Gdx.files.internal("ui/uiskin.json")));
+    }
+    /**
+     * Draws the exam-related UI elements.
+     */
     public void draw(){
         stage.act();
         stage.draw();
     }
-
+    /**
+     * Checks if the exam event should be triggered based on the elapsed time.
+     * Updates the exam timer and building statistics during the event.
+     *
+     * @param delta the time elapsed since the last check.
+     */
     public void checkTriggeringEvent(float delta){
+        timerTime -= delta;
         if (timerTime > 0){
             timerTime -= delta;
             updateExamTimer();
@@ -70,13 +93,23 @@ public class Exam {
             announcement.showAnnouncement("EXAM TIME!!!");
             examEvent();
         }
-    }
 
+    }
+    /**
+     * Initiates the exam event,
+     * setting the exam timer, and initializing the UI display.
+     */
     private void examEvent(){
         Array<Integer> stats= getExamStats();
         timerTime = 15f;
         initialiseShowExam(stats.get(0), stats.get(1));
     }
+    /**
+     * Initializes and displays exam-related UI labels with given stats.
+     *
+     * @param examSpace       the total available exam space.
+     * @param amountOfStudents the total number of students required for the exam.
+     */
 
     private void initialiseShowExam(int examSpace, int amountOfStudents){
         examTimer = new Label("Timer: " + String.format("%.1f", timerTime), skin);
@@ -112,7 +145,11 @@ public class Exam {
     private void updateExamTimer(){
         examTimer.setText("Timer: " + String.format("%.1f", timerTime));
     }
-
+    /**
+     * Updates the labels for exam space and student count based on current stats.
+     * Change label colours depending on whether exam space meets student requirements.
+     * Green if met, red if not
+     */
     private void updateExamAmounts(){
         Array<Integer> stats = getExamStats();
         examSpaces.setText("Amount of Exam Space: " + stats.get(0));
@@ -129,6 +166,12 @@ public class Exam {
         }
     }
 
+    /**
+     * Calculates and retrieves current exam stats - total exam space
+     * and number of students.
+     *
+     * @return an Array of two integers: [examSpace, amountOfStudents].
+     */
     private Array<Integer> getExamStats() {
         Array<Building> placed = buildingManager.getPlaced();
         int examSpace = 0;
@@ -149,12 +192,12 @@ public class Exam {
         stats.add(amountOfStudents);
         return stats;
     }
+    /**
+     * Ends the exam event, hides exam related UI elements, and adjusts satisfaction
+     * based on exam results, pass or fail.
+     */
 
     private void endExamEvent(){
-        examHasTriggered = false;
-        examTimer.setVisible(false);
-        examSpaces.setVisible(false);
-        examStudents.setVisible(false);
 
         Array<Integer> stats = getExamStats();
 
@@ -165,5 +208,9 @@ public class Exam {
             announcement.showAnnouncement("Exam Failed! \n- 10% Satisfaction!");
             satisfaction.decreaseSatis(10);
         }
+        examHasTriggered = false;
+        examTimer.setVisible(false);
+        examSpaces.setVisible(false);
+        examStudents.setVisible(false);
     }
 }

@@ -1,5 +1,9 @@
 package com.badlogic.UniSim2.buildingmanager.types;
 
+/**
+ * Enum representing different types of buildings in the simulation.
+ * Each enum constant is associated with a category/type description
+ */
 public enum BuildingTypes {
     DERWENT("Accommodation"),
     GOODRICKE("Accommodation"),

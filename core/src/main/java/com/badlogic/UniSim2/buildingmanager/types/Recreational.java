@@ -23,7 +23,20 @@ public class Recreational extends Building{
     private final int maxCellDistance;
 
 
-
+    /**
+     * Constructs a new Recreational building, inheriting from building.
+     *
+     * @param placedTexture           texture when the building is placed
+     * @param collisionTexture        texture when the building is colliding
+     * @param draggingTexture         texture when the building is being dragged
+     * @param width                   the width of the building
+     * @param height                  the height of the building
+     * @param cost                    the cost to place the building
+     * @param name                    the name of the building
+     * @param type                    the type enum for this building
+     * @param capacity                the maximum capacity of students the building can handle
+     * @param satisfactionPerStudent  the satisfaction increase per student when near the building
+     */
     public Recreational(Texture placedTexture, Texture collisionTexture, Texture draggingTexture,
                         int width, int height, float cost, String name, BuildingTypes type, int capacity,
                         float satisfactionPerStudent) {
@@ -46,6 +59,15 @@ public class Recreational extends Building{
 
 
     }
+    /**
+     * Calculates and updates the discount rate for student satisfaction based on
+     * the distance from the closest accomodation building. This method adjusts the best discount
+     * rate and updates the satisfaction per student accordingly if a closer
+     * distance is found.
+     *
+     * @param buildingX the x-coordinate of a given accomodation
+     * @param buildingY the y-coordinate of a given accomodation
+     */
     public void calculateDiscountRate(float buildingX, float buildingY){
         float distX = (float) StrictMath.pow((buildingX - this.getX()), 2);
         float distY = (float) StrictMath.pow((buildingY - this.getY()), 2);
@@ -67,7 +89,12 @@ public class Recreational extends Building{
 
     public float getBestDiscountRate(){ return bestDiscountRate;}
 
-
+    /**
+     * Returns a string containing detailed statistics about the recreational
+     * building
+     *
+     * @return a formatted string with building statistics.
+     */
     public String getStats(){
         return "Building: " + getType() + "\nAccomodation Proximity Discount: -" + roundToSignificantFigures(bestDiscountRate, 3) + "%" +
             "\nSatisfaction earned: " + getSatisfactionGenerated() + "%" +

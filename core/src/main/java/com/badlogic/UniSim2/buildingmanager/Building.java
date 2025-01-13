@@ -46,6 +46,20 @@ public abstract class Building extends Sprite {
 
     private boolean isBroken;
 
+    /**
+     * Constructs a new Building
+     *
+     * @param placedTexture   texture when the building is placed
+     * @param collisionTexture texture when the building is colliding
+     * @param draggingTexture texture when the building is being dragged
+     * @param width           the width of the building
+     * @param height          the height of the building
+     * @param cost            the cost of placing the building
+     * @param name            the name of the building
+     * @param type            the type of the building as a BuildingTypes enum
+     * @param examSpace       the exam space provided by the building
+     */
+
     public Building(Texture placedTexture, Texture collisionTexture, Texture draggingTexture, int width, int height,
                     float cost, String name, BuildingTypes type, int examSpace) {
 

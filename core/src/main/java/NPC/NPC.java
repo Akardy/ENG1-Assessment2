@@ -39,17 +39,22 @@ public class NPC {
     private float scaleX;
     private float scaleY;
 
-
+    /**
+     * Constructs an NPC with the given grid and scaling factors.
+     * Initializes its position, direction, animations, and movement state.
+     *
+     * @param grid the grid that contains the NPC's allowed movement paths.
+     * @param scaleX the horizontal scaling factor for the game grid.
+     * @param scaleY the vertical scaling factor for the game grid.
+     */
     public NPC(Grid grid, float scaleX, float scaleY) {
         this.grid = grid;
         this.scaleX = scaleX;
         this.scaleY = scaleY;
 
 
-
         // first direction is randomly either right or left
         int randomDirection = random.nextBoolean() ? -1 : 1;
-
 
         direction = new Vector2(randomDirection, 0); // Starts moving randomly left/right
         currentState = getState();
@@ -58,7 +63,6 @@ public class NPC {
         // Define animations and standing frames
         TextureRegion texture = Assets.NPCTexture;
         defineAnimations(texture);
-
 
         // Initialize position
         startPosition = new Vector2(40, 27);
@@ -70,7 +74,12 @@ public class NPC {
         stateTimer = 0;
     }
 
-
+    /**
+     * Defines the animations for the NPC's movements using a texture atlas.
+     * Cuts out animations for running in all directions and the standing pose.
+     *
+     * @param texture the texture atlas containing NPC frames.
+     */
     private void defineAnimations(TextureRegion texture) {
         Array<TextureRegion> frames = new Array<>();
         // Define running animations and standing textures
@@ -94,7 +103,9 @@ public class NPC {
 
         standUp = new TextureRegion(texture, 1, 28, 14, 18);
     }
-
+    /**
+     * Updates the NPC's coordinates by moving it towards its target or picking a new direction if not moving.
+     */
     public void update() {
         if (isMoving) {
             moveTowardsTarget();
@@ -104,7 +115,10 @@ public class NPC {
 
     }
 
-
+    /**
+     * Moves the NPC towards its current target position based on its direction and speed.
+     * Once the target is reached, stops the movement.
+     */
     private void moveTowardsTarget() {
         Vector2 movement = direction.cpy().scl(NPCSpeed * CELL_SIZE * scaleX * scaleY);
         currentPosition.add(movement);
@@ -116,7 +130,12 @@ public class NPC {
             isMoving = false;
         }
     }
-
+    /**
+     * Picks a new direction for the NPC when it is no longer moving.
+     * Considers all possible valid directions from start position,
+     * selects one of the possible directions at random.
+     * If no valid paths are available, turn around.
+     */
     private void pickNewDirection() {
 
         Array<Vector2> possibleDirections = new Array<>();
@@ -151,6 +170,13 @@ public class NPC {
 
 
     }
+    /**
+     * Retrieves the current animation frame for the NPC.
+     * Updates the state timer so animation can change.
+     *
+     * @param delta the time elapsed since the last frame update.
+     * @return the current image to display for the NPC.
+     */
 
     public TextureRegion getFrame(float delta) {
         // get current frame - image state
@@ -177,6 +203,11 @@ public class NPC {
         previousState = currentState;
         return region;
     }
+    /**
+     * Determines the NPC's current direction it is moving.
+     *
+     * @return the current state (RUN_UP, RUN_DOWN, RUN_LEFT, or RUN_RIGHT).
+     */
 
     private State getState() {
         if (direction.y > 0) {
@@ -194,7 +225,6 @@ public class NPC {
     public Vector2 getPosition() {
         return currentPosition;
     }
-    // returns half the size of the character, so it is displayed correctly
     public float getWidth(){ return 14f;}
     public float getHeight(){return 18;}
 

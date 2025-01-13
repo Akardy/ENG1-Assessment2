@@ -15,6 +15,13 @@ public class NPCManager {
     private static float scaleX;
     private static float scaleY;
 
+    /**
+     * Constructs an NPCManager with specified scaling factors.
+     * Initializes grid, NPC list, sprite batch, and creates designated paths in the grid.
+     *
+     * @param scaleX the horizontal scaling factor for the game grid.
+     * @param scaleY the vertical scaling factor for the game grid.
+     */
     public NPCManager(float scaleX, float scaleY){
         grid = new Grid();
         NPCList = new Array<>();
@@ -23,6 +30,10 @@ public class NPCManager {
         this.scaleY = scaleY;
         createPath();
     }
+    /**
+     * Creates designated paths in the grid imitating the ones in the game.
+     * Marks specific horizontal and vertical path ranges that NPCs can move correctly.
+     */
     private void createPath(){
         // horizontal paths
         grid.markPathRange(27, 10, 27, 100);
@@ -36,6 +47,11 @@ public class NPCManager {
 
 
     }
+    /**
+     * Updates all NPCs, drawing each using a sprite batch
+     *
+     * @param delta the time elapsed since the last update call.
+     */
     public void update(float delta) {
         for (NPC npc : NPCList) {
             npc.update(); // Update each NPC
@@ -47,7 +63,12 @@ public class NPCManager {
     }
 
 
-    // ADD NPCs with a 0.3s cool down - using threads so doesn't steal all system resources
+    /**
+     * Adds a specified number of NPCs to the game with a cool down between additions.
+     * NPCs are added on a separate thread so the rest of the game can run during the cool downs of adding NPCs
+     *
+     * @param count the number of NPCs to add.
+     */
     public static void addNPC(int count) {
         new Thread(() -> {
             for (int i = 0; i < count; i++) {

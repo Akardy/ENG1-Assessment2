@@ -38,9 +38,18 @@ public class BuildingFrenzy {
     private Array<Integer> originalAmounts;
     private Array<Integer> currentAmounts;
     private Array<Boolean> completedType;
-
     private Random rand;
 
+    /**
+     * Constructs a BuildingFrenzy event.
+     *
+     * @param timer           the Timer object tracking game time.
+     * @param satisfaction    the Satisfaction object to adjust satisfaction levels.
+     * @param buildingManager the BuildingManager handling building placements.
+     * @param buildingCounts  the BuildingCounts object tracking counts of buildings.
+     * @param announcement    the Announcement system for displaying messages.
+     * @param game            the Main game instance used to access the viewport.
+     */
 
     public BuildingFrenzy(Timer timer, Satisfaction satisfaction, BuildingManager buildingManager,
                           BuildingCounts buildingCounts, Announcement announcement, Main game, Stage stage, Skin skin, Random rand) {
@@ -62,6 +71,9 @@ public class BuildingFrenzy {
                 new Skin(Gdx.files.internal("ui/uiskin.json")), new Random());
     }
 
+    /**
+     * Initializes UI labels used during the Building Frenzy event.
+     */
     private void initialiseLabels() {
         timerPrompt = new Label("", skin);
         timerPrompt.setFontScale(2);
@@ -93,6 +105,12 @@ public class BuildingFrenzy {
         stage.addActor(middlePrompt);
         stage.addActor(bottomPrompt);
     }
+    /**
+     * Checks if the conditions to start or update a Building Frenzy event are met,
+     * updates the event timer, and refreshes UI elements accordingly.
+     *
+     * @param delta the time elapsed since the last frame.
+     */
 
     public void checkForBuildingFrenzy(float delta){
         // Check for exam time
@@ -117,12 +135,18 @@ public class BuildingFrenzy {
             }
         }
     }
+    /**
+     * Updates and draws the stage with the Building Frenzy UI elements.
+     */
 
     public void draw(){
         stage.act();
         stage.draw();
     }
-
+    /**
+     * Starts the Building Frenzy event by initializing timers, selecting
+     * random building types to be built, and preparing UI labels.
+     */
     private void startEvent(){
         eventTriggered = true;
         eventTimer = 15f;
@@ -160,35 +184,52 @@ public class BuildingFrenzy {
         updateCountLabels();
     }
 
-
+    /**
+     * Returns a random BuildingTypes value.
+     *
+     * @return a random BuildingTypes enum value.
+     */
     private BuildingTypes getRandomBuildingType(){
         int numberOfOptions = BuildingTypes.values().length - 5;
         int random = rand.nextInt(numberOfOptions);
         return BuildingTypes.values()[random];
     }
-
+    /**
+     * Records and stores the original counts of the selected building types at the start of the event.
+     */
     private void getOriginalAmounts(){
         for(int i = 0; i < amountOfTypes; i++){
             originalAmounts.add(buildingCounts.getBuildingCounts(toBuild.get(i).ordinal()));
         }
     }
 
+
+    /**
+     * Retrieves the current counts of the selected building types.
+     */
     private void getAmounts(){
         currentAmounts = new Array<>();
         for(int i = 0; i < amountOfTypes; i++){
             currentAmounts.add(buildingCounts.getBuildingCounts(toBuild.get(i).ordinal()));
         }
     }
-
+    /**
+     * Randomly selects the number of building types requires for the next event.
+     */
     private void pickAmountOfTypes(){
         amountOfTypes = rand.nextInt(2) + 1;
     }
-
+    /**
+     * Updates the timer prompt label with the remaining event time left.
+     */
     private void updateTimer(){
         timerPrompt.setText("Timer: " + String.format("%.1f", eventTimer));
         timerPrompt.setVisible(true);
     }
-
+    /**
+     * Updates count labels for each building type during the event, checks for
+     * completion, and adjusts UI colors accordingly.
+     */
     private void updateCountLabels(){
         getAmounts();
 
@@ -213,6 +254,11 @@ public class BuildingFrenzy {
             label.setColor(colour);
         }
     }
+    /**
+     * Checks if all building goals for the event are complete.
+     *
+     * @return true if all necessary buildings have been built, false otherwise.
+     */
 
     private boolean isAllComplete(){
         for(Boolean complete : completedType){
@@ -222,7 +268,10 @@ public class BuildingFrenzy {
         }
         return true;
     }
-
+    /**
+     * Ends the Building Frenzy event, updates satisfaction based on success,
+     * announces the decision and hides event-related UI elements.
+     */
     private void endEvent(){
         eventTriggered = false;
 

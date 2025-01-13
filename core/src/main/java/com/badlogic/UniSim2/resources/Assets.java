@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
- * This class is used to store all textures that will be used in the game.
+ * This is a Utility class is used to store all textures that will be used in the game.
  * All textures are made public static variable and should not be changed
  * by another other class.
  */

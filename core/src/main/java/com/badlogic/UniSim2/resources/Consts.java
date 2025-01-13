@@ -3,7 +3,7 @@ package com.badlogic.UniSim2.resources;
 import com.badlogic.gdx.graphics.Color;
 
 /**
- * This class is used to manage all the constants in the game. It allows
+ * This utility class is used to manage all the constants in the game. It allows
  * easy changes to be made to all constants within it.
  */
 public class Consts {
@@ -11,6 +11,8 @@ public class Consts {
      * Size of each cell in pixels, everything scales to the cell size.
      */
     public static final int CELL_SIZE = 20;
+    public static final float FIX_BUILDING_COST = 500;
+    public static final float SAT_DECAY_FROM_BROKEN_BUILDING = 2f;
 
     /**
      * Scales a value according to the size of each grid cell.
