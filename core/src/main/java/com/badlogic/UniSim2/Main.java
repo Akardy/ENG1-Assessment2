@@ -5,6 +5,7 @@ import com.badlogic.UniSim2.resources.*;
 import com.badlogic.UniSim2.stats.Satisfaction;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -27,7 +28,7 @@ public class Main extends Game {
         Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4,
                 Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 4);
         Assets.loadTextures();
-        startScreen = new StartScreen(this, Gdx.files.local("assets/leaderboard.txt"));
+        startScreen = new StartScreen(this, Gdx.files.local("assets/leaderboard.txt"), new Stage(viewport));
         setScreen(startScreen);
     }
 
@@ -56,7 +57,7 @@ public class Main extends Game {
      * the {@link GameScreen} when the timer ends.
      */
     public void endGame(Satisfaction satisfaction) {
-        endScreen = new EndScreen(this, satisfaction);
+        endScreen = new EndScreen(this, satisfaction, new Stage(viewport));
         setScreen(endScreen);
         gameScreen.dispose();
     }

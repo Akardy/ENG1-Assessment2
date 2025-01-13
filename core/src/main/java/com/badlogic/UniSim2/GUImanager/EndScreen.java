@@ -28,21 +28,28 @@ public class EndScreen implements Screen {
     private StretchViewport viewport;
     private Stage stage;
     private Label scoreLabel;
-    private final Skin skin;
+    private Skin skin;
     private Satisfaction satisfaction;
     private ImageButton menuButton;
 
-    SpriteBatch spriteBatch = new SpriteBatch();
+    SpriteBatch spriteBatch;
 
-    public EndScreen(Main game, Satisfaction satisfaction) {
+    public EndScreen(Main game, Satisfaction satisfaction, Stage stage) {
         this.game = game;
         this.viewport = game.getViewport();
-        this.stage = new Stage(this.viewport);
-        this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        this.stage = stage;
         this.satisfaction = satisfaction;
+        if (stage != null) {
+            createUI();
+            saveSatisfaction();
+        }
+    }
+
+    private void createUI(){
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         createScoreLabel();
         addMenuButton();
-        saveSatisfaction();
+        spriteBatch = new SpriteBatch();
     }
 
     // Adds a label to the middle of the screen displaying the score that the player
@@ -119,7 +126,6 @@ public class EndScreen implements Screen {
         System.out.println("Saving to: " + file.file().getAbsolutePath());
         // Append the satisfaction value to the file, followed by a newline for readability
         file.writeString(satisfaction.getSatis() + "\n", true);
-        file.writeString("1" + "\n", true);
     }
 
     @Override
