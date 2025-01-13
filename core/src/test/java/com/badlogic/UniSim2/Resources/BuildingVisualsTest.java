@@ -1,10 +1,13 @@
 package com.badlogic.UniSim2.Resources;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.badlogic.UniSim2.resources.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class BuildingVisualsTest extends AbstractHeadlessGdxTest{
     @Test
