@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
@@ -45,21 +46,25 @@ public class StartScreen implements Screen {
      * @param file the file handle for leaderboard data.
      */
 
-    public StartScreen(Main game, FileHandle file) {
+    public StartScreen(Main game, FileHandle file, Stage stage) {
         this.game = game;
         viewport = game.getViewport();
-        stage = new Stage(viewport);
+        this.stage = stage;
         this.file = file;
+        leaderboardData = getLeaderboardData();
+        if (stage != null) {
+            createUI();
+        }
+    }
+
+    protected void createUI(){
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         addStartButton();
         addCreditsButton();
         addSettingsButton();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        leaderboardData = getLeaderboardData();
         addLeaderBored();
         addClearLeaderboard();
     }
-
-
 
     @Override
     public void show() {
@@ -202,7 +207,7 @@ public class StartScreen implements Screen {
      * Displays the top satisfaction scores in descending order, labeled with rank.
      */
 
-    private void addLeaderBored() {
+    public void addLeaderBored() {
         Table mainTable = new Table();
         leaderboardTable = new Table();
         leaderboardTable.top().left();
@@ -238,6 +243,23 @@ public class StartScreen implements Screen {
         stage.addActor(mainTable);
 
     }
+
+    public List<Float> sortLeaderboardData(List<Float> leaderBoard){
+        java.util.List<Float> sortedScores = leaderBoard;
+        sortedScores.sort(Comparator.reverseOrder());
+        return sortedScores;
+    }
+
+    public static boolean canParseFloat(String str) {
+        try {
+            // Try to parse the string as a float
+            Float.parseFloat(str);
+            return true; // Successfully parsed as a float
+        } catch (NumberFormatException e) {
+            return false; // Exception occurred, not a valid float
+        }
+    }
+
     /**
      * Reads leaderboard satisfaction scores from the leaderboard file.
      *
@@ -252,15 +274,19 @@ public class StartScreen implements Screen {
             // Read the entire file as a string
             String fileContents = file.readString();
             // Split file into lines (assuming each line is a satisfaction value)
-            String[] lines = fileContents.split("\n");
+            if(fileContents != null) {
+                String[] lines = fileContents.split("\n");
 
-            // Parse each line as a float and add it to the list
-            for (String line : lines) {
-                try {
-                    float satisfaction = Float.parseFloat(line.trim());  // Convert line to float
-                    leaderboardSat.add(satisfaction);
-                } catch (NumberFormatException e) {
-                    System.err.println("Error parsing value: " + line);
+                // Parse each line as a float and add it to the list
+                for (String line : lines) {
+                    try {
+                        if(canParseFloat(line)) {
+                            float satisfaction = Float.parseFloat(line.trim());  // Convert line to float
+                            leaderboardSat.add(satisfaction);
+                        }
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error parsing value: " + line);
+                    }
                 }
             }
         }
@@ -271,7 +297,7 @@ public class StartScreen implements Screen {
      * When clicked, leaderboard scores are reset and the table is updated.
      */
 
-    private void addClearLeaderboard(){
+    public void addClearLeaderboard(){
         TextButton clearLeaderboardButton = new TextButton("Clear Leaderboard", skin);
 
         clearLeaderboardButton.addListener(new ClickListener() {
@@ -299,7 +325,7 @@ public class StartScreen implements Screen {
      */
     public void clearLeaderboardSat() {
         // Get a handle to the file
-        FileHandle file = Gdx.files.local("assets/leaderboard.txt");
+        this.file = Gdx.files.local("assets/leaderboard.txt");
 
         // Write an empty string to clear the file's content
         file.writeString("", false);
