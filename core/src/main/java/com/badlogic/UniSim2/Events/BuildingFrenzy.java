@@ -39,18 +39,27 @@ public class BuildingFrenzy {
     private Array<Integer> currentAmounts;
     private Array<Boolean> completedType;
 
+    private Random rand;
+
 
     public BuildingFrenzy(Timer timer, Satisfaction satisfaction, BuildingManager buildingManager,
-                          BuildingCounts buildingCounts, Announcement announcement, Main game) {
+                          BuildingCounts buildingCounts, Announcement announcement, Main game, Stage stage, Skin skin, Random rand) {
         this.timer = timer;
         this.satisfaction = satisfaction;
         this.buildingManager = buildingManager;
         this.buildingCounts = buildingCounts;
         this.announcement = announcement;
-        this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        this.stage = new Stage(game.getViewport());
+        this.skin = skin;
+        this.stage = stage;
         this.eventTriggered = false;
+        this.rand = rand;
         initialiseLabels();
+    }
+
+    public BuildingFrenzy(Timer timer, Satisfaction satisfaction, BuildingManager buildingManager,
+                          BuildingCounts buildingCounts, Announcement announcement, Main game) {
+        this(timer, satisfaction, buildingManager, buildingCounts, announcement, game, new Stage(game.getViewport()),
+                new Skin(Gdx.files.internal("ui/uiskin.json")), new Random());
     }
 
     private void initialiseLabels() {
@@ -86,7 +95,8 @@ public class BuildingFrenzy {
     }
 
     public void checkForBuildingFrenzy(float delta){
-        //Check for exam time
+        // Check for exam time
+        int check =  (int)timer.getElapsedTime();
         if ((int)timer.getElapsedTime() % 60 == 25 && !eventTriggered){
             startEvent();
         }
@@ -153,7 +163,7 @@ public class BuildingFrenzy {
 
     private BuildingTypes getRandomBuildingType(){
         int numberOfOptions = BuildingTypes.values().length - 5;
-        int random = new Random().nextInt(numberOfOptions);
+        int random = rand.nextInt(numberOfOptions);
         return BuildingTypes.values()[random];
     }
 
@@ -163,8 +173,6 @@ public class BuildingFrenzy {
         }
     }
 
-
-
     private void getAmounts(){
         currentAmounts = new Array<>();
         for(int i = 0; i < amountOfTypes; i++){
@@ -173,7 +181,6 @@ public class BuildingFrenzy {
     }
 
     private void pickAmountOfTypes(){
-        Random rand = new Random();
         amountOfTypes = rand.nextInt(2) + 1;
     }
 
