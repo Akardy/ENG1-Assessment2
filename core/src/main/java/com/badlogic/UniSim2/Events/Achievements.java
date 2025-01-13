@@ -64,7 +64,7 @@ public class Achievements {
      */
     private void checkForAchievements() {
         if (buildingCounts.getFoodZoneCount() == 10 && !doneHungryHippo ||
-            (buildingCounts.getTotalCount() == 1 && buildingCounts.getFoodZoneCount() == 1)){
+            (buildingCounts.getTotalCount() == 1 && buildingCounts.getFoodZoneCount() == 1) && !doneHungryHippo) {
             announcement.showAnnouncement("Achievement:\nHungry Hippo");
             doneHungryHippo = true;
         }
