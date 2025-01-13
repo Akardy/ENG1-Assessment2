@@ -81,7 +81,7 @@ public class BrokenBuilding {
         this.satisfaction = satisfaction;
     }
     /**
-     * Selects a random time, in seconds, when the next building will break
+     * Selects a random time 20 seconds onwards, in seconds, when the building will break
      */
     private void selectTimeGoOf() {
         Random random = new Random();

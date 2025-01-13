@@ -60,6 +60,7 @@ public class BuildingFrenzy {
         this.skin = skin;
         this.stage = stage;
         this.eventTriggered = false;
+        this.completedType = new Array<Boolean>();
         initialiseLabels();
     }
 
@@ -288,4 +289,13 @@ public class BuildingFrenzy {
         }
     }
 
+    /**
+     * Update the value of eventTriggered
+     */
+    public void setEventTriggered(boolean eventTriggered){this.eventTriggered = eventTriggered; }
+
+    /**
+     * Update completedType array list
+     */
+    public void updateCompletedType(Array<Boolean> completedType){this.completedType = completedType; }
 }
